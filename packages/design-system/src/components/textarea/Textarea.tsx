@@ -1,6 +1,6 @@
 import type { TextareaHTMLAttributes } from 'react';
 import { textareaWrapperVariant, textareaInputVariant, type TextareaSize } from './textarea.css';
-import { cn } from '@/shared/utils/cn';
+import { cn } from '../../utils/cn';
 
 export interface TextareaProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'> {
   size?: TextareaSize;

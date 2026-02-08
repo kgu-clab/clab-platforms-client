@@ -1,14 +1,12 @@
 @import '@clab/config/theme.css';
 
-@source "../../../../packages/design-system/src";
+@source "../../../packages/design-system/src";
 
 :root {
-  --background: linear-gradient(to bottom, black, #f3f4f6);
   --foreground: #171717;
 }
 
 body {
-  background: var(--background);
   color: var(--foreground);
   font-family: var(--font-wantedSans);
 }
