@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
   --color-primary: #3580ff;
@@ -25,17 +25,15 @@
   --color-chip-purple: #8855ff;
 
   --font-family-primary:
-    "WantedSans", "Pretendard Variable", Pretendard, system-ui, Avenir,
-    Helvetica, Arial, sans-serif;
+    'WantedSans', 'Pretendard Variable', Pretendard, system-ui, Avenir, Helvetica, Arial, sans-serif;
   --font-family-sans:
-    "WantedSans", "Pretendard Variable", Pretendard, system-ui, Avenir,
-    Helvetica, Arial, sans-serif;
+    'WantedSans', 'Pretendard Variable', Pretendard, system-ui, Avenir, Helvetica, Arial, sans-serif;
   --font-family-serif:
-    "WantedSans", "Pretendard Variable", Pretendard, ui-serif, Georgia, Cambria,
-    "Times New Roman", Times, serif;
+    'WantedSans', 'Pretendard Variable', Pretendard, ui-serif, Georgia, Cambria, 'Times New Roman',
+    Times, serif;
   --font-family-mono:
-    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-    "Courier New", monospace;
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
 
   --font-weight-regular: 400;
   --font-weight-medium: 500;
