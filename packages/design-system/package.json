@@ -7,7 +7,10 @@
   "exports": {
     ".": "./src/index.ts",
     "./components": "./src/components/index.ts",
-    "./utils": "./src/utils/cn.ts"
+    "./utils": "./src/utils/cn.ts",
+    "./button": "./src/components/button/Button.tsx",
+    "./input": "./src/components/input/Input.tsx",
+    "./textarea": "./src/components/textarea/Textarea.tsx"
   },
   "scripts": {
     "storybook": "storybook dev -p 6006",

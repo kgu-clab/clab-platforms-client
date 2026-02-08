@@ -1,6 +1,7 @@
 'use client';
 
-import { Input, Textarea } from '@clab/design-system';
+import Input from '@clab/design-system/input';
+import Textarea from '@clab/design-system/textarea';
 import { useState } from 'react';
 
 import type { ApplicationForm as ApplicationFormType, ApplicationType } from './types';

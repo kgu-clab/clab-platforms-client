@@ -1,4 +1,6 @@
+import Button from '@clab/design-system/button';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function HeroSection() {
   return (
@@ -11,6 +13,9 @@ export default function HeroSection() {
           width={26}
           height={25}
         />
+        <Link href="/apply">
+          <Button size="small">지원하기</Button>
+        </Link>
       </div>
       <div className="self-stretch p-2.5 flex flex-col justify-center items-center gap-10 overflow-hidden">
         <div className="flex flex-col justify-center items-center">
