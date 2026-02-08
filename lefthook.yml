@@ -4,11 +4,11 @@ pre-commit:
     lint:
       run: |
         git diff --cached --name-only \
-          | grep -E '^(apps|packages)/' \
+          | grep -E '^(apps|packages)/' || true \
           | cut -d/ -f1,2 \
           | sort -u \
           | while read -r pkg; do
-              pnpm exec turbo run lint --filter="./$pkg"
+              [ -n "$pkg" ] && pnpm exec turbo run lint --filter="./$pkg"
             done
 
     format:
@@ -16,17 +16,12 @@ pre-commit:
       stage_fixed: true
 
 commit-msg:
-  run: |
-    pnpm commitlint --edit {1} || {
-      echo ""
-      echo "🚨 커밋 메시지 형식이 올바르지 않습니다."
-      echo ""
-      echo "형식:"
-      echo "  🚨 (scope) 메시지"
-      echo ""
-      echo "예시:"
-      echo "  ✨ (land) 코드 린트룰 적용"
-      echo "  🐛 (member) 응답 파싱 오류 수정"
-      echo ""
-      exit 1
-    }
+  commands:
+    commitlint:
+      run: pnpm exec commitlint --edit {1}
+      fail_text: |
+        🚨 커밋 메시지 형식이 올바르지 않습니다.
+
+        형식: 이모지 (scope) 메시지
+        예시: ✨ (land) 코드 린트룰 적용
+        예시: 🐛 (member) 응답 파싱 오류 수정
