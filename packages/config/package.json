@@ -2,10 +2,27 @@
   "name": "@clab/config",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "exports": {
-    "./theme.css": "./theme.css"
+    "./theme.css": "./theme.css",
+    "./eslint": "./eslint/index.js",
+    "./eslint/base": "./eslint/base.js",
+    "./eslint/react": "./eslint/react.js"
   },
   "dependencies": {
     "tailwindcss": "^4.1.18"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-react": "^7.37.0",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^16.5.0",
+    "typescript-eslint": "^8.46.4"
+  },
+  "peerDependencies": {
+    "eslint": ">=9"
   }
 }
