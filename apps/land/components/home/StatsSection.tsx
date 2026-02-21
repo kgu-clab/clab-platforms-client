@@ -1,16 +1,10 @@
-const STATS = [
-  { label: '총 활동 인원', value: '100+', dark: true },
-  { label: '활성화 스터디', value: '10개', dark: false },
-  { label: '활성화 스터디', value: '10개', dark: false },
-  { label: '총 활동 인원', value: '100+', dark: true },
-] as const;
+import { STATS } from '@/constants';
+import { Title } from '../common';
 
 export default function StatsSection() {
   return (
-    <section className="flex w-full flex-col px-20 gap-3 bg-linear-to-b from-primary to-primary-sub items-center justify-center h-screen">
-      <h2 className="text-3xl font-semibold text-white mb-20">
-        C-Lab은 다음과 같은 역사를 가지고 있어요
-      </h2>
+    <section className="flex w-full flex-col px-5 sm:px-10 md:px-20 gap-3 bg-linear-to-b from-primary to-primary-sub items-center justify-center h-screen">
+      <Title title="C-Lab은 다음과 같은 역사를 가지고 있어요" className="text-white" />
       <div className="grid w-full grid-cols-2 gap-3">
         {STATS.map(({ label, value, dark }, i) => (
           <div
