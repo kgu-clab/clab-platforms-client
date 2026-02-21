@@ -8,8 +8,8 @@ import {
 import { HomeCarousel, HomePostItem, HomeLink } from "@/components/home";
 import { BottomNavbar } from "@/components/menu";
 
-import { ROUTE } from "@/shared/config/route";
-import { communityPostsList } from "@/shared/mock/community-posts";
+import { ROUTE } from "@/constants";
+import { communityPostsList } from "@/mock/community-posts";
 
 export default function HomePage() {
   return (

@@ -2,7 +2,7 @@ import { Chip } from "@clab/design-system";
 import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
 
-import { clubNewsList, type ClubNews } from "@/shared/mock/club-news";
+import { clubNewsList, type ClubNews } from "@/mock/club-news";
 
 interface HomeCarouselProps {
   items?: ClubNews[];

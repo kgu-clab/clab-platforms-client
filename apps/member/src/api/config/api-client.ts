@@ -1,9 +1,9 @@
 import got, { type HandlerFunction } from "got";
 
-import { postReissueToken } from "@/handlers/auth/postReissueToken";
+import { useAuthStore } from "@/model/common";
 
-import { ROUTE } from "./route";
-import { useAuthStore } from "../store/auth";
+import { postReissueToken } from "@/api/auth";
+import { ROUTE } from "@/constants";
 
 export const baseApiClient = got.extend({
   prefixUrl: "", // TODO: API_BASE_URL 설정

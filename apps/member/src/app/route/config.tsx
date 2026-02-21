@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router";
 
-import { ROUTE } from "@/shared/config/route";
-
+import { ROUTE } from "@/constants";
 import {
   ActivityHomePage,
   HomePage,

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 
 import type { BookData } from "@/types/library";
 
-import { ROUTE } from "@/shared/config/route";
+import { ROUTE } from "@/constants";
 
 interface LibraryBookItemProps {
   book: BookData;

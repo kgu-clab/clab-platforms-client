@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 
 import { ActivityStudyItem } from "@/components/activity";
 
-import { MOCK_ACTIVITIES } from "@/shared/mock/activity";
+import { MOCK_ACTIVITIES } from "@/mock/activity";
 
 export default function MyActivityPage() {
   const navigate = useNavigate();

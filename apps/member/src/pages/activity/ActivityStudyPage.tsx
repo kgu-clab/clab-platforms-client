@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 
 import { ActivityStudyList } from "@/components/activity";
 
-import { ROUTE } from "@/shared/config/route";
+import { ROUTE } from "@/constants";
 
 export default function ActivityStudyPage() {
   const navigate = useNavigate();

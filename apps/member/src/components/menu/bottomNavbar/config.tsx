@@ -3,7 +3,7 @@ import { HiMiniSquare3Stack3D } from "react-icons/hi2";
 import { ImBubbles } from "react-icons/im";
 import { IoBook, IoPerson } from "react-icons/io5";
 
-import { ROUTE } from "@/shared/config/route";
+import { ROUTE } from "@/constants";
 
 import type { BottomNavbarItemProps } from "./BottomNavbar";
 
