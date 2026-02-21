@@ -5,7 +5,7 @@ export default function StatsSection() {
   return (
     <section className="flex w-full flex-col px-5 sm:px-10 md:px-20 gap-3 bg-linear-to-b from-primary to-primary-sub items-center justify-center h-screen">
       <Title title="C-Lab은 다음과 같은 역사를 가지고 있어요" className="text-white" />
-      <div className="grid w-full grid-cols-2 gap-3">
+      <div className="grid w-full grid-cols-2 gap-3 items-center justify-center max-w-[900px]">
         {STATS.map(({ label, value, dark }, i) => (
           <div
             key={i}
@@ -14,8 +14,8 @@ export default function StatsSection() {
             }`}
           >
             <div className="flex flex-col gap-1 justify-center items-center">
-              <span className="text-sm opacity-90">{label}</span>
-              <span className="text-2xl font-bold">{value}</span>
+              <span className="text-sm md:text-base opacity-90">{label}</span>
+              <span className="text-xl md:text-2xl font-bold">{value}</span>
             </div>
           </div>
         ))}
