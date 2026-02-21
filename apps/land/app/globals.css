@@ -6,6 +6,17 @@
   --foreground: #171717;
 }
 
+html,
+body {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
 body {
   color: var(--foreground);
   font-family: var(--font-wantedSans);
