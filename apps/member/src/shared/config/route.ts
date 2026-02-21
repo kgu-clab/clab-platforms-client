@@ -1,4 +1,5 @@
 export const ROUTE = {
+  LOGIN: "/login",
   HOME: "/",
   COMMUNITY: "/community",
   COMMUNITY_NOTICE: "/community?tab=notice",
