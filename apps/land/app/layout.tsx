@@ -1,6 +1,10 @@
 import type { Metadata } from 'next';
 import { ReactNode } from 'react';
 
+import { Header } from '@/components/common';
+import { QueryProvider } from '@/lib';
+import { wantedSans } from './font';
+
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -17,13 +21,12 @@ export const metadata: Metadata = {
   },
 };
 
-import { wantedSans } from './font';
-
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ko" className={`${wantedSans.variable}`} suppressHydrationWarning>
       <body className="antialiased" suppressHydrationWarning>
-        {children}
+        <Header />
+        <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
   );
