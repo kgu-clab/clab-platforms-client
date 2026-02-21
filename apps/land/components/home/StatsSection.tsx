@@ -15,12 +15,14 @@ export default function StatsSection() {
         {STATS.map(({ label, value, dark }, i) => (
           <div
             key={i}
-            className={`flex flex-col w-full gap-1.5 min-h-40 rounded-2xl p-4 ${
+            className={`grid place-items-center w-full min-h-40 rounded-2xl p-4 ${
               dark ? 'bg-blue-900 text-white' : 'bg-white text-blue-900'
             }`}
           >
-            <span className="text-sm opacity-90">{label}</span>
-            <span className="text-2xl font-bold">{value}</span>
+            <div className="flex flex-col gap-1 justify-center items-center">
+              <span className="text-sm opacity-90">{label}</span>
+              <span className="text-2xl font-bold">{value}</span>
+            </div>
           </div>
         ))}
       </div>
