@@ -5,23 +5,14 @@ import Link from 'next/link';
 export default function HeroSection() {
   return (
     <div className="self-stretch h-screen relative bg-linear-to-b from-black to-primary inline-flex flex-col justify-center items-center overflow-hidden">
-      <div className="self-stretch h-16 absolute top-0 px-5 left-0 w-full inline-flex justify-between items-center overflow-hidden">
-        <Image
-          className="w-6 h-6"
-          src="/images/clab-logo.png"
-          alt="Clab Logo"
-          width={26}
-          height={25}
-        />
-        <Link href="/apply">
-          <Button size="small">지원하기</Button>
-        </Link>
-      </div>
       <div className="self-stretch p-2.5 flex flex-col justify-center items-center gap-10 overflow-hidden">
         <div className="flex flex-col justify-center items-center">
           <div className="justify-start text-white text-2xl ">개발보안동아리 C-Lab</div>
         </div>
         <Image src="/images/clab-logo-long.png" alt="Clab Logo" width={270} height={119} />
+        <Link href="/apply">
+          <Button size="small">지원하기</Button>
+        </Link>
       </div>
     </div>
   );
