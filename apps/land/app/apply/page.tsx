@@ -4,7 +4,7 @@ import { ApplyHeroSection, FAQSection, RecruitmentTable } from '@/components/app
 
 export default function ApplyPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-black">
+    <div className="flex min-h-screen flex-col bg-black pt-header-height">
       <div className="sticky top-16">
         <ApplyHeroSection />
       </div>

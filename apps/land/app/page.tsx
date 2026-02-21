@@ -8,7 +8,7 @@ import {
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col relative">
+    <div className="flex min-h-screen flex-col relative pt-header-height">
       <HeroSection />
       <StatsSection />
       <ActivitySection />
