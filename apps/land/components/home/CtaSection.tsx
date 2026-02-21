@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function CtaSection() {
   return (
-    <section className="w-full h-screen flex flex-col items-center justify-center bg-gray-100 px-20">
+    <section className="w-full h-screen flex flex-col items-center justify-center bg-gray-100 px-5 sm:px-10 md:px-20">
       <div className="relative mx-auto flex flex-col items-center gap-4 overflow-hidden rounded-2xl w-full bg-primary-sub h-[60vh] max-h-[700px] px-5 py-6">
         <Image
           src="/images/clab-logo.png"
