@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'C-Lab',
     description: '경기대학교 컴퓨터공학부 개발보안동아리, C-Lab 입니다! 👋',
-    images: ['/images/clab-logo-long-colored.png'],
+    images: ['/images/clab-logo-og.png'],
   },
 };
 
