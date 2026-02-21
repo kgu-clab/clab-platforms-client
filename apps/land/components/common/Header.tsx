@@ -59,7 +59,7 @@ export default function Header() {
             aria-label={isOpen ? '메뉴 닫기' : '메뉴 열기'}
           >
             <Image
-              src={isOpen ? '/images/icons/close.svg' : '/images/icons/menu.svg'}
+              src={isOpen ? '/icons/close.svg' : '/icons/menu.svg'}
               alt={isOpen ? '메뉴 닫기' : '메뉴 열기'}
               width={24}
               height={24}
