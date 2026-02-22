@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { setTokens, authorization } from '@/model/auth/tokenStorage';
+import { setTokens, authorization } from '@/lib/auth';
 import { useIsLoggedInState } from '@/model/auth/useIsLoggedIn';
 
 import { Button } from '@/components/common/Button';

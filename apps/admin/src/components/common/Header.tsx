@@ -11,9 +11,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/common/DropdownMenu';
 
-import { removeTokens } from '@/model/auth/tokenStorage';
-import { useIsLoggedInState } from '@/model/auth/useIsLoggedIn';
 import { ROUTE } from '@/constants/route';
+import { removeTokens } from '@/lib/auth';
+import { useIsLoggedInState } from '@/model/auth/useIsLoggedIn';
 
 export function Header() {
   const navigate = useNavigate();

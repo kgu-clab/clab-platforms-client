@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react';
 
-import * as tokenStorage from './tokenStorage';
+import { getTokens } from '@/lib/auth';
+
 import { useIsLoggedInState } from './useIsLoggedIn';
 
 export function useToken(): [
@@ -9,7 +10,7 @@ export function useToken(): [
   updateLogged: (logged: boolean) => void,
 ] {
   const [, setLoggedIn] = useIsLoggedInState();
-  const tokens = tokenStorage.getTokens();
+  const tokens = getTokens();
 
   const updateLogged = useCallback(
     (logged: boolean) => {
