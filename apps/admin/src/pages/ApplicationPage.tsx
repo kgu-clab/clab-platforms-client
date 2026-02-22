@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { ApplicationDetailModal } from '@/components/application/ApplicationDetailModal';
@@ -5,39 +6,48 @@ import { DataTable } from '@/components/application/ApplicationTable';
 import { getColumns } from '@/components/application/ApplicationTableColumn';
 import { Header } from '@/components/common/Header';
 
-import {
-  applicationListResponseSchema,
-  type ApplicationListItem,
-  type PaginationMeta,
-} from '@/api/application/api.model';
-import mockResponse from '@/mock/application.json';
+import type { ApplicationListItem, PaginationMeta } from '@/api/application/api.model';
+import { applicationQueryKeys, getApplicationConditions } from '@/api/application/api.query';
 
-function getApplications(): {
-  items: ApplicationListItem[];
-  pagination: PaginationMeta;
-} {
-  const parsed = applicationListResponseSchema.parse(mockResponse);
-  return {
-    items: parsed.data.items,
-    pagination: {
-      currentPage: parsed.data.currentPage,
-      hasPrevious: parsed.data.hasPrevious,
-      hasNext: parsed.data.hasNext,
-      totalPages: parsed.data.totalPages,
-      totalItems: parsed.data.totalItems,
-      take: parsed.data.take,
-    },
-  };
-}
+const RECRUITMENT_ID = 14;
+const PAGE_SIZE = 10;
 
 export function ApplicationPage() {
-  const { items, pagination } = getApplications();
+  const [page, setPage] = useState(1);
   const [detailOpen, setDetailOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<ApplicationListItem | null>(null);
 
-  const handlePageChange = (page: number) => {
-    // TODO: API 호출로 페이지 변경 (예: fetchApplications({ page }))
-    console.log(page);
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: applicationQueryKeys.list(RECRUITMENT_ID, { page, size: PAGE_SIZE }),
+    queryFn: () =>
+      getApplicationConditions({
+        recruitmentId: RECRUITMENT_ID,
+        page,
+        size: PAGE_SIZE,
+      }),
+  });
+
+  const items: ApplicationListItem[] = data?.items ?? [];
+  const pagination: PaginationMeta = data
+    ? {
+        currentPage: data.currentPage,
+        hasPrevious: data.hasPrevious,
+        hasNext: data.hasNext,
+        totalPages: data.totalPages,
+        totalItems: data.totalItems,
+        take: data.take,
+      }
+    : {
+        currentPage: 1,
+        hasPrevious: false,
+        hasNext: false,
+        totalPages: 1,
+        totalItems: 0,
+        take: PAGE_SIZE,
+      };
+
+  const handlePageChange = (nextPage: number) => {
+    setPage(nextPage);
   };
 
   const handleViewDetail = (item: ApplicationListItem) => {
@@ -66,6 +76,12 @@ export function ApplicationPage() {
             <Header />
           </div>
         </div>
+        {isPending && <p className="text-muted-foreground text-sm">지원 목록을 불러오는 중...</p>}
+        {isError && (
+          <p className="text-destructive text-sm">
+            {error instanceof Error ? error.message : '지원 목록을 불러오지 못했습니다.'}
+          </p>
+        )}
         <DataTable
           data={items}
           columns={columns}
