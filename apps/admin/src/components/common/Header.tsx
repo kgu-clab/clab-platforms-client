@@ -1,4 +1,5 @@
 import { ChevronsUpDown, LogOut } from 'lucide-react';
+import { useNavigate } from 'react-router';
 
 import { Button } from '@/components/common/Button';
 import {
@@ -10,7 +11,20 @@ import {
   DropdownMenuTrigger,
 } from '@/components/common/DropdownMenu';
 
+import { removeTokens } from '@/model/auth/tokenStorage';
+import { useIsLoggedInState } from '@/model/auth/useIsLoggedIn';
+import { ROUTE } from '@/constants/route';
+
 export function Header() {
+  const navigate = useNavigate();
+  const [, setLoggedIn] = useIsLoggedInState();
+
+  const handleLogout = () => {
+    removeTokens();
+    setLoggedIn(false);
+    navigate(ROUTE.LOGIN, { replace: true });
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -34,9 +48,9 @@ export function Header() {
           <span>Profile</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
+          <span>로그아웃</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
