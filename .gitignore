@@ -218,3 +218,5 @@ out/
 
 # Turborepo
 .turbo/
+
+.pnpm-store/

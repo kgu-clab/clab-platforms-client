@@ -1,0 +1,67 @@
+{
+  "success": true,
+  "data": {
+    "currentPage": 1,
+    "hasPrevious": false,
+    "hasNext": true,
+    "totalPages": 3,
+    "totalItems": 25,
+    "take": 10,
+    "items": [
+      {
+        "studentId": "STU-001",
+        "recruitmentId": 1,
+        "name": "홍길동",
+        "contact": "010-1234-5678",
+        "email": "hong@example.com",
+        "department": "컴퓨터공학부",
+        "grade": 2,
+        "birth": "2004-03-15",
+        "address": "서울시 강남구",
+        "interests": "백엔드 개발",
+        "otherActivities": "코딩 동아리",
+        "githubUrl": "https://github.com/hong",
+        "applicationType": "NORMAL",
+        "isPass": true,
+        "updatedAt": "2026-02-22T13:10:00.112Z",
+        "createdAt": "2026-02-20T10:00:00.000Z"
+      },
+      {
+        "studentId": "STU-002",
+        "recruitmentId": 1,
+        "name": "김철수",
+        "contact": "010-2345-6789",
+        "email": "kim@example.com",
+        "department": "소프트웨어학과",
+        "grade": 3,
+        "birth": "2003-07-22",
+        "address": "경기도 수원시",
+        "interests": "프론트엔드",
+        "otherActivities": "없음",
+        "githubUrl": "https://github.com/kim",
+        "applicationType": "MEISTER",
+        "isPass": false,
+        "updatedAt": "2026-02-22T12:00:00.000Z",
+        "createdAt": "2026-02-21T14:30:00.000Z"
+      },
+      {
+        "studentId": "STU-003",
+        "recruitmentId": 1,
+        "name": "이영희",
+        "contact": "010-3456-7890",
+        "email": "lee@example.com",
+        "department": "컴퓨터공학부",
+        "grade": 1,
+        "birth": "2005-01-10",
+        "address": "인천시 남동구",
+        "interests": "풀스택, DevOps",
+        "otherActivities": "해커톤 참가",
+        "githubUrl": "https://github.com/lee",
+        "applicationType": "NORMAL",
+        "isPass": true,
+        "updatedAt": "2026-02-22T11:00:00.000Z",
+        "createdAt": "2026-02-19T09:00:00.000Z"
+      }
+    ]
+  }
+}
