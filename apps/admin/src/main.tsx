@@ -12,11 +12,10 @@ import { LoginPage } from '@/pages/LoginPage';
 import { AuthInit } from '@/components/auth/AuthInit';
 import { ProtectAuth } from '@/components/auth/ProtectAuth';
 
-import { initAuth } from '@/auth';
-import { authConfig } from '@/auth/auth.config';
 import { ROUTE } from '@/constants/route';
+import { setupAuth } from '@/lib/auth';
 
-initAuth(authConfig);
+setupAuth();
 
 const queryClient = new QueryClient({
   defaultOptions: {
