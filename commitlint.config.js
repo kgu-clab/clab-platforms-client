@@ -7,7 +7,7 @@ module.exports = {
     },
   },
   rules: {
-    'scope-enum': [2, 'always', ['land', 'member', 'config', 'design-system', '*']],
+    'scope-enum': [2, 'always', ['land', 'member', 'config', 'design-system', '*', 'admin']],
     'subject-empty': [2, 'never'],
     'header-max-length': [2, 'always', 100],
     'subject-full-stop': [2, 'never', '.'],
