@@ -7,7 +7,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 import './index.css';
 
 import { ApplicationPage } from '@/pages/ApplicationPage';
-import { AuthCallbackPage } from '@/pages/AuthCallbackPage';
 import { LoginPage } from '@/pages/LoginPage';
 
 import { AuthInit } from '@/components/auth/AuthInit';
@@ -28,7 +27,6 @@ const queryClient = new QueryClient({
 });
 
 const router = createBrowserRouter([
-  { path: ROUTE.AUTH_CALLBACK, element: <AuthCallbackPage /> },
   {
     path: ROUTE.LOGIN,
     element: (
