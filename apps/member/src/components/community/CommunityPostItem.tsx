@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 
 import type { PostData } from "@/types/community";
 
-import { ROUTE } from "@/shared/config/route";
+import { ROUTE } from "@/constants";
 
 interface CommunityPostItemProps {
   postData: PostData;

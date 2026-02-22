@@ -10,7 +10,7 @@ import {
 import { GoChevronLeft } from "react-icons/go";
 import { useNavigate } from "react-router";
 
-import { MOCK_BOOK } from "@/shared/mock/library";
+import { MOCK_BOOK } from "@/mock/library";
 
 export default function LibraryDetailPage() {
   const navigate = useNavigate();

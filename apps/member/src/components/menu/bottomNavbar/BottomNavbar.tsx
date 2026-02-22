@@ -2,7 +2,7 @@ import { cloneElement, type ReactElement, type ReactNode } from "react";
 import type { IconBaseProps } from "react-icons";
 import { useMatch, useNavigate } from "react-router";
 
-import { cn } from "@/shared/utils/cn";
+import { cn } from "@/utils/cn";
 
 import { BOTTOM_NAVBAR_CONFIG } from "./config";
 

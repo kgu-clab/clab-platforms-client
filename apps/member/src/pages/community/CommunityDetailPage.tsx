@@ -8,7 +8,7 @@ import {
   PostDetailCommentList,
 } from "@/components/community";
 
-import { MOCK_POST, MOCK_COMMENTS } from "@/shared/mock/community";
+import { MOCK_POST, MOCK_COMMENTS } from "@/mock/community";
 
 export default function CommunityDetailPage() {
   const navigate = useNavigate();

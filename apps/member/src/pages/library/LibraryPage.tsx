@@ -8,7 +8,7 @@ import {
 } from "@/components/library";
 import { BottomNavbar } from "@/components/menu";
 
-import { ROUTE } from "@/shared/config/route";
+import { ROUTE } from "@/constants";
 
 export default function LibraryPage() {
   const navigate = useNavigate();

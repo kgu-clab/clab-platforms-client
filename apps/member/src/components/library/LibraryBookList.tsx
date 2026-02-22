@@ -1,4 +1,4 @@
-import { MOCK_BOOKS } from "@/shared/mock/library";
+import { MOCK_BOOKS } from "@/mock/library";
 
 import LibraryBookItem from "./LibraryBookItem";
 

@@ -1,4 +1,4 @@
-import { MOCK_POSTS } from "@/shared/mock/community";
+import { MOCK_POSTS } from "@/mock/community";
 
 import CommunityPostItem from "./CommunityPostItem";
 

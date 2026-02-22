@@ -7,7 +7,7 @@ import { TbXboxX } from "react-icons/tb";
 import { BottomNavbar } from "@/components/menu";
 import { MyMenuItem } from "@/components/my";
 
-import { ROUTE } from "@/shared/config/route";
+import { ROUTE } from "@/constants";
 
 export default function MyPage() {
   return (

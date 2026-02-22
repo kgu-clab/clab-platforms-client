@@ -1,7 +1,7 @@
 import type { HTMLAttributes } from "react";
 import { IoChevronForward } from "react-icons/io5";
 
-import { cn } from "@/shared/utils/cn";
+import { cn } from "@/utils/cn";
 
 export interface ActivityCurriculumItemProps extends HTMLAttributes<HTMLButtonElement> {
   label: string;

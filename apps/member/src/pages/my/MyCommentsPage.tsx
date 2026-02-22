@@ -4,8 +4,8 @@ import { useNavigate } from "react-router";
 
 import { PostDetailCommentItem } from "@/components/community";
 
-import { ROUTE } from "@/shared/config/route";
-import { MOCK_MY_COMMENTS } from "@/shared/mock/my";
+import { ROUTE } from "@/constants";
+import { MOCK_MY_COMMENTS } from "@/mock/my";
 
 export default function MyCommentsPage() {
   const navigate = useNavigate();

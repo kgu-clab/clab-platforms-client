@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router";
 
-import { ROUTE } from "@/shared/config/route";
-
+import { ROUTE } from "@/constants";
 import {
   ActivityHomePage,
   HomePage,
@@ -18,11 +17,14 @@ import {
   MyCommentsPage,
   MyLibraryPage,
   MyActivityPage,
+  LoginPage,
 } from "@/pages";
 
 import ActivityLayout from "../layout/ActivityLayout";
 import CommunityLayout from "../layout/CommunityLayout";
 import RootLayout from "../layout/RootLayout";
+
+const authRoutes = [{ path: ROUTE.LOGIN, element: <LoginPage /> }];
 
 const activityRoutes = [
   {
@@ -67,6 +69,7 @@ export const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true, element: <HomePage /> },
+      ...authRoutes,
       ...activityRoutes,
       ...communityRoutes,
       ...libraryRoutes,

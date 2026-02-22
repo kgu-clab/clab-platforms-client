@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 
 import { LibraryBookItem } from "@/components/library";
 
-import { MOCK_MY_BOOKS } from "@/shared/mock/my";
+import { MOCK_MY_BOOKS } from "@/mock/my";
 
 export default function MyLibraryPage() {
   const navigate = useNavigate();

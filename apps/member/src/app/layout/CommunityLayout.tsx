@@ -9,7 +9,7 @@ import { Outlet } from "react-router";
 
 import { BottomNavbar } from "@/components/menu";
 
-import { ROUTE } from "@/shared/config/route";
+import { ROUTE } from "@/constants";
 
 export default function CommunityLayout() {
   return (
