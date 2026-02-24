@@ -75,3 +75,8 @@ export const APPLY_MESSAGE = {
   NOW: '\n망설이지 말고 지금 바로',
   NEXT: '\n다음 모집 때 만나요!',
 } as const;
+
+export const FORM_FIELD_MAX_LENGTH = {
+  INTERESTS: 255,
+  OTHER_ACTIVITIES: 1000,
+} as const;
