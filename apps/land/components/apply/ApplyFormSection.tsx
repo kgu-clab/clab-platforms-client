@@ -1,9 +1,11 @@
 'use client';
 
 import { Button, Input, Textarea } from '@clab/design-system';
+import { cn } from '@clab/design-system/utils';
 import Link from 'next/link';
 import { useState } from 'react';
 
+import { FORM_FIELD_MAX_LENGTH } from '@/constants/apply';
 import { useApplicationMutation } from '@/hooks/apply';
 import { formatBirth } from '@/lib';
 import type { ApplicationForm as ApplicationFormType, ApplicationType } from '@/types';
@@ -13,21 +15,33 @@ interface Props {
   applicationType: ApplicationType;
 }
 
-function FormField({
-  label,
-  required,
-  children,
-}: {
+interface FormFieldProps {
   label: string;
   required?: boolean;
   children: React.ReactNode;
-}) {
+  currentLength?: number;
+  maxLength?: number;
+}
+
+function FormField({ label, required, children, currentLength, maxLength }: FormFieldProps) {
+  const isOverLimit =
+    currentLength !== undefined && maxLength !== undefined && currentLength > maxLength;
+
   return (
     <label className="flex flex-col gap-1.5">
-      <span className="text-sm font-medium text-gray-700">
-        {label}
-        {required && <span className="text-red-500"> *</span>}
-      </span>
+      <div className="flex justify-between items-center">
+        <span className="text-sm font-medium text-gray-700">
+          {label}
+          {required && <span className="text-red-500"> *</span>}
+        </span>
+        {currentLength !== undefined && maxLength !== undefined && (
+          <span
+            className={cn('text-xs', isOverLimit ? 'text-red-500 font-semibold' : 'text-gray-500')}
+          >
+            {currentLength} / {maxLength}
+          </span>
+        )}
+      </div>
       {children}
     </label>
   );
@@ -64,7 +78,9 @@ export default function ApplyFormSection({ recruitmentId, applicationType }: Pro
     form.department.trim() !== '' &&
     form.grade > 0 &&
     form.birth.length === 8 &&
-    form.address.trim() !== '';
+    form.address.trim() !== '' &&
+    form.interests.length <= FORM_FIELD_MAX_LENGTH.INTERESTS &&
+    form.otherActivities.length <= FORM_FIELD_MAX_LENGTH.OTHER_ACTIVITIES;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -199,20 +215,28 @@ export default function ApplyFormSection({ recruitmentId, applicationType }: Pro
           />
         </FormField>
 
-        <FormField label="관심 분야">
+        <FormField
+          label="관심 분야"
+          currentLength={form.interests.length}
+          maxLength={FORM_FIELD_MAX_LENGTH.INTERESTS}
+        >
           <Textarea
             value={form.interests}
             onChange={(e) => update('interests', e.target.value)}
-            placeholder="관심 분야를 입력하세요"
+            placeholder="관심 분야를 입력하세요 (최대 255자)"
             rows={4}
           />
         </FormField>
 
-        <FormField label="다른 동아리/활동">
+        <FormField
+          label="다른 동아리/활동"
+          currentLength={form.otherActivities.length}
+          maxLength={FORM_FIELD_MAX_LENGTH.OTHER_ACTIVITIES}
+        >
           <Textarea
             value={form.otherActivities}
             onChange={(e) => update('otherActivities', e.target.value)}
-            placeholder="참여 중인 다른 동아리나 활동을 입력하세요"
+            placeholder="참여 중인 다른 동아리나 활동을 입력하세요 (최대 1000자)"
             rows={4}
           />
         </FormField>
