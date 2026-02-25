@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
 
-import { setTokens, authorization } from '@/lib/auth';
 import { useIsLoggedInState } from '@/model/auth/useIsLoggedIn';
 
 import { Button } from '@/components/common/Button';
@@ -9,10 +7,9 @@ import { Input } from '@/components/common/Input';
 
 import { postLogin } from '@/api/auth';
 import { setHeaders } from '@/api/client';
-import { ROUTE } from '@/constants/route';
+import { setTokens, authorization } from '@/lib/auth';
 
 export function LoginPage() {
-  const navigate = useNavigate();
   const [, setLoggedIn] = useIsLoggedInState();
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
@@ -33,7 +30,6 @@ export function LoginPage() {
       setTokens({ accessToken: result.accessToken, refreshToken });
       setHeaders({ Authorization: authorization() });
       setLoggedIn(true);
-      navigate(ROUTE.HOME, { replace: true });
     } catch {
       setError('아이디 또는 비밀번호가 잘못되었습니다.');
     } finally {
