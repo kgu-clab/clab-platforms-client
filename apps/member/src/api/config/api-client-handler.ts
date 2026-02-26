@@ -6,6 +6,7 @@ type ResponseStatus = { status: number };
 type Ok<T> = ResponseStatus & {
   ok: true;
   data: T;
+  headers: Headers;
 };
 
 type Err = ResponseStatus & {
@@ -33,6 +34,7 @@ export async function apiClientHandler<T>(
       ok: true,
       status: response.status,
       data,
+      headers: response.headers,
     };
   } catch (error) {
     if (error instanceof HTTPError) {
