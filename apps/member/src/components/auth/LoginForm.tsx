@@ -1,5 +1,8 @@
 import { Button, Input } from "@clab/design-system";
+import { useMutation } from "@tanstack/react-query";
 import { memo, useCallback, useState } from "react";
+
+import { authQueries } from "@/api/auth/api.query";
 
 type InputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => void;
 type InputProps = {
@@ -37,6 +40,8 @@ export default function LoginForm() {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
 
+  const postLoginMutation = useMutation(authQueries.postLoginMutation);
+
   const hasError = false;
   const isFormValid = id.length > 0 && password.length > 0;
 
@@ -50,9 +55,10 @@ export default function LoginForm() {
     [],
   );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    console.log(id, password);
+    if (!isFormValid) return;
+    postLoginMutation.mutate({ id, password });
   };
 
   return (
