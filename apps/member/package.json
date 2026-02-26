@@ -14,6 +14,7 @@
     "@clab/config": "workspace:*",
     "@clab/design-system": "workspace:*",
     "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/react-query": "^5.90.21",
     "dayjs": "^1.11.10",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
