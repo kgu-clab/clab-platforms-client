@@ -1,33 +1,45 @@
-import got, { type HandlerFunction } from "got";
+import ky, {
+  type AfterResponseState,
+  type BeforeRequestState,
+  type KyInstance,
+  type KyRequest,
+  type KyResponse,
+  type NormalizedOptions,
+} from "ky";
 
 import { useAuthStore } from "@/model/common";
 
 import { postReissueToken } from "@/api/auth";
 import { ROUTE } from "@/constants";
 
-export const baseApiClient = got.extend({
-  prefixUrl: "", // TODO: API_BASE_URL 설정
+export const baseApiClient = ky.extend({
+  prefixUrl: import.meta.env.VITE_BASE_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-const beforeRequestHandler: HandlerFunction = (options, next) => {
+const beforeRequestHandler = (
+  request: KyRequest,
+  _options: NormalizedOptions,
+  _state: BeforeRequestState,
+) => {
   const token = useAuthStore.getState().accessToken;
   if (token) {
-    options.headers.Authorization = `Bearer ${token}`;
+    request.headers.set("Authorization", `Bearer ${token}`);
   }
-  return next(options);
 };
 
+let authApiClientInstance: KyInstance;
+
 const afterResponseHook = async (
-  response: { statusCode: number },
-  retryWithMergedOptions: (options: {
-    headers: { Authorization: string };
-  }) => never,
+  request: KyRequest,
+  _options: NormalizedOptions,
+  response: KyResponse,
+  state: AfterResponseState,
 ) => {
-  if (response.statusCode !== 401) {
-    return response;
+  if (response.status !== 401 || state.retryCount > 0) {
+    return;
   }
 
   const tokenResponse = await postReissueToken();
@@ -35,22 +47,30 @@ const afterResponseHook = async (
   if (tokenResponse.ok) {
     const newToken = tokenResponse.data.result.accessToken;
     useAuthStore.getState().setAccessToken(newToken);
-    return retryWithMergedOptions({
-      headers: { Authorization: `Bearer ${newToken}` },
+    const headers = new Headers(request.headers);
+    headers.set("Authorization", `Bearer ${newToken}`);
+    return authApiClientInstance.retry({
+      request: new Request(request.url, {
+        method: request.method,
+        headers,
+        body: request.body,
+      }),
+      code: "TOKEN_REFRESHED",
     });
-  } else {
-    useAuthStore.getState().setAccessToken(undefined);
-    if (typeof window !== "undefined") {
-      window.location.href = ROUTE.LOGIN;
-    }
   }
 
+  useAuthStore.getState().setAccessToken(undefined);
+  if (typeof window !== "undefined") {
+    window.location.href = ROUTE.LOGIN;
+  }
   return response;
 };
 
-export const authApiClient = baseApiClient.extend({
-  handlers: [beforeRequestHandler],
+authApiClientInstance = baseApiClient.extend({
   hooks: {
+    beforeRequest: [beforeRequestHandler],
     afterResponse: [afterResponseHook],
   },
 });
+
+export const authApiClient = authApiClientInstance;

@@ -1,5 +1,5 @@
-import { HTTPError } from "got";
-import type { Got, OptionsInit, Response } from "got";
+import { HTTPError } from "ky";
+import type { KyInstance, Options } from "ky";
 
 type ResponseStatus = { status: number };
 
@@ -18,45 +18,40 @@ type ErrMessage = { message: string };
 export type ApiResult<T> = Ok<T> | Err;
 
 export async function apiClientHandler<T>(
-  client: Got,
+  client: KyInstance,
   endpoint: string,
-  options?: OptionsInit,
+  options?: Options,
 ): Promise<ApiResult<T>> {
   try {
-    const response = (await client(endpoint, {
+    const response = await client(endpoint, {
       ...options,
-      responseType: "json",
-    })) as Response<T>;
+    });
 
-    // 정상 처리 되었을 경우 Ok 타입 반환
+    const data = (await response.json()) as T;
+
     return {
       ok: true,
-      status: response.statusCode,
-      data: response.body,
+      status: response.status,
+      data,
     };
   } catch (error) {
-    // 에러 감지했을 경우
-
-    // HTTP 에러인 경우
     if (error instanceof HTTPError) {
       const res = error.response;
       let body: ErrMessage;
 
-      // 에러 바디 파싱 시도, 바디 파싱 실패 시 기본 메시지 반환
       try {
-        body = (res.body ?? (await res.json())) as ErrMessage;
+        body = (await res.json()) as ErrMessage;
       } catch {
         return {
           ok: false,
-          status: res.statusCode,
+          status: res.status,
           error: { message: "요청에 실패했습니다" } as ErrMessage,
         };
       }
 
-      // 에러 바디 파싱 성공 시 에러 바디 메시지 반환
       return {
         ok: false,
-        status: res.statusCode,
+        status: res.status,
         error: body,
       };
     }
