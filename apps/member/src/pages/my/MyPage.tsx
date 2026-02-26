@@ -3,13 +3,25 @@ import { BiCommentDetail, BiCommentError } from "react-icons/bi";
 import { IoCubeOutline, IoNotificationsOutline } from "react-icons/io5";
 import { RiBook2Line, RiFilePaper2Line, RiLogoutBoxLine } from "react-icons/ri";
 import { TbXboxX } from "react-icons/tb";
+import { useNavigate } from "react-router";
+
+import { useIsLoggedIn } from "@/model/auth";
 
 import { BottomNavbar } from "@/components/menu";
 import { MyMenuItem } from "@/components/my";
 
 import { ROUTE } from "@/constants";
+import { removeTokens } from "@/utils/auth";
 
 export default function MyPage() {
+  const { updateLogged } = useIsLoggedIn();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    removeTokens();
+    updateLogged(false);
+    navigate(ROUTE.LOGIN);
+  };
   return (
     <>
       <Header
@@ -69,7 +81,11 @@ export default function MyPage() {
 
         <Section title="설정">
           <MyMenuItem to="#" label="알림 설정" icon={IoNotificationsOutline} />
-          <MyMenuItem to="#" label="로그아웃" icon={RiLogoutBoxLine} />
+          <MyMenuItem
+            label="로그아웃"
+            icon={RiLogoutBoxLine}
+            onClick={handleLogout}
+          />
           <MyMenuItem to="#" label="탈퇴하기" icon={TbXboxX} />
         </Section>
       </Scrollable>

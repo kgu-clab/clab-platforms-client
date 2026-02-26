@@ -22,4 +22,7 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
   },
+  server: {
+    port: 6001,
+  },
 });
