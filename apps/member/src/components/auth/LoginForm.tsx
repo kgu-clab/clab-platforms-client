@@ -1,8 +1,15 @@
 import { Button, Input } from "@clab/design-system";
 import { useMutation } from "@tanstack/react-query";
 import { memo, useCallback, useState } from "react";
+import { useNavigate } from "react-router";
+
+import { useIsLoggedIn } from "@/model/auth";
+
+import type { TokenFromHeader } from "@/types/auth";
 
 import { authQueries } from "@/api/auth/api.query";
+import { ROUTE } from "@/constants";
+import { setTokens } from "@/utils/auth";
 
 type InputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => void;
 type InputProps = {
@@ -39,8 +46,34 @@ PasswordInput.displayName = "PasswordInput";
 export default function LoginForm() {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
+  const { updateLogged } = useIsLoggedIn();
+  const navigate = useNavigate();
 
-  const postLoginMutation = useMutation(authQueries.postLoginMutation);
+  const postLoginMutation = useMutation({
+    ...authQueries.postLoginMutation,
+    onSuccess: (res) => {
+      const result = res as { ok: boolean; headers?: Headers };
+      if (!result.ok || !result.headers) {
+        return;
+      }
+
+      const rawHeader = result.headers.get("X-Clab-Auth");
+      if (!rawHeader) {
+        return;
+      }
+
+      const { accessToken, refreshToken } = JSON.parse(
+        rawHeader,
+      ) as TokenFromHeader;
+      if (!accessToken || !refreshToken) {
+        return;
+      }
+
+      setTokens(accessToken, refreshToken);
+      updateLogged(true);
+      navigate(ROUTE.HOME);
+    },
+  });
 
   const hasError = false;
   const isFormValid = id.length > 0 && password.length > 0;
