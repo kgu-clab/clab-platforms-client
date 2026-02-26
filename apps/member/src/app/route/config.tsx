@@ -1,5 +1,7 @@
 import { createBrowserRouter } from "react-router";
 
+import { AuthProvider } from "@/components/auth";
+
 import { ROUTE } from "@/constants";
 import {
   ActivityHomePage,
@@ -24,7 +26,12 @@ import ActivityLayout from "../layout/ActivityLayout";
 import CommunityLayout from "../layout/CommunityLayout";
 import RootLayout from "../layout/RootLayout";
 
-const authRoutes = [{ path: ROUTE.LOGIN, element: <LoginPage /> }];
+const authRoutes = [
+  {
+    path: ROUTE.LOGIN,
+    element: <LoginPage />,
+  },
+];
 
 const activityRoutes = [
   {
@@ -36,7 +43,10 @@ const activityRoutes = [
     path: `${ROUTE.ACTIVITY}/:id`,
     element: <StudyDetailPage />,
   },
-  { path: ROUTE.ACTIVITY_CREATE, element: <ActivityCreatePage /> },
+  {
+    path: ROUTE.ACTIVITY_CREATE,
+    element: <ActivityCreatePage />,
+  },
 ];
 
 const communityRoutes = [
@@ -46,34 +56,61 @@ const communityRoutes = [
     children: [{ index: true, element: <CommunityPage /> }],
   },
   { path: `${ROUTE.COMMUNITY}/:id`, element: <CommunityDetailPage /> },
-  { path: ROUTE.COMMUNITY_WRITE, element: <CommunityWritePage /> },
+  {
+    path: ROUTE.COMMUNITY_WRITE,
+    element: <CommunityWritePage />,
+  },
 ];
 
 const libraryRoutes = [
   { path: ROUTE.LIBRARY, element: <LibraryPage /> },
   { path: `${ROUTE.LIBRARY}/:id`, element: <LibraryDetailPage /> },
-  { path: ROUTE.LIBRARY_CREATE, element: <LibraryCreatePage /> },
+  {
+    path: ROUTE.LIBRARY_CREATE,
+    element: <LibraryCreatePage />,
+  },
 ];
 
 const myRoutes = [
-  { path: ROUTE.MY, element: <MyPage /> },
-  { path: ROUTE.MY_POSTS, element: <MyPostsPage /> },
-  { path: ROUTE.MY_COMMENTS, element: <MyCommentsPage /> },
-  { path: ROUTE.MY_LIBRARY, element: <MyLibraryPage /> },
-  { path: ROUTE.MY_ACTIVITY, element: <MyActivityPage /> },
+  {
+    path: ROUTE.MY,
+    element: <MyPage />,
+  },
+  {
+    path: ROUTE.MY_POSTS,
+    element: <MyPostsPage />,
+  },
+  {
+    path: ROUTE.MY_COMMENTS,
+    element: <MyCommentsPage />,
+  },
+  {
+    path: ROUTE.MY_LIBRARY,
+    element: <MyLibraryPage />,
+  },
+  {
+    path: ROUTE.MY_ACTIVITY,
+    element: <MyActivityPage />,
+  },
+];
+
+const protectedRoutes = [
+  {
+    element: <AuthProvider protect />,
+    children: [
+      { index: true, element: <HomePage /> },
+      ...activityRoutes,
+      ...communityRoutes,
+      ...libraryRoutes,
+      ...myRoutes,
+    ],
+  },
 ];
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    children: [
-      { index: true, element: <HomePage /> },
-      ...authRoutes,
-      ...activityRoutes,
-      ...communityRoutes,
-      ...libraryRoutes,
-      ...myRoutes,
-    ],
+    children: [...authRoutes, ...protectedRoutes],
   },
 ]);
