@@ -1,7 +1,5 @@
 import ky, {
   type AfterResponseState,
-  type BeforeRequestState,
-  type KyInstance,
   type KyRequest,
   type KyResponse,
   type NormalizedOptions,
@@ -19,18 +17,12 @@ export const baseApiClient = ky.extend({
   },
 });
 
-const beforeRequestHandler = (
-  request: KyRequest,
-  _options: NormalizedOptions,
-  _state: BeforeRequestState,
-) => {
+const beforeRequestHandler = (request: KyRequest) => {
   const token = useAuthStore.getState().accessToken;
   if (token) {
     request.headers.set("Authorization", `Bearer ${token}`);
   }
 };
-
-let authApiClientInstance: KyInstance;
 
 const afterResponseHook = async (
   request: KyRequest,
@@ -66,7 +58,7 @@ const afterResponseHook = async (
   return response;
 };
 
-authApiClientInstance = baseApiClient.extend({
+const authApiClientInstance = baseApiClient.extend({
   hooks: {
     beforeRequest: [beforeRequestHandler],
     afterResponse: [afterResponseHook],
