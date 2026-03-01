@@ -1,15 +1,16 @@
-import type { HTMLAttributes, ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode, Ref } from 'react';
 import { cn } from '../../utils/cn';
 import Title from '../title/Title';
 
 export interface SectionProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   children: ReactNode;
   title?: ReactNode;
+  ref?: Ref<HTMLElement>;
 }
 
-export default function Section({ className, children, title, ...props }: SectionProps) {
+export default function Section({ className, children, title, ref, ...props }: SectionProps) {
   return (
-    <section className={cn('gap-lg flex w-full flex-col', className)} {...props}>
+    <section ref={ref} className={cn('gap-lg flex w-full flex-col', className)} {...props}>
       {title && <Title>{title}</Title>}
       {children}
     </section>

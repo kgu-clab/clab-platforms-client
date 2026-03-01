@@ -1,19 +1,18 @@
 import { Chip } from "@clab/design-system";
 import { useNavigate } from "react-router";
 
-import type { BookData } from "@/types/library";
-
+import type { Book } from "@/api/library/api.type";
 import { ROUTE } from "@/constants";
 
 interface LibraryBookItemProps {
-  book: BookData;
+  book: Book;
 }
 
 export default function LibraryBookItem({ book }: LibraryBookItemProps) {
   const { id, title, author, publisher, imageUrl, category, borrowerId } = book;
   const navigate = useNavigate();
 
-  const isAvailable = borrowerId === null;
+  const isAvailable = !borrowerId;
 
   return (
     <div
