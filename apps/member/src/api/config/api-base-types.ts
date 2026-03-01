@@ -12,3 +12,18 @@ export type ApiResponseWithoutResult = {
   code: string;
   message: string;
 };
+
+export type BaseApiResponse<T> = {
+  success: boolean;
+  data: T;
+};
+
+export type BasePaginationResponse<T> = BaseApiResponse<{
+  currentPage: number;
+  hasPrevious: true;
+  hasNext: true;
+  totalPages: number;
+  totalItems: number;
+  take: number;
+  items: T;
+}>;
