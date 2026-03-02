@@ -41,7 +41,10 @@ export default function MyCommentsPage() {
           </div>
         )}
         {comments.map((comment) => (
-          <PostDetailCommentItem key={comment.id} commentData={comment} />
+          <PostDetailCommentItem
+            key={comment.id}
+            commentData={{ ...comment, isOwner: true }}
+          />
         ))}
       </Scrollable>
     </>

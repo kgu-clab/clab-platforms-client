@@ -60,33 +60,27 @@ export default function PostDetailCommentItem({
   const likeMutation = useMutation({
     ...commentQueries.postCommentLikeMutation,
     onSuccess: () => {
-      if (boardId) {
-        queryClient.invalidateQueries({
-          queryKey: commentKeys.all,
-        });
-      }
+      queryClient.invalidateQueries({
+        queryKey: commentKeys.all,
+      });
     },
   });
 
   const deleteMutation = useMutation({
     ...commentQueries.deleteCommentMutation,
     onSuccess: () => {
-      if (boardId) {
-        queryClient.invalidateQueries({
-          queryKey: commentKeys.all,
-        });
-      }
+      queryClient.invalidateQueries({
+        queryKey: commentKeys.all,
+      });
     },
   });
 
   const editMutation = useMutation({
     ...commentQueries.patchCommentMutation,
     onSuccess: () => {
-      if (boardId) {
-        queryClient.invalidateQueries({
-          queryKey: commentKeys.all,
-        });
-      }
+      queryClient.invalidateQueries({
+        queryKey: commentKeys.all,
+      });
       setIsEditing(false);
     },
   });
