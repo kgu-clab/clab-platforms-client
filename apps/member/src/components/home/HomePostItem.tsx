@@ -1,6 +1,7 @@
-import { Chip } from "@clab/design-system";
-import { IoHeart, IoChatbubbleOutline } from "react-icons/io5";
+import { IoChatbubbleOutline } from "react-icons/io5";
 import { Link } from "react-router";
+
+import { CommunityCategoryChip } from "../community";
 
 export interface CommunityPostItemProps {
   id: string;
@@ -8,7 +9,6 @@ export interface CommunityPostItemProps {
   title: string;
   content: string;
   author: string;
-  likes: number;
   comments: number;
 }
 
@@ -18,31 +18,15 @@ export default function CommunityPostItem({
   title,
   content,
   author,
-  likes,
   comments,
 }: CommunityPostItemProps) {
-  const getCategoryColor = (
-    cat: string,
-  ): "red" | "yellow" | "green" | "purple" => {
-    switch (cat) {
-      case "자유":
-        return "purple";
-      case "질문":
-        return "yellow";
-      case "정보":
-        return "green";
-      default:
-        return "red";
-    }
-  };
-
   return (
     <Link
       to={`/community/${id}`}
       className="bg-gray-0 border-gray-2 gap-md p-xl flex w-full flex-col rounded-xl border"
     >
       <div className="gap-xs flex items-center justify-between">
-        <Chip color={getCategoryColor(category)}>{category}</Chip>
+        <CommunityCategoryChip category={category} />
         <span className="font-regular text-gray-4 text-[12px] leading-normal">
           {author}
         </span>
@@ -58,12 +42,6 @@ export default function CommunityPostItem({
       </div>
 
       <div className="gap-md text-gray-4 flex items-center">
-        <div className="gap-xs flex items-center">
-          <IoHeart size={16} />
-          <span className="font-regular text-[12px] leading-normal">
-            {likes}
-          </span>
-        </div>
         <div className="gap-xs flex items-center">
           <IoChatbubbleOutline size={16} />
           <span className="font-regular text-[12px] leading-normal">
