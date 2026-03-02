@@ -6,14 +6,14 @@ import {
   Section,
   Button,
 } from "@clab/design-system";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { GoChevronLeft } from "react-icons/go";
 import { IoClose } from "react-icons/io5";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 import type { BoardCategory, BoardFileInfo } from "@/api/community";
-import { boardQueries } from "@/api/community";
+import { boardKeys, boardQueries } from "@/api/community";
 
 import {
   CommunityWriteSelector,
@@ -22,15 +22,48 @@ import {
 
 import { ROUTE } from "@/constants";
 
+interface EditState {
+  editMode: true;
+  boardId: number;
+  title: string;
+  content: string;
+  category: string;
+  hashtagNames: string[];
+  files: BoardFileInfo[];
+  wantAnonymous: boolean;
+}
+
+interface WriteFormState {
+  title: string;
+  content: string;
+  category: BoardCategory;
+  hashtags: string[];
+  isAnonymous: boolean;
+  files: BoardFileInfo[];
+}
+
 export default function CommunityWritePage() {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [selectedCategory, setSelectedCategory] =
-    useState<BoardCategory>("FREE");
-  const [selectedHashtags, setSelectedHashtags] = useState<string[]>([]);
-  const [isAnonymous, setIsAnonymous] = useState(false);
-  const [uploadedFiles, setUploadedFiles] = useState<BoardFileInfo[]>([]);
+  const location = useLocation();
+  const editState = location.state as EditState | null;
+  const isEditMode = !!editState?.editMode;
+
+  const [form, setForm] = useState<WriteFormState>({
+    title: editState?.title ?? "",
+    content: editState?.content ?? "",
+    category: (editState?.category as BoardCategory) ?? "FREE",
+    hashtags: editState?.hashtagNames ?? [],
+    isAnonymous: editState?.wantAnonymous ?? false,
+    files: editState?.files ?? [],
+  });
+
+  const updateForm = <K extends keyof WriteFormState>(
+    key: K,
+    value: WriteFormState[K],
+  ) => {
+    setForm((prev) => ({ ...prev, [key]: value }));
+  };
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const imageInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -44,26 +77,49 @@ export default function CommunityWritePage() {
     },
   });
 
+  const patchBoardMutation = useMutation({
+    ...boardQueries.patchBoardMutation,
+    onSuccess: () => {
+      if (editState) {
+        queryClient.invalidateQueries({
+          queryKey: boardKeys.detail(editState.boardId),
+        });
+      }
+      navigate(-1);
+    },
+  });
+
   const uploadFileMutation = useMutation({
     ...boardQueries.postBoardFileMutation,
     onSuccess: (data) => {
-      setUploadedFiles((prev) => [...prev, ...data]);
+      setForm((prev) => ({ ...prev, files: [...prev.files, ...data] }));
     },
   });
 
   const handleSubmit = () => {
-    if (!title.trim() || !content.trim()) return;
-    postBoardMutation.mutate({
-      category: selectedCategory,
-      title,
-      content,
-      wantAnonymous: isAnonymous,
-      hashtagNames: selectedHashtags.length > 0 ? selectedHashtags : undefined,
-      fileUrlList:
-        uploadedFiles.length > 0
-          ? uploadedFiles.map((f) => f.fileUrl)
-          : undefined,
-    });
+    if (!form.title.trim() || !form.content.trim()) return;
+    if (isEditMode && editState) {
+      patchBoardMutation.mutate({
+        boardId: editState.boardId,
+        body: {
+          wantAnonymous: form.isAnonymous,
+          category: form.category,
+          title: form.title,
+          content: form.content,
+          hashtagNames: form.hashtags.length > 0 ? form.hashtags : undefined,
+        },
+      });
+    } else {
+      postBoardMutation.mutate({
+        category: form.category,
+        title: form.title,
+        content: form.content,
+        wantAnonymous: form.isAnonymous,
+        hashtagNames: form.hashtags.length > 0 ? form.hashtags : undefined,
+        fileUrlList:
+          form.files.length > 0 ? form.files.map((f) => f.fileUrl) : undefined,
+      });
+    }
   };
 
   const handleImageClick = () => {
@@ -82,11 +138,17 @@ export default function CommunityWritePage() {
   };
 
   const handleRemoveFile = (index: number) => {
-    setUploadedFiles((prev) => prev.filter((_, i) => i !== index));
+    setForm((prev) => ({
+      ...prev,
+      files: prev.files.filter((_, i) => i !== index),
+    }));
   };
 
   const isSubmitDisabled =
-    !title.trim() || !content.trim() || postBoardMutation.isPending;
+    !form.title.trim() ||
+    !form.content.trim() ||
+    postBoardMutation.isPending ||
+    patchBoardMutation.isPending;
 
   return (
     <>
@@ -111,8 +173,8 @@ export default function CommunityWritePage() {
             <Input
               type="text"
               placeholder="제목을 입력해주세요"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={form.title}
+              onChange={(e) => updateForm("title", e.target.value)}
               variant="underline"
             />
           </div>
@@ -128,10 +190,10 @@ export default function CommunityWritePage() {
         >
           <div className="px-gutter">
             <CommunityWriteSelector
-              selectedCategory={selectedCategory}
-              onSelectCategory={(cat) => setSelectedCategory(cat)}
-              selectedHashtags={selectedHashtags}
-              onSelectHashtag={setSelectedHashtags}
+              selectedCategory={form.category}
+              onSelectCategory={(cat) => updateForm("category", cat)}
+              selectedHashtags={form.hashtags}
+              onSelectHashtag={(tags) => updateForm("hashtags", tags)}
             />
           </div>
         </Section>
@@ -147,21 +209,21 @@ export default function CommunityWritePage() {
           <div className="px-gutter">
             <Textarea
               placeholder="어떤 이야기를 나누고 싶으신가요?"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
+              value={form.content}
+              onChange={(e) => updateForm("content", e.target.value)}
               maxLength={maxContentLength}
               showCounter={true}
             />
           </div>
         </Section>
 
-        {uploadedFiles.length > 0 && (
+        {form.files.length > 0 && (
           <Section className="gap-md px-gutter">
             <p className="text-13-medium text-gray-4">
-              첨부파일 ({uploadedFiles.length})
+              첨부파일 ({form.files.length})
             </p>
             <div className="gap-sm flex flex-col">
-              {uploadedFiles.map((file, index) => (
+              {form.files.map((file, index) => (
                 <div
                   key={file.fileUrl}
                   className="bg-gray-1 gap-md px-lg py-md flex items-center justify-between rounded-md"
@@ -169,13 +231,15 @@ export default function CommunityWritePage() {
                   <span className="text-13-regular truncate text-black">
                     {file.originalFileName}
                   </span>
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveFile(index)}
-                    className="text-gray-4 shrink-0"
-                  >
-                    <IoClose size={16} />
-                  </button>
+                  {!isEditMode && (
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveFile(index)}
+                      className="text-gray-4 shrink-0"
+                    >
+                      <IoClose size={16} />
+                    </button>
+                  )}
                 </div>
               ))}
             </div>
@@ -191,10 +255,10 @@ export default function CommunityWritePage() {
         <Section className="gap-md px-gutter">
           <Button
             size="small"
-            onClick={() => setIsAnonymous(!isAnonymous)}
-            color={isAnonymous ? "outlineActive" : "outlineDisabled"}
+            onClick={() => updateForm("isAnonymous", !form.isAnonymous)}
+            color={form.isAnonymous ? "outlineActive" : "outlineDisabled"}
           >
-            {isAnonymous ? "익명 해제" : "익명"}
+            {form.isAnonymous ? "익명 해제" : "익명"}
           </Button>
         </Section>
       </Scrollable>
@@ -216,10 +280,11 @@ export default function CommunityWritePage() {
       />
 
       <CommunityWriteBottomBar
-        onImageClick={handleImageClick}
-        onFileClick={handleFileClick}
+        onImageClick={isEditMode ? undefined : handleImageClick}
+        onFileClick={isEditMode ? undefined : handleFileClick}
         onSubmit={handleSubmit}
         disabled={isSubmitDisabled}
+        isEditMode={isEditMode}
       />
     </>
   );

@@ -70,7 +70,7 @@ export const boardQueries = {
       queryKey: boardKeys.hot(),
       queryFn: () => getHotBoards(),
       select: (data): BoardHotListResponseDto[] =>
-        data.ok ? data.data.data : [],
+        data.ok ? (data.data.data ?? []) : [],
     }),
 
   getMyBoardsQuery: (params?: PaginationParams) =>

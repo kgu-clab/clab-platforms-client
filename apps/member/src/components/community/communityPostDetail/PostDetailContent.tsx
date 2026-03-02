@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router";
 
 import type { BoardDetail, BoardFileInfo, NewsDetail } from "@/api/community";
 import { accusationQueries, boardKeys, boardQueries } from "@/api/community";
@@ -14,12 +15,13 @@ import {
 
 import { Button, Chip, Modal, Textarea } from "@clab/design-system";
 
+import { ROUTE } from "@/constants";
+
 const IMAGE_EXTENSIONS = /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i;
 
 interface PostDetailLayoutProps {
   title: string;
   content: string;
-  imageUrl?: string;
   files?: BoardFileInfo[];
   meta: React.ReactNode;
   footer?: React.ReactNode;
@@ -28,7 +30,6 @@ interface PostDetailLayoutProps {
 function PostDetailLayout({
   title,
   content,
-  imageUrl,
   files,
   meta,
   footer,
@@ -42,14 +43,6 @@ function PostDetailLayout({
       {meta}
 
       <h2 className="text-16-semibold text-black">{title}</h2>
-
-      {imageUrl && (
-        <img
-          src={imageUrl}
-          alt={title}
-          className="w-full rounded-lg object-cover"
-        />
-      )}
 
       <p className="text-14-regular mb-3 whitespace-pre-wrap text-black">
         {content}
@@ -114,7 +107,37 @@ export default function BoardDetailContent({ board }: BoardDetailContentProps) {
     isOwner,
   } = board;
 
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  const deleteMutation = useMutation({
+    ...boardQueries.deleteBoardMutation,
+    onSuccess: () => {
+      navigate(ROUTE.COMMUNITY, { replace: true });
+    },
+  });
+
+  const handleConfirmDelete = () => {
+    deleteMutation.mutate(id);
+    setIsDeleteModalOpen(false);
+  };
+
+  const handleEdit = () => {
+    navigate(ROUTE.COMMUNITY_WRITE, {
+      state: {
+        editMode: true,
+        boardId: id,
+        title,
+        content,
+        category: board.category.toUpperCase(),
+        hashtagNames: boardHashtagInfos.map((tag) => tag.name),
+        files,
+        wantAnonymous: board.writerId === null,
+      },
+    });
+  };
 
   const emojiMutation = useMutation({
     ...boardQueries.postBoardEmojiMutation,
@@ -201,7 +224,26 @@ export default function BoardDetailContent({ board }: BoardDetailContentProps) {
             >
               {isLiked ? <IoHeart /> : <IoHeartOutline />} {likeCount}
             </Button>
-            {!isOwner && (
+            {isOwner ? (
+              <>
+                <Button
+                  size="small"
+                  color="disabled"
+                  onClick={handleEdit}
+                  className="gap-1"
+                >
+                  수정
+                </Button>
+                <Button
+                  size="small"
+                  color="disabled"
+                  onClick={() => setIsDeleteModalOpen(true)}
+                  className="gap-1"
+                >
+                  삭제
+                </Button>
+              </>
+            ) : (
               <Button
                 size="small"
                 color="disabled"
@@ -237,6 +279,26 @@ export default function BoardDetailContent({ board }: BoardDetailContentProps) {
           {accusationMutation.isPending ? "신고 중..." : "신고하기"}
         </Button>
       </Modal>
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        title="게시글 삭제"
+        subtitle="정말 게시글을 삭제하시겠습니까?"
+        size="small"
+      >
+        <div className="gap-md flex">
+          <Button
+            color="disabled"
+            onClick={() => setIsDeleteModalOpen(false)}
+            className="flex-1"
+          >
+            취소
+          </Button>
+          <Button onClick={handleConfirmDelete} className="flex-1">
+            삭제
+          </Button>
+        </div>
+      </Modal>
     </>
   );
 }
@@ -246,13 +308,12 @@ interface NewsDetailContentProps {
 }
 
 export function NewsDetailContent({ news }: NewsDetailContentProps) {
-  const { title, content, imageUrl, source, articleUrl, createdAt } = news;
+  const { title, content, source, articleUrl, createdAt } = news;
 
   return (
     <PostDetailLayout
       title={title}
       content={content}
-      imageUrl={imageUrl}
       meta={
         <div className="flex flex-col">
           <span className="text-14-semibold text-black">{source}</span>
