@@ -1,4 +1,11 @@
-import type { HTMLAttributes, ReactNode } from 'react';
+import {
+  type HTMLAttributes,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { IoClose } from 'react-icons/io5';
 import {
   modalBackdropVariant,
@@ -24,6 +31,8 @@ export interface ModalProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
 }
 
+const CLOSE_ANIMATION_DURATION = 150;
+
 export default function Modal({
   isOpen,
   onClose,
@@ -35,12 +44,35 @@ export default function Modal({
   className,
   ...props
 }: ModalProps) {
-  if (!isOpen) return null;
+  const [visible, setVisible] = useState(false);
+  const [closing, setClosing] = useState(false);
+  const visibleRef = useRef(false);
+  visibleRef.current = visible;
+
+  useEffect(() => {
+    if (isOpen) {
+      setVisible(true);
+      setClosing(false);
+    } else if (visibleRef.current) {
+      setClosing(true);
+      const timer = setTimeout(() => {
+        setVisible(false);
+        setClosing(false);
+      }, CLOSE_ANIMATION_DURATION);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
+  const handleClose = useCallback(() => {
+    onClose();
+  }, [onClose]);
+
+  if (!visible) return null;
 
   return (
-    <div className={cn(modalBackdropVariant())} onClick={onClose} {...props}>
+    <div className={cn(modalBackdropVariant({ closing }))} onClick={handleClose} {...props}>
       <div
-        className={cn(modalContentVariant({ size }), className)}
+        className={cn(modalContentVariant({ size, closing }), className)}
         onClick={(e) => e.stopPropagation()}
       >
         {(title || subtitle || description) && (
@@ -50,7 +82,7 @@ export default function Modal({
               <button
                 type="button"
                 className={cn(modalCloseButtonVariant())}
-                onClick={onClose}
+                onClick={handleClose}
                 aria-label="닫기"
               >
                 <IoClose size={20} color="#808080" />

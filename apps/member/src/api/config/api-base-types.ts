@@ -5,10 +5,24 @@
 export type ApiResponse<T> = {
   code: string;
   message: string;
-  result: T;
+  data: T;
 };
 
 export type ApiResponseWithoutResult = {
   code: string;
   message: string;
+};
+
+export type PagedResponse<T> = {
+  items: T[];
+  currentPage: number;
+  totalPage: number;
+  totalItems: number;
+};
+
+export type PaginationParams = {
+  page?: number;
+  size?: number;
+  sortBy?: string[];
+  sortDirection?: string[];
 };

@@ -1,14 +1,17 @@
 import { Header, Scrollable, Title } from "@clab/design-system";
+import { useQuery } from "@tanstack/react-query";
 import { GoChevronLeft } from "react-icons/go";
 import { useNavigate } from "react-router";
 
-import { PostDetailCommentItem } from "@/components/community";
+import { commentQueries } from "@/api/community";
 
-import { ROUTE } from "@/constants";
-import { MOCK_MY_COMMENTS } from "@/mock/my";
+import { PostDetailCommentItem } from "@/components/community";
 
 export default function MyCommentsPage() {
   const navigate = useNavigate();
+  const { data, isLoading } = useQuery(commentQueries.getMyCommentsQuery());
+
+  const comments = data?.items ?? [];
 
   return (
     <>
@@ -22,14 +25,25 @@ export default function MyCommentsPage() {
             <Title>내가 쓴 댓글</Title>
           </button>
         }
-        className="z-100 absolute left-0 right-0 top-0 bg-white"
+        className="z-fixed absolute left-0 right-0 top-0 bg-white"
       />
       <Scrollable className="pt-header-height pb-bottom-padding">
-        {MOCK_MY_COMMENTS.map((comment) => (
+        {isLoading && (
+          <div className="flex justify-center py-10">
+            <span className="text-gray-4 text-14-regular">로딩 중...</span>
+          </div>
+        )}
+        {!isLoading && comments.length === 0 && (
+          <div className="flex justify-center py-10">
+            <span className="text-gray-4 text-14-regular">
+              작성한 댓글이 없습니다.
+            </span>
+          </div>
+        )}
+        {comments.map((comment) => (
           <PostDetailCommentItem
             key={comment.id}
-            commentData={comment}
-            to={`${ROUTE.COMMUNITY}/${comment.boardId}`}
+            commentData={{ ...comment, isOwner: true }}
           />
         ))}
       </Scrollable>

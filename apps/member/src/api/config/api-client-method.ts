@@ -32,6 +32,22 @@ function createHttpMethod(apiClient: KyInstance) {
     });
   };
 
+  const postForm = <T>(
+    url: string,
+    body: FormData,
+    options?: Options,
+  ): Promise<ApiResult<T>> => {
+    return apiClientHandler(apiClient, url, {
+      method: "POST",
+      body,
+      ...options,
+      headers: {
+        "Content-Type": undefined as unknown as string,
+        ...options?.headers,
+      },
+    });
+  };
+
   const del = <T>(url: string, options?: Options): Promise<ApiResult<T>> => {
     return apiClientHandler(apiClient, url, { method: "DELETE", ...options });
   };
@@ -48,7 +64,7 @@ function createHttpMethod(apiClient: KyInstance) {
     });
   };
 
-  return { get, post, put, del, patch };
+  return { get, post, postForm, put, del, patch };
 }
 
 export const baseApi = createHttpMethod(baseApiClient);

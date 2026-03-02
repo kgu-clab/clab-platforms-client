@@ -1,36 +1,63 @@
 import { Button, Dropdown } from "@clab/design-system";
-import { useState } from "react";
 import { IoChevronDown } from "react-icons/io5";
+import { useSearchParams } from "react-router";
 
-import { CATEGORY } from "@/types/community";
+import { useHashtagFilterOptions } from "@/hooks/useHashtagFilterOptions";
+import { CATEGORY } from "@/api/community";
 
 interface CommunityFilterProps {
   tab: string;
 }
 
 export default function CommunityFilter({ tab }: CommunityFilterProps) {
-  const [isLatest, setIsLatest] = useState<boolean>(true);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const sort = searchParams.get("sort") ?? "latest";
 
-  const onClick = () => {
-    setIsLatest(!isLatest);
+  const toggleSort = () => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.set("sort", sort === "latest" ? "popular" : "latest");
+      return next;
+    });
   };
+
   return (
     <div className="px-gutter gap-md flex items-center">
       <div className="scrollbar-hide min-w-0 flex-1 overflow-x-auto">
         {tab === CATEGORY.INFORMATION && <InformationFilterOptions />}
         {tab === CATEGORY.QUESTION && <QuestionFilterOptions />}
       </div>
-      <Button color="text" size="small" className="shrink-0" onClick={onClick}>
-        {isLatest ? "최신순" : "인기순"}
-      </Button>
+      {tab !== CATEGORY.INFORMATION && (
+        <Button
+          color="text"
+          size="small"
+          className="shrink-0"
+          onClick={toggleSort}
+        >
+          {sort === "latest" ? "최신순" : "인기순"}
+        </Button>
+      )}
     </div>
   );
 }
 
-const INFORMATION_FILTERS: string[] = ["전체", "IT 소식", "채용 정보"];
+export const INFORMATION_FILTERS = ["전체", "IT 소식", "채용 정보"] as const;
 
 function InformationFilterOptions() {
-  const [activeFilter, setActiveFilter] = useState(INFORMATION_FILTERS[0]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeFilter = searchParams.get("filter") ?? INFORMATION_FILTERS[0];
+
+  const handleFilter = (filter: string) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      if (filter === INFORMATION_FILTERS[0]) {
+        next.delete("filter");
+      } else {
+        next.set("filter", filter);
+      }
+      return next;
+    });
+  };
 
   return (
     <div className="gap-lg flex overflow-auto">
@@ -39,7 +66,7 @@ function InformationFilterOptions() {
           key={filter}
           color={activeFilter === filter ? "outlineActive" : "ghost"}
           size="small"
-          onClick={() => setActiveFilter(filter)}
+          onClick={() => handleFilter(filter)}
         >
           {filter}
         </Button>
@@ -53,38 +80,26 @@ interface FilterOption {
   value: string;
 }
 
-const LANGUAGE_OPTIONS: FilterOption[] = [
-  { label: "언어", value: "all" },
-  { label: "JavaScript", value: "javascript" },
-  { label: "TypeScript", value: "typescript" },
-  { label: "Python", value: "python" },
-  { label: "Java", value: "java" },
-  { label: "C/C++", value: "cpp" },
-  { label: "Go", value: "go" },
-];
-
-const FIELD_OPTIONS: FilterOption[] = [
-  { label: "분야", value: "all" },
-  { label: "프론트엔드", value: "frontend" },
-  { label: "백엔드", value: "backend" },
-  { label: "모바일", value: "mobile" },
-  { label: "데브옵스", value: "devops" },
-  { label: "데이터", value: "data" },
-];
-
-const TECH_OPTIONS: FilterOption[] = [
-  { label: "기술", value: "all" },
-  { label: "React", value: "react" },
-  { label: "Next.js", value: "nextjs" },
-  { label: "Node.js", value: "nodejs" },
-  { label: "Spring", value: "spring" },
-  { label: "AWS", value: "aws" },
-];
-
 function QuestionFilterOptions() {
-  const [language, setLanguage] = useState<string>("all");
-  const [field, setField] = useState<string>("all");
-  const [tech, setTech] = useState<string>("all");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { languageOptions, fieldOptions, techOptions } =
+    useHashtagFilterOptions();
+
+  const language = searchParams.get("language") ?? "all";
+  const field = searchParams.get("field") ?? "all";
+  const tech = searchParams.get("tech") ?? "all";
+
+  const handleChange = (key: string, value: string) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      if (value === "all") {
+        next.delete(key);
+      } else {
+        next.set(key, value);
+      }
+      return next;
+    });
+  };
 
   const getSelectedLabel = (options: FilterOption[], value: string) => {
     return (
@@ -92,76 +107,39 @@ function QuestionFilterOptions() {
     );
   };
 
+  const dropdowns = [
+    { key: "language", value: language, options: languageOptions },
+    { key: "field", value: field, options: fieldOptions },
+    { key: "tech", value: tech, options: techOptions },
+  ];
+
   return (
     <div className="gap-md scrollbar-hide flex overflow-y-hidden overflow-x-scroll">
-      <Dropdown
-        trigger={
-          <Button
-            color={language === "all" ? "outlineDisabled" : "outlineActive"}
-            size="small"
-            className="shrink-0 whitespace-nowrap"
-          >
-            {getSelectedLabel(LANGUAGE_OPTIONS, language)}
-            <IoChevronDown className="ml-xs" />
-          </Button>
-        }
-        align="start"
-      >
-        {LANGUAGE_OPTIONS.map((option) => (
-          <Dropdown.Item
-            key={option.value}
-            onSelect={() => setLanguage(option.value)}
-          >
-            {option.label}
-          </Dropdown.Item>
-        ))}
-      </Dropdown>
-
-      <Dropdown
-        trigger={
-          <Button
-            color={field === "all" ? "outlineDisabled" : "outlineActive"}
-            size="small"
-            className="shrink-0 whitespace-nowrap"
-          >
-            {getSelectedLabel(FIELD_OPTIONS, field)}
-            <IoChevronDown className="ml-xs" />
-          </Button>
-        }
-        align="start"
-      >
-        {FIELD_OPTIONS.map((option) => (
-          <Dropdown.Item
-            key={option.value}
-            onSelect={() => setField(option.value)}
-          >
-            {option.label}
-          </Dropdown.Item>
-        ))}
-      </Dropdown>
-
-      <Dropdown
-        trigger={
-          <Button
-            color={tech === "all" ? "outlineDisabled" : "outlineActive"}
-            size="small"
-            className="shrink-0 whitespace-nowrap"
-          >
-            {getSelectedLabel(TECH_OPTIONS, tech)}
-            <IoChevronDown className="ml-xs" />
-          </Button>
-        }
-        align="start"
-      >
-        {TECH_OPTIONS.map((option) => (
-          <Dropdown.Item
-            key={option.value}
-            onSelect={() => setTech(option.value)}
-          >
-            {option.label}
-          </Dropdown.Item>
-        ))}
-      </Dropdown>
+      {dropdowns.map(({ key, value, options }) => (
+        <Dropdown
+          key={key}
+          trigger={
+            <Button
+              color={value === "all" ? "outlineDisabled" : "outlineActive"}
+              size="small"
+              className="shrink-0 whitespace-nowrap"
+            >
+              {getSelectedLabel(options, value)}
+              <IoChevronDown className="ml-xs" />
+            </Button>
+          }
+          align="start"
+        >
+          {options.map((option) => (
+            <Dropdown.Item
+              key={option.value}
+              onSelect={() => handleChange(key, option.value)}
+            >
+              {option.label}
+            </Dropdown.Item>
+          ))}
+        </Dropdown>
+      ))}
     </div>
   );
 }
