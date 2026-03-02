@@ -28,7 +28,6 @@ export function formatRelativeTime(dateString: string): string {
   const diffMs = now.getTime() - date.getTime();
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
 
-  // 24시간 이내면 상대 시간 표시
   if (diffHours < 24 && diffHours >= 0) {
     if (diffHours === 0) {
       const diffMinutes = Math.floor(diffMs / (1000 * 60));
@@ -40,6 +39,5 @@ export function formatRelativeTime(dateString: string): string {
     return `${diffHours}시간 전`;
   }
 
-  // 24시간 이상이면 날짜 포맷
   return formatDate(dateString);
 }

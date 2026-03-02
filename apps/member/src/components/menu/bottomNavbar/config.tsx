@@ -11,7 +11,7 @@ export const BOTTOM_NAVBAR_CONFIG: BottomNavbarItemProps[] = [
   {
     icon: <ImBubbles />,
     label: "커뮤니티",
-    href: ROUTE.COMMUNITY,
+    href: ROUTE.COMMUNITY_NOTICE,
   },
   {
     icon: <HiMiniSquare3Stack3D />,
