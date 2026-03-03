@@ -1,4 +1,4 @@
-import { Button, Chip } from "@clab/design-system";
+import { Button } from "@clab/design-system";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { GoChevronDown } from "react-icons/go";
@@ -45,11 +45,11 @@ export function CommunityPostItem({ post }: BoardPostItemProps) {
         <span className="text-16-medium truncate text-black">{title}</span>
       </div>
       {boardHashtagInfos.length > 0 && (
-        <div className="gap-xs flex flex-wrap">
+        <div className="gap-xs mt-2 flex flex-wrap">
           {boardHashtagInfos.map((tag) => (
-            <Chip key={tag.id} color="primary">
+            <span key={tag.id} className="text-12-medium text-gray-4">
               #{tag.name}
-            </Chip>
+            </span>
           ))}
         </div>
       )}
