@@ -259,7 +259,8 @@ export default function PostDetailCommentItem({
                 value={editContent}
                 onChange={(e) => setEditContent(e.target.value)}
                 placeholder="댓글을 입력하세요"
-                className="min-h-[80px]"
+                showCounter
+                maxLength={1000}
               />
               <div className="gap-sm flex justify-end">
                 <button
@@ -278,7 +279,7 @@ export default function PostDetailCommentItem({
               </div>
             </div>
           ) : (
-            <p className="text-14-regular whitespace-pre-wrap text-black">
+            <p className="text-14-regular whitespace-pre-wrap break-all text-black">
               {content}
             </p>
           )}
@@ -314,7 +315,8 @@ export default function PostDetailCommentItem({
                 value={replyContent}
                 onChange={(e) => setReplyContent(e.target.value)}
                 placeholder="답글을 입력하세요"
-                className="min-h-header-height"
+                showCounter
+                maxLength={1000}
               />
               <div className="gap-sm flex justify-end">
                 <button

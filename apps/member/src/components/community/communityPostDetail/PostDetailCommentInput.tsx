@@ -3,7 +3,7 @@ import { useState } from "react";
 import { IoSend } from "react-icons/io5";
 
 import { commentKeys, commentQueries } from "@/api/community";
-import { Button } from "@clab/design-system";
+import { Button, Textarea } from "@clab/design-system";
 
 interface PostDetailCommentInputProps {
   boardId: number;
@@ -37,16 +37,20 @@ export default function PostDetailCommentInput({
   return (
     <div className="gap-md px-gutter py-sm flex items-start">
       <div className="bg-gray-2 size-8 shrink-0 rounded-full" />
-      <div className="border-gray-2 px-lg py-md gap-sm flex flex-1 flex-col items-end rounded-lg border">
-        <textarea
+      <div className="border-gray-2 relative flex flex-1 flex-col rounded-lg border">
+        <Textarea
           placeholder="댓글을 남겨보세요..."
+          size="small"
           value={comment}
-          onChange={(e) => setComment(e.target.value)}
+          maxLength={1000}
+          showCounter
           rows={1}
-          className="text-14-regular scrollbar-hide min-h-18 max-h-24 w-full resize-none overflow-auto outline-none"
           style={{ fieldSizing: "content" }}
+          onChange={(e) => setComment(e.target.value)}
+          className="scrollbar-hide "
+          wrapperClassName="w-full bg-transparent border-0 pb-12"
         />
-        <div className="gap-sm flex items-center">
+        <div className="gap-sm absolute bottom-3 right-3 z-10 flex items-center">
           <Button
             size="small"
             onClick={() => setIsAnonymous(!isAnonymous)}
