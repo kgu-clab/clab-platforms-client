@@ -40,6 +40,7 @@
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
+    "eslint-plugin-storybook": "^10.2.10",
     "globals": "^16.5.0",
     "playwright": "^1.57.0",
     "prettier": "^3.7.4",
