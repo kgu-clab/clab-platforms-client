@@ -70,7 +70,7 @@ export default function CommunityDetailPage() {
             <GoChevronLeft size={24} />
           </button>
         }
-        className="absolute left-0 right-0 top-0 bg-white"
+        className="z-100 absolute left-0 right-0 top-0 bg-white"
       />
 
       <Scrollable className="gap-xl pt-header-height mt-2">

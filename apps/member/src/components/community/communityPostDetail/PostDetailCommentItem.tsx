@@ -243,7 +243,6 @@ export default function PostDetailCommentItem({
                     className="text-12-regular text-gray-4 gap-xs flex items-center"
                     onClick={onClickReport}
                   >
-                    <IoWarningOutline className="size-3" />
                     신고
                   </button>
                 )}

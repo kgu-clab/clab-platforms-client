@@ -100,7 +100,7 @@ export default function MyProfileHeader({
         onClose={handleModalClose}
         title="프로필 이미지 변경"
       >
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center gap-10">
           {previewUrl ? (
             <img
               src={previewUrl}
@@ -123,7 +123,7 @@ export default function MyProfileHeader({
 
           <div className="flex w-full gap-2">
             <Button
-              color="ghost"
+              color="disabled"
               className="flex-1"
               onClick={() => fileInputRef.current?.click()}
             >

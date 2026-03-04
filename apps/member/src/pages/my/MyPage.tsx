@@ -66,7 +66,7 @@ export default function MyPage() {
     <>
       <Header
         left={<Title>마이페이지</Title>}
-        className="absolute left-0 right-0 top-0 bg-white"
+        className="z-100 absolute left-0 right-0 top-0 bg-white"
       />
 
       <Scrollable className="pt-header-height px-gutter gap-3xl mt-sm">
