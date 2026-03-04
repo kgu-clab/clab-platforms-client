@@ -1,7 +1,12 @@
-import { infiniteQueryOptions } from "@tanstack/react-query";
+import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 
-import type { getBooksRequest, getBooksResponse } from "./api.model";
+import type {
+  getBooksRequest,
+  getBooksResponse,
+  getBooksDetailRequest,
+} from "./api.model";
 import { getBooks } from "./getBooks";
+import { getBooksDetail } from "./getBooksDetail";
 
 const libraryQueryKey = ["library"] as const;
 const BOOKS_PAGE_SIZE = 20;
@@ -28,6 +33,15 @@ export const libraryQueries = {
       },
       initialPageParam: 0,
       getNextPageParam: (lastPage: getBooksResponse) =>
-        lastPage.data.hasNext ? lastPage.data.currentPage + 1 : undefined,
+        lastPage.success ? lastPage.data.currentPage + 1 : undefined,
+    }),
+  getBooksDetailQuery: (request: getBooksDetailRequest) =>
+    queryOptions({
+      queryKey: [...libraryQueries.all, "detail", request.id] as const,
+      queryFn: async () => {
+        const res = await getBooksDetail(request);
+        if (!res.ok) throw new Error("도서 상세 조회에 실패했습니다.");
+        return res.data.data;
+      },
     }),
 };

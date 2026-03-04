@@ -1,4 +1,7 @@
-import type { BasePaginationResponse } from "../config/api-base-types";
+import type {
+  BaseApiResponse,
+  BasePaginationResponse,
+} from "../config/api-base-types";
 
 export type getBooksRequest = {
   title?: string;
@@ -29,3 +32,22 @@ export type getBooksResponse = BasePaginationResponse<
     updatedAt: string;
   }[]
 >;
+
+export type getBooksDetailRequest = {
+  id: number;
+};
+
+export type getBooksDetailResponse = BaseApiResponse<{
+  id: number;
+  borrowerId: string;
+  borrowerName: string;
+  category: string;
+  title: string;
+  author: string;
+  publisher: string;
+  imageUrl: string;
+  reviewLinks: string[];
+  dueDate: string;
+  createdAt: string;
+  updatedAt: string;
+}>;
