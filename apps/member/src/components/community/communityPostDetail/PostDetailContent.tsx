@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 
 import type { BoardDetail, BoardFileInfo, NewsDetail } from "@/api/community";
 import { accusationQueries, boardKeys, boardQueries } from "@/api/community";
+import { ProfileImage } from "@/components/common";
 import { formatRelativeTime } from "@/utils/date";
 import {
   IoDownloadOutline,
@@ -106,6 +107,7 @@ export default function BoardDetailContent({ board }: BoardDetailContentProps) {
     files,
     boardHashtagInfos,
     isOwner,
+    writerRoleLevel,
   } = board;
 
   const navigate = useNavigate();
@@ -188,15 +190,11 @@ export default function BoardDetailContent({ board }: BoardDetailContentProps) {
         meta={
           <div className="gap-md flex flex-col">
             <div className="gap-lg flex items-center">
-              <div className="bg-gray-2 size-10 shrink-0 overflow-hidden rounded-full">
-                {writerImageUrl && (
-                  <img
-                    src={writerImageUrl}
-                    alt={writerName}
-                    className="h-full w-full object-cover"
-                  />
-                )}
-              </div>
+              <ProfileImage
+                imageUrl={writerImageUrl}
+                size="size-10"
+                role={writerRoleLevel}
+              />
               <div className="flex flex-col">
                 <span className="text-14-semibold text-black">
                   {writerName}

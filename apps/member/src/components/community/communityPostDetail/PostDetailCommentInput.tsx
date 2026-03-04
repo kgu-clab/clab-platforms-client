@@ -5,6 +5,8 @@ import { IoSend } from "react-icons/io5";
 import { commentKeys, commentQueries } from "@/api/community";
 import { Button, Textarea } from "@clab/design-system";
 
+import { ProfileImage } from "@/components/common";
+
 interface PostDetailCommentInputProps {
   boardId: number;
 }
@@ -36,7 +38,7 @@ export default function PostDetailCommentInput({
 
   return (
     <div className="gap-md px-gutter py-sm flex items-start">
-      <div className="bg-gray-2 size-8 shrink-0 rounded-full" />
+      <ProfileImage size="size-8" />
       <div className="border-gray-2 relative flex flex-1 flex-col rounded-lg border">
         <Textarea
           placeholder="댓글을 남겨보세요..."

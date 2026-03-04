@@ -73,7 +73,7 @@ export default function CommunityDetailPage() {
         className="absolute left-0 right-0 top-0 bg-white"
       />
 
-      <Scrollable className="gap-xl pt-header-height">
+      <Scrollable className="gap-xl pt-header-height mt-2">
         {type === "board" && board && <PostDetailContent board={board} />}
 
         {type === "news" && news && <NewsDetailContent news={news} />}
