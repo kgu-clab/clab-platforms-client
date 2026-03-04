@@ -1,7 +1,7 @@
-import { Header, PlusButton, Section, Title } from "@clab/design-system";
+import { Header, Section, Title } from "@clab/design-system";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 
 import { useDebounce } from "@/model/common/useDebounce";
 import { useInfiniteScroll } from "@/model/common/useInfiniteScroll";
@@ -16,10 +16,10 @@ import {
 import { BottomNavbar } from "@/components/menu";
 
 import { libraryQueries } from "@/api/library/api.query";
-import { ROUTE } from "@/constants";
+// import { ROUTE } from "@/constants";
 
 export default function LibraryPage() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
   const [borrowStatus, setBorrowStatus] = useState<BookStatus>(BOOK_STATUS.ALL);
@@ -44,9 +44,9 @@ export default function LibraryPage() {
     [data],
   );
 
-  const handleAddBook = () => {
-    navigate(ROUTE.LIBRARY_CREATE);
-  };
+  // const handleAddBook = () => {
+  //   navigate(ROUTE.LIBRARY_CREATE);
+  // };
 
   return (
     <>
@@ -67,7 +67,7 @@ export default function LibraryPage() {
         <LibraryBookList books={books} bottomSentinelRef={bottomSentinelRef} />
       </Section>
 
-      <PlusButton onClick={handleAddBook} />
+      {/* <PlusButton onClick={handleAddBook} /> */}
       <BottomNavbar />
     </>
   );
