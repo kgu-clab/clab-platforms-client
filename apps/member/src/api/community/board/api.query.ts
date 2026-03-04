@@ -1,4 +1,5 @@
 import { mutationOptions, queryOptions } from "@tanstack/react-query";
+import { showErrorToast } from "@/utils/toast";
 
 import type {
   BoardDetailsResponseDto,
@@ -12,6 +13,7 @@ import type {
   GetBoardsByHashtagParams,
 } from "./api.model";
 import type { PagedResponse, PaginationParams } from "@/api/config";
+import { TOAST_MESSAGES } from "@/constants";
 import { deleteBoard } from "./deleteBoard";
 import { getBoard } from "./getBoard";
 import { getBoardsByCategory } from "./getBoardsByCategory";
@@ -85,6 +87,9 @@ export const boardQueries = {
 
   postBoardMutation: mutationOptions<unknown, Error, BoardRequestDto>({
     mutationFn: (body: BoardRequestDto) => postBoard(body),
+    onError: () => {
+      showErrorToast(TOAST_MESSAGES.BOARD_CREATE);
+    },
   }),
 
   patchBoardMutation: mutationOptions<
@@ -93,10 +98,16 @@ export const boardQueries = {
     { boardId: number; body: BoardUpdateRequestDto }
   >({
     mutationFn: ({ boardId, body }) => patchBoard(boardId, body),
+    onError: () => {
+      showErrorToast(TOAST_MESSAGES.BOARD_UPDATE);
+    },
   }),
 
   deleteBoardMutation: mutationOptions<unknown, Error, number>({
     mutationFn: (boardId: number) => deleteBoard(boardId),
+    onError: () => {
+      showErrorToast(TOAST_MESSAGES.BOARD_DELETE);
+    },
   }),
 
   postBoardEmojiMutation: mutationOptions<
@@ -105,6 +116,9 @@ export const boardQueries = {
     { boardId: number; emoji: string }
   >({
     mutationFn: ({ boardId, emoji }) => postBoardEmoji(boardId, emoji),
+    onError: () => {
+      showErrorToast(TOAST_MESSAGES.BOARD_EMOJI);
+    },
   }),
 
   postBoardFileMutation: mutationOptions<BoardFileInfo[], Error, File[]>({
@@ -112,6 +126,9 @@ export const boardQueries = {
       const result = await postBoardFile(files);
       if (!result.ok) throw new Error(result.error.message);
       return result.data.data;
+    },
+    onError: () => {
+      showErrorToast(TOAST_MESSAGES.FILE_UPLOAD);
     },
   }),
 };

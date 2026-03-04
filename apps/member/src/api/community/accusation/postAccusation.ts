@@ -3,9 +3,15 @@ import { authApi, END_POINT } from "@/api/config";
 
 import type { AccuseRequestDto } from "./api.model";
 
-export function postAccusation(body: AccuseRequestDto) {
-  return authApi.post<ApiResponse<number>, AccuseRequestDto>(
+export async function postAccusation(body: AccuseRequestDto) {
+  const result = await authApi.post<ApiResponse<number>, AccuseRequestDto>(
     END_POINT.COMMUNITY.ACCUSATION.BASE,
     body,
   );
+
+  if (!result.ok) {
+    throw new Error(result.error.message);
+  }
+
+  return result;
 }

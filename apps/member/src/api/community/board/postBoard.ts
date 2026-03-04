@@ -3,9 +3,15 @@ import { authApi, END_POINT } from "@/api/config";
 
 import type { BoardRequestDto } from "./api.model";
 
-export function postBoard(body: BoardRequestDto) {
-  return authApi.post<ApiResponse<string>, BoardRequestDto>(
+export async function postBoard(body: BoardRequestDto) {
+  const result = await authApi.post<ApiResponse<string>, BoardRequestDto>(
     END_POINT.COMMUNITY.BOARD.BASE,
     body,
   );
+
+  if (!result.ok) {
+    throw new Error(result.error.message);
+  }
+
+  return result;
 }

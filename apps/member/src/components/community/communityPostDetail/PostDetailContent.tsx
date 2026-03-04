@@ -15,7 +15,8 @@ import {
 
 import { Button, Chip, Modal, Textarea } from "@clab/design-system";
 
-import { ROUTE } from "@/constants";
+import { ROUTE, TOAST_MESSAGES } from "@/constants";
+import { showSuccessToast } from "@/utils/toast";
 
 const IMAGE_EXTENSIONS = /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i;
 
@@ -115,6 +116,7 @@ export default function BoardDetailContent({ board }: BoardDetailContentProps) {
   const deleteMutation = useMutation({
     ...boardQueries.deleteBoardMutation,
     onSuccess: () => {
+      showSuccessToast(TOAST_MESSAGES.BOARD_DELETE);
       navigate(ROUTE.COMMUNITY, { replace: true });
     },
   });
@@ -154,6 +156,7 @@ export default function BoardDetailContent({ board }: BoardDetailContentProps) {
   const accusationMutation = useMutation({
     ...accusationQueries.postAccusationMutation,
     onSuccess: () => {
+      showSuccessToast(TOAST_MESSAGES.ACCUSATION);
       setIsReportModalOpen(false);
       setReportReason("");
     },

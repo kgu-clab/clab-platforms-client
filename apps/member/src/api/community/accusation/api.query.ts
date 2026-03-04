@@ -1,4 +1,5 @@
 import { mutationOptions, queryOptions } from "@tanstack/react-query";
+import { showErrorToast } from "@/utils/toast";
 
 import type { PaginationParams } from "@/api/config";
 import type {
@@ -6,6 +7,7 @@ import type {
   GetAccusationsParams,
   PatchAccusationStatusParams,
 } from "./api.model";
+import { TOAST_MESSAGES } from "@/constants";
 import { getAccusations } from "./getAccusations";
 import { getMyAccusations } from "./getMyAccusations";
 import { patchAccusationStatus } from "./patchAccusationStatus";
@@ -26,6 +28,9 @@ export const accusationQueries = {
 
   postAccusationMutation: mutationOptions<unknown, Error, AccuseRequestDto>({
     mutationFn: (body: AccuseRequestDto) => postAccusation(body),
+    onError: () => {
+      showErrorToast(TOAST_MESSAGES.ACCUSATION);
+    },
   }),
 
   patchAccusationStatusMutation: mutationOptions<

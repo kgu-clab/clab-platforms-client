@@ -20,7 +20,8 @@ import {
   CommunityWriteBottomBar,
 } from "@/components/community";
 
-import { ROUTE } from "@/constants";
+import { ROUTE, TOAST_MESSAGES } from "@/constants";
+import { showSuccessToast } from "@/utils/toast";
 
 interface EditState {
   editMode: true;
@@ -80,6 +81,7 @@ export default function CommunityWritePage() {
   const patchBoardMutation = useMutation({
     ...boardQueries.patchBoardMutation,
     onSuccess: () => {
+      showSuccessToast(TOAST_MESSAGES.BOARD_UPDATE);
       if (editState) {
         queryClient.invalidateQueries({
           queryKey: boardKeys.detail(editState.boardId),

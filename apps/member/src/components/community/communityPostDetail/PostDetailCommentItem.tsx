@@ -17,6 +17,8 @@ import {
 } from "@/api/community";
 
 import { formatRelativeTime } from "@/utils/date";
+import { showSuccessToast } from "@/utils/toast";
+import { TOAST_MESSAGES } from "@/constants";
 
 interface PostDetailCommentItemProps {
   commentData: Comment;
@@ -69,6 +71,7 @@ export default function PostDetailCommentItem({
   const deleteMutation = useMutation({
     ...commentQueries.deleteCommentMutation,
     onSuccess: () => {
+      showSuccessToast(TOAST_MESSAGES.COMMENT_DELETE);
       queryClient.invalidateQueries({
         queryKey: commentKeys.all,
       });
@@ -78,6 +81,7 @@ export default function PostDetailCommentItem({
   const editMutation = useMutation({
     ...commentQueries.patchCommentMutation,
     onSuccess: () => {
+      showSuccessToast(TOAST_MESSAGES.COMMENT_UPDATE);
       queryClient.invalidateQueries({
         queryKey: commentKeys.all,
       });
@@ -101,6 +105,7 @@ export default function PostDetailCommentItem({
   const accusationMutation = useMutation({
     ...accusationQueries.postAccusationMutation,
     onSuccess: () => {
+      showSuccessToast(TOAST_MESSAGES.ACCUSATION);
       setIsReportModalOpen(false);
       setReportReason("");
     },
@@ -254,7 +259,8 @@ export default function PostDetailCommentItem({
                 value={editContent}
                 onChange={(e) => setEditContent(e.target.value)}
                 placeholder="댓글을 입력하세요"
-                className="min-h-[80px]"
+                showCounter
+                maxLength={1000}
               />
               <div className="gap-sm flex justify-end">
                 <button
@@ -273,7 +279,7 @@ export default function PostDetailCommentItem({
               </div>
             </div>
           ) : (
-            <p className="text-14-regular whitespace-pre-wrap text-black">
+            <p className="text-14-regular whitespace-pre-wrap break-all text-black">
               {content}
             </p>
           )}
@@ -309,7 +315,8 @@ export default function PostDetailCommentItem({
                 value={replyContent}
                 onChange={(e) => setReplyContent(e.target.value)}
                 placeholder="답글을 입력하세요"
-                className="min-h-header-height"
+                showCounter
+                maxLength={1000}
               />
               <div className="gap-sm flex justify-end">
                 <button
