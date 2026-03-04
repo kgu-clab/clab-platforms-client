@@ -1,5 +1,5 @@
 import { mutationOptions, queryOptions } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { showErrorToast } from "@/utils/toast";
 
 import type {
   BoardDetailsResponseDto,
@@ -88,7 +88,7 @@ export const boardQueries = {
   postBoardMutation: mutationOptions<unknown, Error, BoardRequestDto>({
     mutationFn: (body: BoardRequestDto) => postBoard(body),
     onError: () => {
-      toast.error(TOAST_MESSAGES.BOARD_CREATE.error);
+      showErrorToast(TOAST_MESSAGES.BOARD_CREATE);
     },
   }),
 
@@ -99,14 +99,14 @@ export const boardQueries = {
   >({
     mutationFn: ({ boardId, body }) => patchBoard(boardId, body),
     onError: () => {
-      toast.error(TOAST_MESSAGES.BOARD_UPDATE.error);
+      showErrorToast(TOAST_MESSAGES.BOARD_UPDATE);
     },
   }),
 
   deleteBoardMutation: mutationOptions<unknown, Error, number>({
     mutationFn: (boardId: number) => deleteBoard(boardId),
     onError: () => {
-      toast.error(TOAST_MESSAGES.BOARD_DELETE.error);
+      showErrorToast(TOAST_MESSAGES.BOARD_DELETE);
     },
   }),
 
@@ -117,7 +117,7 @@ export const boardQueries = {
   >({
     mutationFn: ({ boardId, emoji }) => postBoardEmoji(boardId, emoji),
     onError: () => {
-      toast.error(TOAST_MESSAGES.BOARD_EMOJI.error);
+      showErrorToast(TOAST_MESSAGES.BOARD_EMOJI);
     },
   }),
 
@@ -128,7 +128,7 @@ export const boardQueries = {
       return result.data.data;
     },
     onError: () => {
-      toast.error(TOAST_MESSAGES.FILE_UPLOAD.error);
+      showErrorToast(TOAST_MESSAGES.FILE_UPLOAD);
     },
   }),
 };

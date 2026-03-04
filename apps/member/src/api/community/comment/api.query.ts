@@ -1,5 +1,5 @@
 import { mutationOptions, queryOptions } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { showErrorToast } from "@/utils/toast";
 
 import type { PagedResponse, PaginationParams } from "@/api/config";
 import type {
@@ -48,28 +48,28 @@ export const commentQueries = {
     mutationFn: ({ boardId, body, parentId }) =>
       postComment(boardId, body, parentId),
     onError: () => {
-      toast.error(TOAST_MESSAGES.COMMENT_CREATE.error);
+      showErrorToast(TOAST_MESSAGES.COMMENT_CREATE);
     },
   }),
 
   patchCommentMutation: mutationOptions<unknown, Error, PatchCommentParams>({
     mutationFn: ({ commentId, body }) => patchComment(commentId, body),
     onError: () => {
-      toast.error(TOAST_MESSAGES.COMMENT_UPDATE.error);
+      showErrorToast(TOAST_MESSAGES.COMMENT_UPDATE);
     },
   }),
 
   deleteCommentMutation: mutationOptions<unknown, Error, number>({
     mutationFn: (commentId: number) => deleteComment(commentId),
     onError: () => {
-      toast.error(TOAST_MESSAGES.COMMENT_DELETE.error);
+      showErrorToast(TOAST_MESSAGES.COMMENT_DELETE);
     },
   }),
 
   postCommentLikeMutation: mutationOptions<unknown, Error, number>({
     mutationFn: (commentId: number) => postCommentLike(commentId),
     onError: () => {
-      toast.error(TOAST_MESSAGES.COMMENT_LIKE.error);
+      showErrorToast(TOAST_MESSAGES.COMMENT_LIKE);
     },
   }),
 };

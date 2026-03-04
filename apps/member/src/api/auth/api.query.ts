@@ -1,5 +1,5 @@
 import { mutationOptions } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { showErrorToast } from "@/utils/toast";
 
 import type { PostLoginRequest } from "./api.model";
 import { TOAST_MESSAGES } from "@/constants";
@@ -9,7 +9,7 @@ export const authQueries = {
   postLoginMutation: mutationOptions<unknown, Error, PostLoginRequest>({
     mutationFn: ({ id, password }: PostLoginRequest) => postLogin(id, password),
     onError: () => {
-      toast.error(TOAST_MESSAGES.LOGIN.error);
+      showErrorToast(TOAST_MESSAGES.LOGIN);
     },
   }),
 };

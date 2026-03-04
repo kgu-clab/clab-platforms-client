@@ -17,7 +17,7 @@ import {
 } from "@/api/community";
 
 import { formatRelativeTime } from "@/utils/date";
-import { toast } from "sonner";
+import { showSuccessToast } from "@/utils/toast";
 import { TOAST_MESSAGES } from "@/constants";
 
 interface PostDetailCommentItemProps {
@@ -71,7 +71,7 @@ export default function PostDetailCommentItem({
   const deleteMutation = useMutation({
     ...commentQueries.deleteCommentMutation,
     onSuccess: () => {
-      toast.success(TOAST_MESSAGES.COMMENT_DELETE.success!);
+      showSuccessToast(TOAST_MESSAGES.COMMENT_DELETE);
       queryClient.invalidateQueries({
         queryKey: commentKeys.all,
       });
@@ -81,7 +81,7 @@ export default function PostDetailCommentItem({
   const editMutation = useMutation({
     ...commentQueries.patchCommentMutation,
     onSuccess: () => {
-      toast.success(TOAST_MESSAGES.COMMENT_UPDATE.success!);
+      showSuccessToast(TOAST_MESSAGES.COMMENT_UPDATE);
       queryClient.invalidateQueries({
         queryKey: commentKeys.all,
       });
@@ -105,7 +105,7 @@ export default function PostDetailCommentItem({
   const accusationMutation = useMutation({
     ...accusationQueries.postAccusationMutation,
     onSuccess: () => {
-      toast.success(TOAST_MESSAGES.ACCUSATION.success!);
+      showSuccessToast(TOAST_MESSAGES.ACCUSATION);
       setIsReportModalOpen(false);
       setReportReason("");
     },

@@ -1,5 +1,5 @@
 import { mutationOptions, queryOptions } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { showErrorToast } from "@/utils/toast";
 
 import type { PaginationParams } from "@/api/config";
 import type {
@@ -29,7 +29,7 @@ export const accusationQueries = {
   postAccusationMutation: mutationOptions<unknown, Error, AccuseRequestDto>({
     mutationFn: (body: AccuseRequestDto) => postAccusation(body),
     onError: () => {
-      toast.error(TOAST_MESSAGES.ACCUSATION.error);
+      showErrorToast(TOAST_MESSAGES.ACCUSATION);
     },
   }),
 

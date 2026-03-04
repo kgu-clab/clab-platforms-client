@@ -21,7 +21,7 @@ import {
 } from "@/components/community";
 
 import { ROUTE, TOAST_MESSAGES } from "@/constants";
-import { toast } from "sonner";
+import { showSuccessToast } from "@/utils/toast";
 
 interface EditState {
   editMode: true;
@@ -81,7 +81,7 @@ export default function CommunityWritePage() {
   const patchBoardMutation = useMutation({
     ...boardQueries.patchBoardMutation,
     onSuccess: () => {
-      toast.success(TOAST_MESSAGES.BOARD_UPDATE.success!);
+      showSuccessToast(TOAST_MESSAGES.BOARD_UPDATE);
       if (editState) {
         queryClient.invalidateQueries({
           queryKey: boardKeys.detail(editState.boardId),
