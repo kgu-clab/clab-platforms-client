@@ -7,7 +7,7 @@ import {
   Section,
   Title,
 } from "@clab/design-system";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GoChevronLeft } from "react-icons/go";
 import { useNavigate, useParams } from "react-router";
 
@@ -15,6 +15,7 @@ import { libraryQueries } from "@/api/library/api.query";
 
 export default function LibraryDetailPage() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { id } = useParams<{ id: string }>();
   const bookId = id ? Number(id) : NaN;
 
@@ -27,7 +28,19 @@ export default function LibraryDetailPage() {
     enabled: Number.isInteger(bookId) && bookId > 0,
   });
 
+  const postBookLoanMutation = useMutation({
+    ...libraryQueries.postBookLoanMutation,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: libraryQueries.all });
+    },
+  });
+
   const isAvailable = book ? !book.borrowerId : false;
+
+  const handleLoanApply = () => {
+    if (!book || !isAvailable) return;
+    postBookLoanMutation.mutate({ bookId: book.id });
+  };
 
   const formatDate = (dateString: string) => {
     return dateString.split("T")[0];
@@ -188,7 +201,12 @@ export default function LibraryDetailPage() {
           </Section>
 
           <footer className="z-999 h-bottom-navbar-height px-gutter border-gray-2 fixed bottom-0 left-0 right-0 box-border flex items-center justify-center border-t bg-white">
-            <Button>대여 신청</Button>
+            <Button
+              disabled={!isAvailable || postBookLoanMutation.isPending}
+              onClick={handleLoanApply}
+            >
+              {postBookLoanMutation.isPending ? "처리 중..." : "대출 신청"}
+            </Button>
           </footer>
         </div>
       </Scrollable>

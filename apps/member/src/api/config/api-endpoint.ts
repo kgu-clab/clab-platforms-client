@@ -5,5 +5,6 @@ export const END_POINT = {
   },
   LIBRARY: {
     BOOKS: "books",
+    BOOKS_LOAN: "book-loan-records",
   },
 };

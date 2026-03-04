@@ -51,3 +51,7 @@ export type getBooksDetailResponse = BaseApiResponse<{
   createdAt: string;
   updatedAt: string;
 }>;
+
+export type postBookLoanRequest = {
+  bookId: number;
+};

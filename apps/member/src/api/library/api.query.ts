@@ -1,12 +1,18 @@
-import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
+import {
+  infiniteQueryOptions,
+  mutationOptions,
+  queryOptions,
+} from "@tanstack/react-query";
 
 import type {
   getBooksRequest,
   getBooksResponse,
   getBooksDetailRequest,
+  postBookLoanRequest,
 } from "./api.model";
 import { getBooks } from "./getBooks";
 import { getBooksDetail } from "./getBooksDetail";
+import { postBookLoan } from "./postBookLoan";
 
 const libraryQueryKey = ["library"] as const;
 const BOOKS_PAGE_SIZE = 20;
@@ -44,4 +50,12 @@ export const libraryQueries = {
         return res.data.data;
       },
     }),
+  postBookLoanMutation: mutationOptions({
+    mutationFn: async (request: postBookLoanRequest) => {
+      const res = await postBookLoan(request);
+      if (!res.ok)
+        throw new Error(res.error.message ?? "대출 신청에 실패했습니다.");
+      return res.data;
+    },
+  }),
 };
