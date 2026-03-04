@@ -13,6 +13,21 @@ export type ApiResponseWithoutResult = {
   message: string;
 };
 
+export type BaseApiResponse<T> = {
+  success: boolean;
+  data: T;
+};
+
+export type BasePaginationResponse<T> = BaseApiResponse<{
+  currentPage: number;
+  hasPrevious: true;
+  hasNext: true;
+  totalPages: number;
+  totalItems: number;
+  take: number;
+  items: T;
+}>;
+
 export type PagedResponse<T> = {
   items: T[];
   currentPage: number;

@@ -3,6 +3,14 @@ export const END_POINT = {
     REISSUE_TOKEN: "v1/auth/reissue", // 실제 문서 확인 후 수정 필요
     LOGIN: "login",
   },
+  LIBRARY: {
+    BOOKS: "books",
+    BOOKS_LOAN: "book-loan-records",
+    BOOKS_LOAN_CONDITIONS: "book-loan-records/conditions",
+  },
+  USER: {
+    INFO: "members/my-profile",   
+  },
   COMMUNITY: {
     BOARD: {
       BASE: "boards",

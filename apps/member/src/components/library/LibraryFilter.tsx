@@ -1,5 +1,4 @@
 import { Button } from "@clab/design-system";
-import { useState } from "react";
 
 import { BOOK_STATUS, type BookStatus } from "@/types/library";
 
@@ -9,14 +8,15 @@ const FILTER_OPTIONS: { label: string; value: BookStatus }[] = [
   { label: "대여중", value: BOOK_STATUS.BORROWED },
 ];
 
-export default function LibraryFilter() {
-  const [activeFilter, setActiveFilter] = useState<BookStatus>(BOOK_STATUS.ALL);
-  const [isLatest, setIsLatest] = useState<boolean>(true);
+type LibraryFilterProps = {
+  activeFilter: BookStatus;
+  onActiveFilterChange: (value: BookStatus) => void;
+};
 
-  const toggleSort = () => {
-    setIsLatest(!isLatest);
-  };
-
+export default function LibraryFilter({
+  activeFilter,
+  onActiveFilterChange,
+}: LibraryFilterProps) {
   return (
     <div className="px-gutter gap-md flex items-center">
       <div className="scrollbar-hide min-w-0 flex-1 overflow-x-auto">
@@ -26,21 +26,21 @@ export default function LibraryFilter() {
               key={filter.value}
               color={activeFilter === filter.value ? "outlineActive" : "ghost"}
               size="small"
-              onClick={() => setActiveFilter(filter.value)}
+              onClick={() => onActiveFilterChange(filter.value)}
             >
               {filter.label}
             </Button>
           ))}
         </div>
       </div>
-      <Button
+      {/* <Button
         color="text"
         size="small"
         className="shrink-0"
-        onClick={toggleSort}
+        onClick={onSortToggle}
       >
         {isLatest ? "최신순" : "인기순"}
-      </Button>
+      </Button> */}
     </div>
   );
 }
