@@ -1,13 +1,15 @@
 import { Button, Input } from "@clab/design-system";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { memo, useCallback, useState } from "react";
 import { useNavigate } from "react-router";
 
 import { useIsLoggedIn } from "@/model/auth";
+import { useAuthStore } from "@/model/common";
 
 import type { TokenFromHeader } from "@/types/auth";
 
 import { authQueries } from "@/api/auth/api.query";
+import { userQueries } from "@/api/user/api.query";
 import { ROUTE } from "@/constants";
 import { setTokens } from "@/utils/auth";
 
@@ -44,10 +46,12 @@ const PasswordInput = memo(({ value, onChange }: InputProps) => (
 PasswordInput.displayName = "PasswordInput";
 
 export default function LoginForm() {
+  const queryClient = useQueryClient();
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const { updateLogged } = useIsLoggedIn();
   const navigate = useNavigate();
+  const { setMemberId } = useAuthStore();
 
   const postLoginMutation = useMutation({
     ...authQueries.postLoginMutation,
@@ -71,7 +75,15 @@ export default function LoginForm() {
 
       setTokens(accessToken, refreshToken);
       updateLogged(true);
-      navigate(ROUTE.HOME);
+
+      queryClient
+        .fetchQuery({ ...userQueries.getUserInfoQuery() })
+        .then((userInfo) => {
+          setMemberId(userInfo.data.id);
+        })
+        .finally(() => {
+          navigate(ROUTE.HOME);
+        });
     },
   });
 

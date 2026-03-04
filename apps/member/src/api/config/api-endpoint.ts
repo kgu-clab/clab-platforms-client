@@ -8,4 +8,7 @@ export const END_POINT = {
     BOOKS_LOAN: "book-loan-records",
     BOOKS_LOAN_CONDITIONS: "book-loan-records/conditions",
   },
+  USER: {
+    INFO: "members/my-profile",
+  },
 };
