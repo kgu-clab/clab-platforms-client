@@ -86,6 +86,51 @@
   --z-index-modal: 1050;
   --z-index-popover: 1060;
   --z-index-tooltip: 1070;
+
+  --animate-modal-backdrop-in: modal-backdrop-in 200ms ease-out;
+  --animate-modal-backdrop-out: modal-backdrop-out 150ms ease-in forwards;
+  --animate-modal-content-in: modal-content-in 200ms ease-out;
+  --animate-modal-content-out: modal-content-out 150ms ease-in forwards;
+}
+
+@keyframes modal-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-backdrop-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes modal-content-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes modal-content-out {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95) translateY(8px);
+  }
 }
 
 @layer utilities {

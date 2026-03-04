@@ -34,7 +34,7 @@ function TabsItem({ className, icon, label, href, ...props }: TabsItemProps) {
 
   const isActive =
     targetPath === currentPath &&
-    (targetSearch ? `?${targetSearch}` === currentSearch : !currentSearch);
+    (targetSearch ? currentSearch.includes(targetSearch) : !currentSearch);
 
   return (
     <button

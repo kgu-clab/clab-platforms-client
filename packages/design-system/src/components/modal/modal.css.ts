@@ -1,21 +1,28 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 
 export const modalBackdropVariant = cva(
-  'fixed inset-0 backdrop-blur-sm bg-black/40 flex items-center justify-center px-2xl py-xl z-modal-backdrop',
+  'fixed inset-0 backdrop-blur-sm bg-black/40 flex items-center justify-center px-2xl py-xl z-modal-backdrop animate-modal-backdrop-in',
   {
-    variants: {},
+    variants: {
+      closing: {
+        true: 'animate-modal-backdrop-out',
+      },
+    },
     defaultVariants: {},
   }
 );
 
 export const modalContentVariant = cva(
-  'bg-white rounded-xl p-2xl flex flex-col gap-xl w-full max-w-max-width relative z-modal',
+  'bg-white rounded-xl p-2xl flex flex-col gap-xl w-full max-w-max-width relative z-modal animate-modal-content-in',
   {
     variants: {
       size: {
         default: 'max-w-max-width',
         small: 'max-w-[400px]',
         large: 'max-w-[600px]',
+      },
+      closing: {
+        true: 'animate-modal-content-out',
       },
     },
     defaultVariants: {

@@ -1,22 +1,28 @@
-import { Button, Header, Scrollable, Section } from "@clab/design-system";
+import { Header, Scrollable, Section } from "@clab/design-system";
+import { useQuery } from "@tanstack/react-query";
 import {
   IoCalendarOutline,
   IoPeopleOutline,
   IoBookOutline,
 } from "react-icons/io5";
 
+import { boardQueries } from "@/api/community";
+
 import { HomeCarousel, HomePostItem, HomeLink } from "@/components/home";
 import { BottomNavbar } from "@/components/menu";
 
 import { ROUTE } from "@/constants";
-import { communityPostsList } from "@/mock/community-posts";
 
 export default function HomePage() {
+  const { data: hotBoards = [] } = useQuery(boardQueries.getHotBoardsQuery());
+
   return (
     <>
       <Header
-        left={<img src="/logo/logo.svg" alt="clab" className="w-15" />}
-        className="z-999 absolute left-0 right-0 top-0 bg-white"
+        left={
+          <img src="/logo/logo.svg" alt="clab" className="w-header-height" />
+        }
+        className="z-fixed absolute left-0 right-0 top-0 bg-white"
       />
       <Scrollable className="pt-header-height gap-3xl pb-bottom-padding">
         <Section className="mt-xl">
@@ -44,20 +50,17 @@ export default function HomePage() {
         </Section>
 
         <Section title="커뮤니티 인기 게시글" className="px-gutter">
-          <div className="gap-sm flex items-center">
-            <Button size="small" color="dark">
-              전체
-            </Button>
-            <Button size="small" color="ghost">
-              자유
-            </Button>
-            <Button size="small" color="ghost">
-              질문
-            </Button>
-          </div>
           <Section.List>
-            {communityPostsList.map((post) => (
-              <HomePostItem key={post.id} {...post} />
+            {hotBoards.map((post) => (
+              <HomePostItem
+                key={post.id}
+                id={String(post.id)}
+                category={post.category}
+                title={post.title}
+                content={post.content}
+                author={post.writerName}
+                comments={post.commentCount}
+              />
             ))}
           </Section.List>
         </Section>

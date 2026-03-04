@@ -5,7 +5,7 @@
 export type ApiResponse<T> = {
   code: string;
   message: string;
-  result: T;
+  data: T;
 };
 
 export type ApiResponseWithoutResult = {
@@ -27,3 +27,17 @@ export type BasePaginationResponse<T> = BaseApiResponse<{
   take: number;
   items: T;
 }>;
+
+export type PagedResponse<T> = {
+  items: T[];
+  currentPage: number;
+  totalPage: number;
+  totalItems: number;
+};
+
+export type PaginationParams = {
+  page?: number;
+  size?: number;
+  sortBy?: string[];
+  sortDirection?: string[];
+};
