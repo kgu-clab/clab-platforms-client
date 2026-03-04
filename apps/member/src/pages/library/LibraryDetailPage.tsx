@@ -150,7 +150,7 @@ export default function LibraryDetailPage() {
                   <img
                     src={book.imageUrl}
                     alt={book.title}
-                    className="h-full w-full object-cover"
+                    className="h-full w-full rounded-lg object-cover"
                   />
                 ) : (
                   <div className="bg-gray-2 flex h-full w-full items-center justify-center">
@@ -179,7 +179,7 @@ export default function LibraryDetailPage() {
                   ))
                 ) : (
                   <>
-                    <button
+                    {/* <button
                       type="button"
                       className="border-gray-2 gap-sm flex flex-1 flex-col items-center justify-center bg-white px-4 py-3 shadow-lg"
                     >
@@ -201,7 +201,7 @@ export default function LibraryDetailPage() {
                     >
                       <span className="text-lg">💜</span>
                       <span className="text-12-medium text-gray-5">알라딘</span>
-                    </button>
+                    </button> */}
                   </>
                 )}
               </div>
