@@ -6,5 +6,6 @@ export const END_POINT = {
   LIBRARY: {
     BOOKS: "books",
     BOOKS_LOAN: "book-loan-records",
+    BOOKS_LOAN_CONDITIONS: "book-loan-records/conditions",
   },
 };

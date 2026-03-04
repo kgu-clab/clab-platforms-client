@@ -55,3 +55,29 @@ export type getBooksDetailResponse = BaseApiResponse<{
 export type postBookLoanRequest = {
   bookId: number;
 };
+
+export type BookLoanStatus = "PENDING" | "APPROVED" | "REJECTED" | "RETURNED";
+
+export type getBooksLoanConditionsRequest = {
+  status: BookLoanStatus;
+  page: number;
+  size: number;
+  sortBy: "borrowedAt";
+  sortDirection?: SortDirection;
+};
+
+export type getBooksLoanConditionsResponse = BasePaginationResponse<
+  {
+    bookLoanRecordId: number;
+    bookId: number;
+    bookTitle: string;
+    bookImageUrl: string;
+    borrowerId: string;
+    borrowerName: string;
+    borrowedAt: string;
+    returnedAt: string;
+    dueDate: string;
+    loanExtensionCount: number;
+    status: BookLoanStatus;
+  }[]
+>;

@@ -8,14 +8,26 @@ import {
   Title,
 } from "@clab/design-system";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMemo } from "react";
 import { GoChevronLeft } from "react-icons/go";
 import { useNavigate, useParams } from "react-router";
 
+import { useAuthStore } from "@/model/common/store-auth";
+
 import { libraryQueries } from "@/api/library/api.query";
+
+const LOAN_CONDITIONS_PARAMS = {
+  status: "PENDING" as const,
+  page: 0,
+  size: 20,
+  sortBy: "borrowedAt" as const,
+  sortDirection: "desc" as const,
+};
 
 export default function LibraryDetailPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const memberId = useAuthStore((s) => s.memberId);
   const { id } = useParams<{ id: string }>();
   const bookId = id ? Number(id) : NaN;
 
@@ -28,6 +40,20 @@ export default function LibraryDetailPage() {
     enabled: Number.isInteger(bookId) && bookId > 0,
   });
 
+  const { data: loanConditions } = useQuery({
+    ...libraryQueries.getBooksLoanConditionsQuery(LOAN_CONDITIONS_PARAMS),
+    enabled: Number.isInteger(bookId) && bookId > 0 && !!book,
+  });
+
+  const hasApplied = useMemo(() => {
+    if (!book || !loanConditions?.items.length) return false;
+    const forThisBook = loanConditions.items.filter(
+      (item) => item.bookId === book.id,
+    );
+    if (forThisBook.length === 0) return false;
+    return memberId != null && forThisBook[0].borrowerId === memberId;
+  }, [book, loanConditions, memberId]);
+
   const postBookLoanMutation = useMutation({
     ...libraryQueries.postBookLoanMutation,
     onSuccess: () => {
@@ -37,9 +63,21 @@ export default function LibraryDetailPage() {
 
   const isAvailable = book ? !book.borrowerId : false;
 
+  const isButtonDisabled =
+    !isAvailable || hasApplied || postBookLoanMutation.isPending;
+
   const handleLoanApply = () => {
-    if (!book || !isAvailable) return;
-    postBookLoanMutation.mutate({ bookId: book.id });
+    if (!book || !isAvailable || hasApplied) return;
+    postBookLoanMutation.mutate(
+      { bookId: book.id },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: libraryQueries.loanConditionsKey(LOAN_CONDITIONS_PARAMS),
+          });
+        },
+      },
+    );
   };
 
   const formatDate = (dateString: string) => {
@@ -201,11 +239,12 @@ export default function LibraryDetailPage() {
           </Section>
 
           <footer className="z-999 h-bottom-navbar-height px-gutter border-gray-2 fixed bottom-0 left-0 right-0 box-border flex items-center justify-center border-t bg-white">
-            <Button
-              disabled={!isAvailable || postBookLoanMutation.isPending}
-              onClick={handleLoanApply}
-            >
-              {postBookLoanMutation.isPending ? "처리 중..." : "대출 신청"}
+            <Button disabled={isButtonDisabled} onClick={handleLoanApply}>
+              {hasApplied
+                ? "신청 완료"
+                : postBookLoanMutation.isPending
+                  ? "처리 중..."
+                  : "대출 신청"}
             </Button>
           </footer>
         </div>
