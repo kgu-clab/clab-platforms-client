@@ -239,7 +239,11 @@ export default function LibraryDetailPage() {
           </Section>
 
           <footer className="z-999 h-bottom-navbar-height px-gutter border-gray-2 fixed bottom-0 left-0 right-0 box-border flex items-center justify-center border-t bg-white">
-            <Button disabled={isButtonDisabled} onClick={handleLoanApply}>
+            <Button
+              disabled={isButtonDisabled}
+              onClick={handleLoanApply}
+              color={isButtonDisabled ? "disabled" : "active"}
+            >
               {hasApplied
                 ? "신청 완료"
                 : postBookLoanMutation.isPending
