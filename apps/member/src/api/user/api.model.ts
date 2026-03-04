@@ -24,4 +24,7 @@ export type ProfileFileResponse = {
 
 export type PatchMemberRequest = {
   imageUrl?: string;
+  contact?: string;
+  email?: string;
+  githubUrl?: string;
 };
