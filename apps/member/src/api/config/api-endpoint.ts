@@ -9,7 +9,7 @@ export const END_POINT = {
     BOOKS_LOAN_CONDITIONS: "book-loan-records/conditions",
   },
   USER: {
-    INFO: "members/my-profile",   
+    INFO: "members/my-profile",
   },
   COMMUNITY: {
     BOARD: {
@@ -50,5 +50,11 @@ export const END_POINT = {
     FILE: {
       BOARD: "files/boards",
     },
+  },
+  SUPPORT: {
+    BASE: "supports",
+    DETAIL: (supportId: number) => `supports/${supportId}`,
+    MY_SUPPORTS: "supports/my",
+    ANSWER: (supportId: number) => `supports/${supportId}/answer`,
   },
 };
