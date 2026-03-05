@@ -52,7 +52,7 @@ export default function MyInfoCard({
     const errors = { contact: "", email: "", githubUrl: "" };
     let isValid = true;
 
-    if (editForm.contact && !/^01[0-9]\d{7,8}$/.test(editForm.contact)) {
+    if (editForm.contact && !/^010\d{8}$/.test(editForm.contact)) {
       errors.contact = "하이픈 없이 숫자만 입력해주세요.";
       isValid = false;
     }
