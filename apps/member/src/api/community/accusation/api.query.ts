@@ -1,8 +1,14 @@
-import { mutationOptions, queryOptions } from "@tanstack/react-query";
+import {
+  infiniteQueryOptions,
+  mutationOptions,
+  queryOptions,
+} from "@tanstack/react-query";
 import { showErrorToast } from "@/utils/toast";
 
 import type { PaginationParams } from "@/api/config";
+import type { BasePaginationResponse } from "@/api/config/api-base-types";
 import type {
+  AccuseMyResponseDto,
   AccuseRequestDto,
   GetAccusationsParams,
   PatchAccusationStatusParams,
@@ -12,6 +18,8 @@ import { getAccusations } from "./getAccusations";
 import { getMyAccusations } from "./getMyAccusations";
 import { patchAccusationStatus } from "./patchAccusationStatus";
 import { postAccusation } from "./postAccusation";
+
+const ACCUSATIONS_PAGE_SIZE = 20;
 
 export const accusationQueries = {
   getAccusationsQuery: (params?: GetAccusationsParams) =>
@@ -24,6 +32,29 @@ export const accusationQueries = {
     queryOptions({
       queryKey: ["community", "accusations", "my", params],
       queryFn: () => getMyAccusations(params),
+    }),
+
+  getMyAccusationsInfiniteQuery: (
+    params?: Omit<PaginationParams, "page" | "size">,
+  ) =>
+    infiniteQueryOptions({
+      queryKey: ["community", "accusations", "myInfinite", params] as const,
+      queryFn: async ({ pageParam }) => {
+        const res = await getMyAccusations({
+          ...params,
+          page: pageParam as number,
+          size: ACCUSATIONS_PAGE_SIZE,
+        });
+        if (!res.ok) {
+          return {
+            data: { hasNext: false, items: [], currentPage: 0 },
+          } as unknown as BasePaginationResponse<AccuseMyResponseDto[]>;
+        }
+        return res.data;
+      },
+      initialPageParam: 0,
+      getNextPageParam: (lastPage) =>
+        lastPage.data.hasNext ? lastPage.data.currentPage + 1 : undefined,
     }),
 
   postAccusationMutation: mutationOptions<unknown, Error, AccuseRequestDto>({

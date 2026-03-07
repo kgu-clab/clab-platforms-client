@@ -3,27 +3,19 @@ import type {
   BasePaginationResponse,
 } from "../config/api-base-types";
 
-export type SortDirection = "asc" | "desc";
-export type SupportStatus = "PENDING" | "ANSWERED" | "CLOSED";
+export type SupportStatus = "PENDING" | "COMPLETED";
 export type SupportCategory = "INQUIRY" | "BUG";
 
-export type PaginationParams = {
+export type GetSupportRequest = {
   page?: number;
   size?: number;
   sortBy?: string[];
-  sortDirection?: SortDirection[];
+  sortDirection?: ("asc" | "desc")[];
 };
-
-export type SupportIdParam = {
-  supportId: number;
-};
-
-export type GetSupportRequest = PaginationParams;
 
 export type GetSupportResponse = BasePaginationResponse<
   {
     id: number;
-    writerId: string;
     name: string;
     category: SupportCategory;
     title: string;
@@ -31,8 +23,6 @@ export type GetSupportResponse = BasePaginationResponse<
     status: SupportStatus;
   }[]
 >;
-
-export type GetSupportDetailRequest = SupportIdParam;
 
 export type GetSupportDetailResponse = BaseApiResponse<{
   id: number;
@@ -61,25 +51,44 @@ export type SupportFileInfo = {
   createdAt: string;
 };
 
-export type DeleteSupportRequest = SupportIdParam;
+export type SupportWriteForm = {
+  category: SupportCategory;
+  title: string;
+  content: string;
+  fileUrlList: string[];
+};
 
-export type PostSupportRequest = SupportIdParam & {
+export type PostSupportRequest = {
   body: {
     title: string;
     content: string;
     category: SupportCategory;
+    fileUrlList?: string[];
   };
 };
 
-export type PostAnswerRequest = SupportIdParam & {
+export type PatchSupportRequest = {
+  supportId: number;
+  body: {
+    title?: string;
+    content?: string;
+    category?: SupportCategory;
+  };
+};
+
+export type PostAnswerRequest = {
+  supportId: number;
   body: {
     content: string;
   };
 };
 
-export type DeleteAnswerRequest = SupportIdParam;
-
-export type GetMySupportsRequest = PaginationParams;
+export type GetMySupportsRequest = {
+  page?: number;
+  size?: number;
+  sortBy?: string[];
+  sortDirection?: ("asc" | "desc")[];
+};
 
 export type GetMySupportsResponse = BasePaginationResponse<
   {
