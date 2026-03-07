@@ -68,7 +68,7 @@ export default function SupportPage() {
 
       <div
         ref={scrollRef}
-        className="pt-header-height px-gutter h-full overflow-y-auto"
+        className="pt-header-height px-gutter scrollbar-hide h-full overflow-y-auto"
       >
         <Section
           title="내 문의 & 신고"
