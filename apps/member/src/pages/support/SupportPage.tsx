@@ -1,6 +1,6 @@
 import { Button, Header, Section, Title } from "@clab/design-system";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { GoChevronLeft } from "react-icons/go";
 
@@ -27,17 +27,6 @@ export default function SupportPage() {
   const [showAllSupports, setShowAllSupports] = useState(
     returnState?.showAllSupports ?? false,
   );
-  const [shouldScroll, setShouldScroll] = useState(false);
-
-  const allSupportsRef = useCallback(
-    (node: HTMLElement | null) => {
-      if (node && shouldScroll) {
-        node.scrollIntoView({ behavior: "smooth", block: "start" });
-        setShouldScroll(false);
-      }
-    },
-    [shouldScroll],
-  );
 
   const {
     data: allData,
@@ -60,7 +49,6 @@ export default function SupportPage() {
 
   const handleShowAll = () => {
     setShowAllSupports(true);
-    setShouldScroll(true);
   };
 
   return (
@@ -143,7 +131,7 @@ export default function SupportPage() {
         </div>
 
         {showAllSupports && (
-          <Section ref={allSupportsRef} title="전체 문의" className="py-3xl">
+          <Section title="전체 문의" className="py-3xl">
             {allSupports.length > 0 ? (
               <>
                 <Section.List>
