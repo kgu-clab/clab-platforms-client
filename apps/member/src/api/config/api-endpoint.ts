@@ -54,7 +54,8 @@ export const END_POINT = {
   SUPPORT: {
     BASE: "supports",
     DETAIL: (supportId: number) => `supports/${supportId}`,
-    MY_SUPPORTS: "supports/my",
+    MY_SUPPORTS: "supports/my-supports",
     ANSWER: (supportId: number) => `supports/${supportId}/answer`,
+    FILE: "files/supports",
   },
 };
