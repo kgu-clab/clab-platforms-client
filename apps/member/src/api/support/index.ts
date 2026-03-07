@@ -1,12 +1,2 @@
-export * from "./api.model";
 export * from "./api.type";
 export * from "./api.query";
-export { getSupports } from "./getSupports";
-export { getSupportDetail } from "./getSupportDetail";
-export { getMySupports } from "./getMySupports";
-export { postSupport } from "./postSupport";
-export { patchSupport } from "./patchSupport";
-export { deleteSupport } from "./deleteSupport";
-export { postAnswer } from "./postAnswer";
-export { patchAnswer } from "./patchAnswer";
-export { deleteAnswer } from "./deleteAnswer";
