@@ -69,7 +69,7 @@ export default function AnswerForm({
         maxLength={500}
         showCounter
       />
-      <div className="gap-md flex">
+      <div className="gap-md mt-2 flex">
         <Button
           onClick={handleSubmit}
           disabled={
