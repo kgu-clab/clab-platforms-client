@@ -1,8 +1,8 @@
 import { cn } from "@clab/design-system";
+import { useState } from "react";
 import { IoPersonSharp } from "react-icons/io5";
 
 import { BASE_FILE_URL } from "@/api/config";
-import { useState } from "react";
 
 interface ProfileImageProps {
   imageUrl?: string;
