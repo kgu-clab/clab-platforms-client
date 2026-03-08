@@ -1,0 +1,96 @@
+/* 바텀시트 애니메이션 */
+.date-picker-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  transition: opacity 300ms ease;
+}
+
+.date-picker-overlay.entering {
+  opacity: 0;
+}
+
+.date-picker-overlay.entered {
+  opacity: 1;
+}
+
+.date-picker-overlay.exiting {
+  opacity: 0;
+}
+
+.date-picker-overlay.exited {
+  opacity: 0;
+}
+
+.date-picker-container {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 50;
+  display: flex;
+  max-height: 70vh;
+  flex-direction: column;
+  border-radius: 20px 20px 0 0;
+  background: white;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 300ms ease;
+}
+
+.date-picker-container.entering {
+  transform: translateY(100%);
+}
+
+.date-picker-container.entered {
+  transform: translateY(0);
+}
+
+.date-picker-container.exiting {
+  transform: translateY(100%);
+}
+
+.date-picker-container.exited {
+  transform: translateY(100%);
+}
+
+.date-picker-drag-handle {
+  width: 36px;
+  height: 4px;
+  margin: 12px auto 0;
+  border-radius: 2px;
+  background: var(--color-gray-3);
+}
+
+/* 캘린더 월/년 네비게이션 */
+.date-picker-calendar .react-calendar__navigation {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1em;
+  gap: 0.5em;
+}
+
+.date-picker-calendar .react-calendar__navigation button {
+  min-width: 44px;
+  padding: 0.5em;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-gray-5);
+  background: transparent;
+  border-radius: 8px;
+}
+
+.date-picker-calendar .react-calendar__navigation button:hover:enabled {
+  background: var(--color-gray-2);
+}
+
+.date-picker-calendar .react-calendar__navigation button:disabled {
+  opacity: 0.3;
+}
+
+.date-picker-calendar .react-calendar__navigation__label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-black);
+}

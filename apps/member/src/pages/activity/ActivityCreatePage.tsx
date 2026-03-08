@@ -4,6 +4,7 @@ import {
   StepProgressBar,
   Button,
 } from "@clab/design-system";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { GoChevronLeft } from "react-icons/go";
 import { useNavigate } from "react-router";
 
@@ -12,9 +13,65 @@ import { ActivityCreateProvider, useActivityCreate } from "@/model/activity";
 import ActivityCreateStep1 from "@/components/activity/ActivityCreateStep1";
 import ActivityCreateStep2 from "@/components/activity/ActivityCreateStep2";
 
+import { activityQueries } from "@/api/activity/api.query";
+import { ROUTE, TOAST_MESSAGES } from "@/constants";
+import { showSuccessToast } from "@/utils/toast";
+
 function ActivityCreatePageContent() {
   const navigate = useNavigate();
-  const { currentStep, handlePrev, handleNext } = useActivityCreate();
+  const queryClient = useQueryClient();
+  const {
+    currentStep,
+    handlePrev,
+    handleNext,
+    title,
+    category,
+    description,
+    curriculumList,
+    target,
+    startDate,
+    endDate,
+    techStack,
+    githubLink,
+  } = useActivityCreate();
+
+  const isStep1Valid =
+    title.trim() !== "" &&
+    description.trim() !== "" &&
+    curriculumList.length >= 1 &&
+    (curriculumList[0]?.content?.trim() ?? "") !== "";
+
+  const isStep2Valid =
+    target.trim() !== "" &&
+    startDate.trim() !== "" &&
+    endDate.trim() !== "" &&
+    techStack.trim() !== "";
+
+  const createMutation = useMutation({
+    ...activityQueries.postActivityCreateMutation,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: activityQueries.all });
+      showSuccessToast(TOAST_MESSAGES.ACTIVITY_CREATE_SUCCESS);
+      navigate(ROUTE.ACTIVITY);
+    },
+  });
+
+  const handleSubmit = () => {
+    createMutation.mutate({
+      category: category === "study" ? "STUDY" : "PROJECT",
+      subject: target,
+      name: title,
+      content: description,
+      imageUrl: "",
+      curriculum: curriculumList
+        .map(({ label, content }) => `${label}\n${content}`)
+        .join("\n\n"),
+      startDate,
+      endDate,
+      techStack,
+      githubUrl: githubLink,
+    });
+  };
 
   return (
     <>
@@ -43,16 +100,22 @@ function ActivityCreatePageContent() {
             </Button>
           )}
           {currentStep < 2 ? (
-            <Button size="large" color="active" onClick={handleNext}>
+            <Button
+              size="large"
+              color={currentStep === 1 && !isStep1Valid ? "disabled" : "active"}
+              onClick={handleNext}
+              disabled={currentStep === 1 && !isStep1Valid}
+            >
               다음
             </Button>
           ) : (
             <Button
               size="large"
-              color="active"
-              onClick={() => console.log("제출")}
+              color={!isStep2Valid ? "disabled" : "active"}
+              onClick={handleSubmit}
+              disabled={!isStep2Valid || createMutation.isPending}
             >
-              제출하기
+              {createMutation.isPending ? "제출 중..." : "제출하기"}
             </Button>
           )}
         </div>

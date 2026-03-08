@@ -1,10 +1,17 @@
 import { useState, type ReactNode } from "react";
 
 import { ActivityCreateContext } from "./ActivityCreateContext";
+import type { CurriculumItem } from "./ActivityCreateContext";
 
 interface ActivityCreateProviderProps {
   children: ReactNode;
 }
+
+const initialCurriculumList: CurriculumItem[] = [
+  { label: "1주차", content: "" },
+  { label: "2주차", content: "" },
+  { label: "3주차", content: "" },
+];
 
 export const ActivityCreateProvider = ({
   children,
@@ -14,11 +21,12 @@ export const ActivityCreateProvider = ({
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<"study" | "project">("study");
   const [description, setDescription] = useState("");
-  const [curriculumList, setCurriculumList] = useState([
-    "1주차",
-    "2주차",
-    "3주차",
-  ]);
+  const [curriculumList, setCurriculumList] = useState<CurriculumItem[]>(
+    initialCurriculumList,
+  );
+  const [editingCurriculumIndex, setEditingCurriculumIndex] = useState<
+    number | null
+  >(null);
 
   const [target, setTarget] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -26,13 +34,22 @@ export const ActivityCreateProvider = ({
   const [techStack, setTechStack] = useState("");
   const [githubLink, setGithubLink] = useState("");
 
+  const setCurriculumContent = (index: number, content: string) => {
+    setCurriculumList((prev) =>
+      prev.map((item, i) => (i === index ? { ...item, content } : item)),
+    );
+  };
+
   const handleAddCurriculum = () => {
     const nextWeek = curriculumList.length + 1;
-    setCurriculumList([...curriculumList, `${nextWeek}주차`]);
+    setCurriculumList([
+      ...curriculumList,
+      { label: `${nextWeek}주차`, content: "" },
+    ]);
   };
 
   const handleCurriculumClick = (index: number) => {
-    console.log("커리큘럼 클릭:", index);
+    setEditingCurriculumIndex(index);
   };
 
   const handleNext = () => {
@@ -58,6 +75,9 @@ export const ActivityCreateProvider = ({
     setDescription,
     curriculumList,
     setCurriculumList,
+    setCurriculumContent,
+    editingCurriculumIndex,
+    setEditingCurriculumIndex,
     target,
     setTarget,
     startDate,

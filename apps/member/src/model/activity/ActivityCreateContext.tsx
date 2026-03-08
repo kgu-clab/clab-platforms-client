@@ -1,5 +1,10 @@
 import { createContext } from "react";
 
+export interface CurriculumItem {
+  label: string;
+  content: string;
+}
+
 export interface ActivityCreateContextType {
   currentStep: number;
   setCurrentStep: (step: number) => void;
@@ -10,8 +15,11 @@ export interface ActivityCreateContextType {
   setCategory: (value: "study" | "project") => void;
   description: string;
   setDescription: (value: string) => void;
-  curriculumList: string[];
-  setCurriculumList: (value: string[]) => void;
+  curriculumList: CurriculumItem[];
+  setCurriculumList: (value: CurriculumItem[]) => void;
+  setCurriculumContent: (index: number, content: string) => void;
+  editingCurriculumIndex: number | null;
+  setEditingCurriculumIndex: (index: number | null) => void;
 
   target: string;
   setTarget: (value: string) => void;

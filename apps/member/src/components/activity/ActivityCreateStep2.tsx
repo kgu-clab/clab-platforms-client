@@ -1,6 +1,9 @@
 import { Input, Section, Button } from "@clab/design-system";
+import { useState } from "react";
 
 import { useActivityCreate } from "@/model/activity";
+
+import DatePickerBottomSheet from "./DatePickerBottomSheet";
 
 export default function ActivityCreateStep2() {
   const {
@@ -15,13 +18,7 @@ export default function ActivityCreateStep2() {
     githubLink,
     setGithubLink,
   } = useActivityCreate();
-  const handleStartDateClick = () => {
-    console.log("시작일 선택", setStartDate);
-  };
-
-  const handleEndDateClick = () => {
-    console.log("종료일 선택", setEndDate);
-  };
+  const [openPicker, setOpenPicker] = useState<"start" | "end" | null>(null);
 
   return (
     <>
@@ -58,7 +55,7 @@ export default function ActivityCreateStep2() {
           <Button
             size="small"
             color={startDate ? "outlineActive" : "outlineDisabled"}
-            onClick={handleStartDateClick}
+            onClick={() => setOpenPicker("start")}
             className="flex-1"
           >
             {startDate ? `시작일 | ${startDate}` : "시작일 지정하기"}
@@ -66,13 +63,28 @@ export default function ActivityCreateStep2() {
           <Button
             size="small"
             color={endDate ? "outlineActive" : "outlineDisabled"}
-            onClick={handleEndDateClick}
+            onClick={() => setOpenPicker("end")}
             className="flex-1"
           >
             {endDate ? `종료일 | ${endDate}` : "종료일 지정하기"}
           </Button>
         </div>
       </Section>
+
+      <DatePickerBottomSheet
+        isOpen={openPicker === "start"}
+        onClose={() => setOpenPicker(null)}
+        title="시작일 선택"
+        value={startDate}
+        onSelect={setStartDate}
+      />
+      <DatePickerBottomSheet
+        isOpen={openPicker === "end"}
+        onClose={() => setOpenPicker(null)}
+        title="종료일 선택"
+        value={endDate}
+        onSelect={setEndDate}
+      />
 
       <Section
         className="gap-xl"
