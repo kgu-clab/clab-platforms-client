@@ -4,6 +4,14 @@ export type ToastMessages = {
 };
 
 export const TOAST_MESSAGES = {
+  ACTIVITY_CREATE_SUCCESS: {
+    success: "활동이 생성되었습니다.",
+    error: "활동 생성에 실패했습니다.",
+  },
+  ACTIVITY_UPDATE_SUCCESS: {
+    success: "활동이 수정되었습니다.",
+    error: "활동 수정에 실패했습니다.",
+  },
   COMMENT_UPDATE: {
     success: "댓글이 수정되었습니다.",
     error: "댓글 수정에 실패했습니다.",

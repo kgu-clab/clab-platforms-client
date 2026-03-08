@@ -1,38 +1,75 @@
 import { useState, type ReactNode } from "react";
 
 import { ActivityCreateContext } from "./ActivityCreateContext";
+import type { CurriculumItem } from "./ActivityCreateContext";
+
+export interface ActivityCreateInitialValues {
+  title: string;
+  category: "study" | "project";
+  description: string;
+  curriculumList: CurriculumItem[];
+  target: string;
+  startDate: string;
+  endDate: string;
+  techStack: string;
+  githubLink: string;
+}
 
 interface ActivityCreateProviderProps {
   children: ReactNode;
+  initialValues?: ActivityCreateInitialValues;
 }
+
+const defaultCurriculumList: CurriculumItem[] = [
+  { label: "1주차", content: "" },
+  { label: "2주차", content: "" },
+  { label: "3주차", content: "" },
+];
 
 export const ActivityCreateProvider = ({
   children,
+  initialValues,
 }: ActivityCreateProviderProps) => {
   const [currentStep, setCurrentStep] = useState(1);
 
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState<"study" | "project">("study");
-  const [description, setDescription] = useState("");
-  const [curriculumList, setCurriculumList] = useState([
-    "1주차",
-    "2주차",
-    "3주차",
-  ]);
+  const [title, setTitle] = useState(initialValues?.title ?? "");
+  const [category, setCategory] = useState<"study" | "project">(
+    initialValues?.category ?? "study",
+  );
+  const [description, setDescription] = useState(
+    initialValues?.description ?? "",
+  );
+  const [curriculumList, setCurriculumList] = useState<CurriculumItem[]>(
+    initialValues?.curriculumList?.length
+      ? initialValues.curriculumList
+      : defaultCurriculumList,
+  );
+  const [editingCurriculumIndex, setEditingCurriculumIndex] = useState<
+    number | null
+  >(null);
 
-  const [target, setTarget] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [techStack, setTechStack] = useState("");
-  const [githubLink, setGithubLink] = useState("");
+  const [target, setTarget] = useState(initialValues?.target ?? "");
+  const [startDate, setStartDate] = useState(initialValues?.startDate ?? "");
+  const [endDate, setEndDate] = useState(initialValues?.endDate ?? "");
+  const [techStack, setTechStack] = useState(initialValues?.techStack ?? "");
+  const [githubLink, setGithubLink] = useState(initialValues?.githubLink ?? "");
+
+  const setCurriculumContent = (index: number, content: string) => {
+    setCurriculumList((prev) =>
+      prev.map((item, i) => (i === index ? { ...item, content } : item)),
+    );
+  };
 
   const handleAddCurriculum = () => {
     const nextWeek = curriculumList.length + 1;
-    setCurriculumList([...curriculumList, `${nextWeek}주차`]);
+    setCurriculumList([
+      ...curriculumList,
+      { label: `${nextWeek}주차`, content: "" },
+    ]);
   };
 
   const handleCurriculumClick = (index: number) => {
-    console.log("커리큘럼 클릭:", index);
+    setEditingCurriculumIndex(index);
   };
 
   const handleNext = () => {
@@ -58,6 +95,9 @@ export const ActivityCreateProvider = ({
     setDescription,
     curriculumList,
     setCurriculumList,
+    setCurriculumContent,
+    editingCurriculumIndex,
+    setEditingCurriculumIndex,
     target,
     setTarget,
     startDate,

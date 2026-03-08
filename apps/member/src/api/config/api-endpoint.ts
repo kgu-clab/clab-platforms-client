@@ -58,6 +58,11 @@ export const END_POINT = {
     LIST_BY_STATUS: "activity-group/status/list",
     DETAIL: (activityGroupId: number) =>
       `activity-group/member/${activityGroupId}`,
+    APPLY: "activity-group/member/apply",
+    MY_ACTIVITY_APPLY: "activity-group/member/applied",
+    CREATE: "activity-group/admin",
+    EDIT: (activityGroupId: number) =>
+      `activity-group/admin/${activityGroupId}`,
   },
   SUPPORT: {
     BASE: "supports",

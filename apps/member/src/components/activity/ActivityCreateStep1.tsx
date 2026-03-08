@@ -14,6 +14,9 @@ export default function ActivityCreateStep1() {
     description,
     setDescription,
     curriculumList,
+    setCurriculumContent,
+    editingCurriculumIndex,
+    setEditingCurriculumIndex,
     handleAddCurriculum,
     handleCurriculumClick,
   } = useActivityCreate();
@@ -97,11 +100,15 @@ export default function ActivityCreateStep1() {
         }
       >
         <div className="px-gutter gap-lg flex w-full flex-col items-end">
-          {curriculumList.map((curriculum, index) => (
+          {curriculumList.map((item, index) => (
             <ActivityCurriculumItem
               key={index}
-              label={curriculum}
-              onClick={() => handleCurriculumClick(index)}
+              label={item.label}
+              content={item.content}
+              isEditing={editingCurriculumIndex === index}
+              onContentChange={(value) => setCurriculumContent(index, value)}
+              onStartEdit={() => handleCurriculumClick(index)}
+              onEndEdit={() => setEditingCurriculumIndex(null)}
             />
           ))}
           <button

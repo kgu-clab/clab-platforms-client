@@ -102,3 +102,41 @@ export type GetActivitiyDetailResponse = BaseApiResponse<{
   owner: boolean;
   isOwner: boolean;
 }>;
+
+export type PostActivityApplyRequest = {
+  activityGroupId: number;
+  applyReason: string;
+};
+
+export type GetActivityAppliedResponse = BasePaginationResponse<{
+  id: number;
+  name: string;
+  content: string;
+  category: ActivityCategory;
+  subject: string;
+  imageUrl: string;
+  leaders: [
+    {
+      id: string;
+      name: string;
+    },
+  ];
+  participantCount: number;
+  weeklyActivityCount: number;
+  createdAt: string;
+}>;
+
+export type PostActivityCreateRequest = {
+  category: ActivityCategory;
+  subject: string;
+  name: string;
+  content: string;
+  imageUrl: string;
+  curriculum: string;
+  startDate: string;
+  endDate: string;
+  techStack: string;
+  githubUrl: string;
+};
+
+export type PatchActivityUpdateRequest = PostActivityCreateRequest;

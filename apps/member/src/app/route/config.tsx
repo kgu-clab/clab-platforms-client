@@ -14,6 +14,7 @@ import {
   LibraryCreatePage,
   CommunityWritePage,
   ActivityCreatePage,
+  ActivityEditPage,
   MyPage,
   MyPostsPage,
   MyCommentsPage,
@@ -45,6 +46,10 @@ const activityRoutes = [
   {
     path: `${ROUTE.ACTIVITY}/:id`,
     element: <StudyDetailPage />,
+  },
+  {
+    path: `${ROUTE.ACTIVITY}/:id/edit`,
+    element: <ActivityEditPage />,
   },
   {
     path: ROUTE.ACTIVITY_CREATE,
