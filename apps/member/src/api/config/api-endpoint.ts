@@ -53,6 +53,12 @@ export const END_POINT = {
       PROFILE: "files/profiles",
     },
   },
+  ACTIVITY: {
+    LIST_BY_CATEGORY: "activity-group/member/list",
+    LIST_BY_STATUS: "activity-group/status/list",
+    DETAIL: (activityGroupId: number) =>
+      `activity-group/member/${activityGroupId}`,
+  },
   SUPPORT: {
     BASE: "supports",
     DETAIL: (supportId: number) => `supports/${supportId}`,
