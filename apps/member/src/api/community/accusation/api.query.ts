@@ -3,18 +3,19 @@ import {
   mutationOptions,
   queryOptions,
 } from "@tanstack/react-query";
-import { showErrorToast } from "@/utils/toast";
 
 import { ACCUSATIONS_PAGE_SIZE } from "@/api/config";
 import type { PaginationParams } from "@/api/config";
 import type { BasePaginationResponse } from "@/api/config/api-base-types";
+import { TOAST_MESSAGES } from "@/constants";
+import { showErrorToast } from "@/utils/toast";
+
 import type {
   AccuseMyResponseDto,
   AccuseRequestDto,
   GetAccusationsParams,
   PatchAccusationStatusParams,
 } from "./api.model";
-import { TOAST_MESSAGES } from "@/constants";
 import { getAccusations } from "./getAccusations";
 import { getMyAccusations } from "./getMyAccusations";
 import { patchAccusationStatus } from "./patchAccusationStatus";

@@ -7,7 +7,6 @@ import { useNavigate } from "react-router";
 
 import type { BoardPost, JobPosting, NewsPost } from "@/api/community";
 import { jobPostingQueries } from "@/api/community";
-
 import { ROUTE } from "@/constants";
 import { formatRelativeTime } from "@/utils/date";
 import {
@@ -15,6 +14,7 @@ import {
   getEmploymentTypeLabel,
   getSourceFromUrl,
 } from "@/utils/string";
+
 import CommunityCategoryChip from "./CommunityCategoryChip";
 
 interface BoardPostItemProps {

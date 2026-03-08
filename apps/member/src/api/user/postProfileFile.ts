@@ -1,7 +1,6 @@
-import type { BaseApiResponse } from "../config/api-base-types";
 import { authApi, END_POINT } from "../config";
-
 import type { ProfileFileResponse } from "./api.model";
+import type { BaseApiResponse } from "../config/api-base-types";
 
 export function postProfileFile(file: File, storagePeriod = 1460) {
   const formData = new FormData();

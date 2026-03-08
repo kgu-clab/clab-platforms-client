@@ -1,16 +1,18 @@
 import { Button, Header, Section, Title } from "@clab/design-system";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router";
 import { GoChevronLeft } from "react-icons/go";
+import { useLocation, useNavigate } from "react-router";
+
+import { useInfiniteScroll } from "@/model/common/useInfiniteScroll";
 
 import {
   FAQAccordion,
   MySupportsCard,
   SupportItem,
 } from "@/components/support";
+
 import { supportQueries } from "@/api/support";
-import { useInfiniteScroll } from "@/model/common/useInfiniteScroll";
 import { ROUTE } from "@/constants";
 import { FAQ_DATA, type FaqCategory } from "@/constants/faq";
 

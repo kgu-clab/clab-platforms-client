@@ -4,6 +4,8 @@ import {
   queryOptions,
 } from "@tanstack/react-query";
 
+import { BOOKS_PAGE_SIZE } from "@/api/config";
+
 import type {
   getBooksRequest,
   getBooksResponse,
@@ -11,7 +13,6 @@ import type {
   getBooksLoanConditionsRequest,
   postBookLoanRequest,
 } from "./api.model";
-import { BOOKS_PAGE_SIZE } from "@/api/config";
 import { getBooks } from "./getBooks";
 import { getBooksDetail } from "./getBooksDetail";
 import { getBooksLoanConditions } from "./getBooksLoanConditions";

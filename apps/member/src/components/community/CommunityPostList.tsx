@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router";
 
-import type { BoardCategory } from "@/api/community";
-import { boardQueries, newsQueries, jobPostingQueries } from "@/api/community";
-
 import {
   CommunityPostItem,
   NewsPostItem,
   JobPostingItem,
 } from "@/components/community";
+
+import type { BoardCategory } from "@/api/community";
+import { boardQueries, newsQueries, jobPostingQueries } from "@/api/community";
 
 function ListMessage({ message }: { message: string }) {
   return (

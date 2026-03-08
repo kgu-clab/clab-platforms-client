@@ -1,4 +1,5 @@
 import { toast as sonnerToast } from "sonner";
+
 import type { ToastMessages } from "@/constants";
 
 export function showSuccessToast(message: ToastMessages): void {

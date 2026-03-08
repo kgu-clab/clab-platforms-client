@@ -2,8 +2,8 @@ import { Button, Dropdown } from "@clab/design-system";
 import { IoChevronDown } from "react-icons/io5";
 import { useSearchParams } from "react-router";
 
-import { useHashtagFilterOptions } from "@/hooks/useHashtagFilterOptions";
 import { CATEGORY } from "@/api/community";
+import { useHashtagFilterOptions } from "@/hooks/useHashtagFilterOptions";
 
 interface CommunityFilterProps {
   tab: string;

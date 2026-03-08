@@ -1,12 +1,10 @@
 import { Field, Input } from "@clab/design-system";
-import { useState } from "react";
-
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
-import { userQueries } from "@/api/user/api.query";
+import { useState } from "react";
 
 import { useAuthStore } from "@/model/common/store-auth";
 
+import { userQueries } from "@/api/user/api.query";
 import { TOAST_MESSAGES } from "@/constants";
 import { showSuccessToast } from "@/utils/toast";
 
@@ -86,7 +84,9 @@ export default function MyInfoCard({
       queryClient.invalidateQueries({ queryKey: userQueries.infoKey() });
       setIsEditing(false);
       showSuccessToast(TOAST_MESSAGES.PROFILE_UPDATE);
-    } catch {}
+    } catch {
+      // 에러 시 토스트 등은 mutation.onError에서 처리
+    }
   };
 
   return (

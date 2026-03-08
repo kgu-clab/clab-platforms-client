@@ -5,16 +5,16 @@ import { IoChatbubbleOutline, IoHeart, IoHeartOutline } from "react-icons/io5";
 import { useNavigate } from "react-router";
 
 import { ProfileImage } from "@/components/common";
+
 import type { Comment } from "@/api/community";
 import {
   accusationQueries,
   commentKeys,
   commentQueries,
 } from "@/api/community";
-
+import { TOAST_MESSAGES } from "@/constants";
 import { formatRelativeTime } from "@/utils/date";
 import { showSuccessToast } from "@/utils/toast";
-import { TOAST_MESSAGES } from "@/constants";
 
 interface PostDetailCommentItemProps {
   commentData: Comment;

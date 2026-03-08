@@ -1,18 +1,16 @@
-import { useState } from "react";
-
+import { Button, Chip, Modal, Textarea } from "@clab/design-system";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { IoHeart, IoHeartOutline, IoWarningOutline } from "react-icons/io5";
 import { useNavigate } from "react-router";
+
+import { ProfileImage } from "@/components/common";
+import { FileDownloadList, ImageInlineList } from "@/components/common";
 
 import type { BoardDetail, BoardFileInfo, NewsDetail } from "@/api/community";
 import { accusationQueries, boardKeys, boardQueries } from "@/api/community";
-import { ProfileImage } from "@/components/common";
-import { formatRelativeTime } from "@/utils/date";
-import { IoHeart, IoHeartOutline, IoWarningOutline } from "react-icons/io5";
-
-import { Button, Chip, Modal, Textarea } from "@clab/design-system";
-
-import { FileDownloadList, ImageInlineList } from "@/components/common";
 import { ROUTE, TOAST_MESSAGES } from "@/constants";
+import { formatRelativeTime } from "@/utils/date";
 import { showSuccessToast } from "@/utils/toast";
 
 interface PostDetailLayoutProps {

@@ -1,5 +1,6 @@
 import { authApi, END_POINT } from "@/api/config";
 import type { ApiResponse } from "@/api/config";
+
 import type { PatchSupportRequest } from "./api.model";
 
 export async function patchSupport(

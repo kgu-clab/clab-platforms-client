@@ -1,15 +1,10 @@
 import { Header, Scrollable, Section, Title } from "@clab/design-system";
+import { useQuery } from "@tanstack/react-query";
 import { BiCommentDetail, BiCommentError } from "react-icons/bi";
 import { IoCubeOutline, IoNotificationsOutline } from "react-icons/io5";
 import { RiBook2Line, RiFilePaper2Line, RiLogoutBoxLine } from "react-icons/ri";
 import { TbXboxX } from "react-icons/tb";
 import { useNavigate } from "react-router";
-
-import { useQuery } from "@tanstack/react-query";
-
-import { boardQueries } from "@/api/community/board/api.query";
-import { commentQueries } from "@/api/community/comment/api.query";
-import { userQueries } from "@/api/user/api.query";
 
 import { useIsLoggedIn } from "@/model/auth";
 
@@ -21,6 +16,9 @@ import {
   MyStatsCard,
 } from "@/components/my";
 
+import { boardQueries } from "@/api/community/board/api.query";
+import { commentQueries } from "@/api/community/comment/api.query";
+import { userQueries } from "@/api/user/api.query";
 import { ROUTE } from "@/constants";
 import { MOCK_ACTIVITIES } from "@/mock/activity";
 import { removeTokens } from "@/utils/auth";

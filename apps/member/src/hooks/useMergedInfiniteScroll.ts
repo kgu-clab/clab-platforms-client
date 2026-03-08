@@ -37,8 +37,6 @@ export default function useMergedInfiniteScroll({
   sortKey = "createdAt",
   sortOrder = "desc",
 }: Options) {
-  const dataFingerprint = queries.map((q) => q.dataUpdatedAt).join(",");
-
   const mergedItems = useMemo(() => {
     const allItems = queries.flatMap(
       (q) => q.data?.pages.flatMap((page) => page.data.items) ?? [],
@@ -50,7 +48,7 @@ export default function useMergedInfiniteScroll({
         ? bVal.localeCompare(aVal)
         : aVal.localeCompare(bVal);
     });
-  }, [dataFingerprint, sortKey, sortOrder]);
+  }, [queries, sortKey, sortOrder]);
 
   const fetchNextPage = useCallback(() => {
     for (const q of queries) {
@@ -58,7 +56,7 @@ export default function useMergedInfiniteScroll({
         q.fetchNextPage();
       }
     }
-  }, [dataFingerprint]);
+  }, [queries]);
 
   return {
     items: mergedItems,

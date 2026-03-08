@@ -1,4 +1,7 @@
 import { mutationOptions, queryOptions } from "@tanstack/react-query";
+
+import type { PagedResponse, PaginationParams } from "@/api/config";
+import { TOAST_MESSAGES } from "@/constants";
 import { showErrorToast } from "@/utils/toast";
 
 import type {
@@ -12,8 +15,6 @@ import type {
   GetBoardsByCategoryParams,
   GetBoardsByHashtagParams,
 } from "./api.model";
-import type { PagedResponse, PaginationParams } from "@/api/config";
-import { TOAST_MESSAGES } from "@/constants";
 import { deleteBoard } from "./deleteBoard";
 import { getBoard } from "./getBoard";
 import { getBoardsByCategory } from "./getBoardsByCategory";

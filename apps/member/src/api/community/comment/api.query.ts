@@ -1,14 +1,15 @@
 import { mutationOptions, queryOptions } from "@tanstack/react-query";
-import { showErrorToast } from "@/utils/toast";
 
 import type { PagedResponse, PaginationParams } from "@/api/config";
+import { TOAST_MESSAGES } from "@/constants";
+import { showErrorToast } from "@/utils/toast";
+
 import type {
   CommentResponseDto,
   GetCommentsParams,
   PatchCommentParams,
   PostCommentParams,
 } from "./api.model";
-import { TOAST_MESSAGES } from "@/constants";
 import { deleteComment } from "./deleteComment";
 import { getComments } from "./getComments";
 import { getMyComments } from "./getMyComments";

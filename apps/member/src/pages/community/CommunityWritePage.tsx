@@ -12,14 +12,13 @@ import { GoChevronLeft } from "react-icons/go";
 import { IoClose } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router";
 
-import type { BoardCategory, BoardFileInfo } from "@/api/community";
-import { boardKeys, boardQueries } from "@/api/community";
-
 import {
   CommunityWriteSelector,
   CommunityWriteBottomBar,
 } from "@/components/community";
 
+import type { BoardCategory, BoardFileInfo } from "@/api/community";
+import { boardKeys, boardQueries } from "@/api/community";
 import { ROUTE, TOAST_MESSAGES } from "@/constants";
 import { showSuccessToast } from "@/utils/toast";
 
