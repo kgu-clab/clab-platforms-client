@@ -76,7 +76,11 @@ export default function MyPage() {
             label="도서 대여 내역"
             icon={RiBook2Line}
           />
-          <MyMenuItem to="#" label="문의하기" icon={BiCommentError} />
+          <MyMenuItem
+            to={ROUTE.SUPPORT}
+            label="문의하기"
+            icon={BiCommentError}
+          />
         </Section>
 
         <Section title="설정">

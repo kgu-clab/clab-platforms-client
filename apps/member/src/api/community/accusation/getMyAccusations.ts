@@ -1,14 +1,11 @@
-import type {
-  ApiResponse,
-  PagedResponse,
-  PaginationParams,
-} from "@/api/config";
+import type { PaginationParams } from "@/api/config";
+import type { BasePaginationResponse } from "@/api/config/api-base-types";
 import { authApi, END_POINT } from "@/api/config";
 
 import type { AccuseMyResponseDto } from "./api.model";
 
 export function getMyAccusations(params?: PaginationParams) {
-  return authApi.get<ApiResponse<PagedResponse<AccuseMyResponseDto>>>(
+  return authApi.get<BasePaginationResponse<AccuseMyResponseDto[]>>(
     END_POINT.COMMUNITY.ACCUSATION.MY,
     {
       searchParams: params as unknown as Record<

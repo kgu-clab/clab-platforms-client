@@ -19,6 +19,9 @@ import {
   MyCommentsPage,
   MyLibraryPage,
   MyActivityPage,
+  SupportDetailPage,
+  SupportPage,
+  SupportWritePage,
   LoginPage,
 } from "@/pages";
 
@@ -94,6 +97,21 @@ const myRoutes = [
   },
 ];
 
+const supportRoutes = [
+  {
+    path: ROUTE.SUPPORT,
+    element: <SupportPage />,
+  },
+  {
+    path: `${ROUTE.SUPPORT}/:id`,
+    element: <SupportDetailPage />,
+  },
+  {
+    path: ROUTE.SUPPORT_WRITE,
+    element: <SupportWritePage />,
+  },
+];
+
 const protectedRoutes = [
   {
     element: <AuthProvider protect />,
@@ -103,6 +121,7 @@ const protectedRoutes = [
       ...communityRoutes,
       ...libraryRoutes,
       ...myRoutes,
+      ...supportRoutes,
     ],
   },
 ];

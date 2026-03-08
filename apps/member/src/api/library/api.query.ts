@@ -11,13 +11,12 @@ import type {
   getBooksLoanConditionsRequest,
   postBookLoanRequest,
 } from "./api.model";
+import { BOOKS_PAGE_SIZE } from "@/api/config";
 import { getBooks } from "./getBooks";
 import { getBooksDetail } from "./getBooksDetail";
 import { getBooksLoanConditions } from "./getBooksLoanConditions";
 import { postBookLoan } from "./postBookLoan";
-
 const libraryQueryKey = ["library"] as const;
-const BOOKS_PAGE_SIZE = 20;
 
 export const libraryQueries = {
   all: libraryQueryKey,

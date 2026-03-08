@@ -6,19 +6,13 @@ import { useNavigate } from "react-router";
 import type { BoardDetail, BoardFileInfo, NewsDetail } from "@/api/community";
 import { accusationQueries, boardKeys, boardQueries } from "@/api/community";
 import { formatRelativeTime } from "@/utils/date";
-import {
-  IoDownloadOutline,
-  IoHeart,
-  IoHeartOutline,
-  IoWarningOutline,
-} from "react-icons/io5";
+import { IoHeart, IoHeartOutline, IoWarningOutline } from "react-icons/io5";
 
 import { Button, Chip, Modal, Textarea } from "@clab/design-system";
 
+import { FileDownloadList, ImageInlineList } from "@/components/common";
 import { ROUTE, TOAST_MESSAGES } from "@/constants";
 import { showSuccessToast } from "@/utils/toast";
-
-const IMAGE_EXTENSIONS = /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i;
 
 interface PostDetailLayoutProps {
   title: string;
@@ -35,10 +29,6 @@ function PostDetailLayout({
   meta,
   footer,
 }: PostDetailLayoutProps) {
-  const imageFiles =
-    files?.filter((f) => IMAGE_EXTENSIONS.test(f.originalFileName)) ?? [];
-  const allFiles = files ?? [];
-
   return (
     <div className="gap-lg px-gutter flex flex-col">
       {meta}
@@ -49,41 +39,8 @@ function PostDetailLayout({
         {content}
       </p>
 
-      {imageFiles.length > 0 && (
-        <div className="gap-md flex flex-col">
-          {imageFiles.map((file) => (
-            <img
-              key={file.fileUrl}
-              src={file.fileUrl}
-              alt={file.originalFileName}
-              className="max-h-75 w-full rounded-lg object-contain"
-            />
-          ))}
-        </div>
-      )}
-
-      {allFiles.length > 0 && (
-        <div className="gap-sm flex flex-col">
-          <p className="text-13-medium text-gray-4 mb-2">
-            첨부파일 ({allFiles.length})
-          </p>
-          {allFiles.map((file) => (
-            <a
-              key={file.fileUrl}
-              href={file.fileUrl}
-              download={file.originalFileName}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-gray-1 px-lg py-md gap-md flex items-center rounded-md"
-            >
-              <IoDownloadOutline className="text-gray-4 size-4 shrink-0" />
-              <span className="text-13-regular truncate text-black">
-                {file.originalFileName}
-              </span>
-            </a>
-          ))}
-        </div>
-      )}
+      {files && <ImageInlineList files={files} />}
+      {files && <FileDownloadList files={files} />}
 
       {footer}
     </div>
