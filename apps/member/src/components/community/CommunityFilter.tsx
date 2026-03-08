@@ -27,7 +27,8 @@ export default function CommunityFilter({ tab }: CommunityFilterProps) {
         {tab === CATEGORY.INFORMATION && <InformationFilterOptions />}
         {tab === CATEGORY.QUESTION && <QuestionFilterOptions />}
       </div>
-      {tab !== CATEGORY.INFORMATION && (
+      {/* 인기순 정렬 오류로 렌더 X */}
+      {tab !== CATEGORY.INFORMATION && false && (
         <Button
           color="text"
           size="small"
