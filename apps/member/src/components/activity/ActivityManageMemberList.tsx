@@ -2,21 +2,13 @@ import { Button, Chip, Dropdown, Section } from "@clab/design-system";
 import { IoChevronDown } from "react-icons/io5";
 
 import { ProfileImage } from "@/components/common";
+import { getRoleLabel, getRoleOptions } from "@/utils/role";
 
 import type { ActivityGroupMember } from "@/api/activity/api.type";
-
-const ROLE_OPTIONS: { value: string; label: string }[] = [
-  { value: "LEADER", label: "리더" },
-  { value: "MEMBER", label: "멤버" },
-];
 
 function formatGeneration(memberId: string): string {
   const gen = memberId.slice(2, 4);
   return gen ? `(${gen})` : "";
-}
-
-function getRoleLabel(role: string): string {
-  return ROLE_OPTIONS.find((r) => r.value === role)?.label ?? (role || "멤버");
 }
 
 interface ActivityManageMemberListProps {
@@ -80,7 +72,7 @@ export default function ActivityManageMemberList({
                   }
                   align="end"
                 >
-                  {ROLE_OPTIONS.map((opt) => (
+                  {getRoleOptions().map((opt) => (
                     <Dropdown.Item
                       key={opt.value}
                       onSelect={() => onRoleChange(member, opt.value)}

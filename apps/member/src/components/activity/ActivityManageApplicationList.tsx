@@ -1,5 +1,7 @@
 import { Button, Field, Section } from "@clab/design-system";
 
+import { getRoleLabel } from "@/utils/role";
+
 type ApplicationItem = {
   memberId: string;
   memberName: string;
@@ -14,11 +16,6 @@ const STATUS_LABELS: Record<string, string> = {
   REJECTED: "거절",
 };
 
-const ROLE_LABELS: Record<string, string> = {
-  LEADER: "리더",
-  MEMBER: "멤버",
-};
-
 function formatGeneration(memberId: string): string {
   const gen = memberId.slice(2, 4);
   return gen ? `(${gen})` : "";
@@ -26,10 +23,6 @@ function formatGeneration(memberId: string): string {
 
 function getStatusLabel(status: string): string {
   return STATUS_LABELS[status] ?? status;
-}
-
-function getRoleLabel(role: string): string {
-  return ROLE_LABELS[role] ?? role;
 }
 
 interface ActivityManageApplicationListProps {
