@@ -63,6 +63,11 @@ export const END_POINT = {
     CREATE: "activity-group/admin",
     EDIT: (activityGroupId: number) =>
       `activity-group/admin/${activityGroupId}`,
+    APPLICATIONS: "activity-group/admin/members",
+    MEMBER_ROLE: "activity-group/admin/position",
+    MEMBER_STATUS: "activity-group/admin/accept",
+    CHANGE_STATUS: (activityGroupId: number) =>
+      `activity-group/admin/manage/${activityGroupId}`,
   },
   SUPPORT: {
     BASE: "supports",

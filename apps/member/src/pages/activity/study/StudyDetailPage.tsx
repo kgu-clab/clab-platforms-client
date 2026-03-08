@@ -24,10 +24,10 @@ import { formatTextToNodes } from "@/utils/formatter";
 
 const STATUS_MAP: Record<
   ActivityStatus,
-  { label: string; color: "green" | "yellow" | "red" }
+  { label: string; color: "disabled" | "green" | "red" }
 > = {
-  WAITING: { label: "모집중", color: "green" },
-  PROGRESSING: { label: "진행중", color: "yellow" },
+  WAITING: { label: "모집대기", color: "disabled" },
+  PROGRESSING: { label: "모집중", color: "green" },
   END: { label: "종료", color: "red" },
 };
 
@@ -254,7 +254,13 @@ export default function StudyDetailPage() {
         </Section>
 
         <footer className="z-999 pb-gutter h-bottom-navbar-height px-gutter border-gray-2 fixed bottom-0 left-0 right-0 box-border flex items-center justify-center border-t bg-white">
-          {hasApplied ? (
+          {detail.isOwner ? (
+            <Button
+              onClick={() => navigate(ROUTE.ACTIVITY_MANAGE(activityGroupId))}
+            >
+              활동 관리
+            </Button>
+          ) : hasApplied ? (
             <Button disabled color="disabled">
               신청완료
             </Button>

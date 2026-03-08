@@ -3,6 +3,7 @@ import { Chip } from "@clab/design-system";
 import { ProfileImage } from "@/components/common";
 
 import type { ActivityGroupMember } from "@/api/activity/api.type";
+import { getRoleLabel } from "@/utils/role";
 
 function formatGeneration(memberId: string): string {
   const gen = memberId.slice(2, 4);
@@ -30,7 +31,9 @@ export default function StudyMemberGrid({
               className="gap-sm flex shrink-0 flex-col items-center justify-center"
             >
               <ProfileImage size="size-[50px]" />
-              <Chip color="yellow">{member.role || "멤버"}</Chip>
+              <Chip color={member.role === "LEADER" ? "yellow" : "primary"}>
+                {getRoleLabel(member.role)}
+              </Chip>
               <p className="text-13-regular">
                 {member.memberName}
                 {formatGeneration(member.memberId)}

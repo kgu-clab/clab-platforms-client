@@ -1,23 +1,37 @@
-import { mutationOptions, queryOptions } from "@tanstack/react-query";
+import {
+  infiniteQueryOptions,
+  mutationOptions,
+  queryOptions,
+} from "@tanstack/react-query";
+
+import { DEFAULT_PAGE_SIZE } from "@/api/config";
 
 import type {
   ActivityCategory,
+  ActivityPosition,
   ActivityStatus,
   GetActivitiyByCategoryRequest,
   GetActivitiyByStatusRequest,
   GetActivitiyDetailRequest,
+  GetActivityApplicationsRequest,
+  PatchActivityChangeStatusRequest,
+  PatchActivityMemberStatusRequest,
+  PatchActivityUpdateRequest,
   PostActivityApplyRequest,
   PostActivityCreateRequest,
-  PatchActivityUpdateRequest,
 } from "./api.model";
 export type ActivityListFilter =
   | { type: "category"; category: ActivityCategory }
   | { type: "status"; status: ActivityStatus };
 import { deleteActivity } from "./deleteActivity";
+import { getActivityApplications } from "./getActivityApplications";
 import { getActivityApplied } from "./getActivityApplied";
 import { getActivityByCategory } from "./getActivityByCategory";
 import { getActivityByStatus } from "./getActivityByStatus";
 import { getActivityDetail } from "./getActivityDetail";
+import { patchActivityMemberRole } from "./patchActivityMemberRole";
+import { patchActivityMemberStatus } from "./patchActivityMemberStatus";
+import { patchActivityStatus } from "./patchActivityStatus";
 import { patchActivityUpdate } from "./patchActivityUpdate";
 import { postActivityApply } from "./postActivityApply";
 import { postActivityCreate } from "./postActivityCreate";
@@ -33,6 +47,8 @@ export const activityQueries = {
   detailKey: (request: GetActivitiyDetailRequest) =>
     [...activityQueryKey, "detail", request.activityGroupId] as const,
   appliedKey: () => [...activityQueryKey, "applied"] as const,
+  applicationsKey: (request: GetActivityApplicationsRequest) =>
+    [...activityQueryKey, "applications", request.activityGroupId] as const,
 
   getActivityByCategoryQuery: (request: GetActivitiyByCategoryRequest) =>
     queryOptions({
@@ -80,6 +96,40 @@ export const activityQueries = {
       staleTime: Number.POSITIVE_INFINITY, // invalidate 시에만 재요청
     }),
 
+  getActivityApplicationsQuery: (request: GetActivityApplicationsRequest) =>
+    queryOptions({
+      queryKey: activityQueries.applicationsKey(request),
+      queryFn: async () => {
+        const res = await getActivityApplications({
+          ...request,
+          page: request.page ?? 0,
+          size: request.size ?? DEFAULT_PAGE_SIZE,
+        });
+        if (!res.ok) throw new Error("지원서 목록 조회에 실패했습니다.");
+        return res.data.data?.items ?? [];
+      },
+      staleTime: 60 * 1000,
+    }),
+
+  getActivityApplicationsInfiniteQuery: (
+    request: Omit<GetActivityApplicationsRequest, "page" | "size">,
+  ) =>
+    infiniteQueryOptions({
+      queryKey: activityQueries.applicationsKey(request),
+      queryFn: async ({ pageParam }) => {
+        const res = await getActivityApplications({
+          ...request,
+          page: pageParam as number,
+          size: DEFAULT_PAGE_SIZE,
+        });
+        if (!res.ok) throw new Error("지원서 목록 조회에 실패했습니다.");
+        return res.data;
+      },
+      initialPageParam: 0,
+      getNextPageParam: (lastPage) =>
+        lastPage?.data?.hasNext ? lastPage.data.currentPage + 1 : undefined,
+    }),
+
   postActivityApplyMutation: mutationOptions({
     mutationFn: async (request: PostActivityApplyRequest) => {
       const res = await postActivityApply(request);
@@ -115,6 +165,51 @@ export const activityQueries = {
       const res = await deleteActivity(activityGroupId);
       if (!res.ok)
         throw new Error(res.error.message ?? "활동 삭제에 실패했습니다.");
+      return res.data;
+    },
+  }),
+
+  patchActivityMemberRoleMutation: mutationOptions({
+    mutationFn: async ({
+      activityGroupId,
+      memberId,
+      position,
+    }: {
+      activityGroupId: number;
+      memberId: string;
+      position: ActivityPosition;
+    }) => {
+      const res = await patchActivityMemberRole(
+        activityGroupId,
+        memberId,
+        position,
+      );
+      if (!res.ok)
+        throw new Error(res.error.message ?? "직책 변경에 실패했습니다.");
+      return res.data;
+    },
+  }),
+
+  patchActivityStatusMutation: mutationOptions({
+    mutationFn: async ({
+      activityGroupId,
+      activityGroupStatus,
+    }: PatchActivityChangeStatusRequest) => {
+      const res = await patchActivityStatus(
+        activityGroupId,
+        activityGroupStatus,
+      );
+      if (!res.ok)
+        throw new Error(res.error.message ?? "활동 상태 변경에 실패했습니다.");
+      return res.data;
+    },
+  }),
+
+  patchActivityMemberStatusMutation: mutationOptions({
+    mutationFn: async (request: PatchActivityMemberStatusRequest) => {
+      const res = await patchActivityMemberStatus(request);
+      if (!res.ok)
+        throw new Error(res.error.message ?? "멤버 상태 변경에 실패했습니다.");
       return res.data;
     },
   }),

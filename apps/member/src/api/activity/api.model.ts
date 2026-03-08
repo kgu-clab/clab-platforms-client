@@ -5,6 +5,8 @@ import type {
 
 export type ActivityCategory = "STUDY" | "PROJECT";
 export type ActivityStatus = "WAITING" | "PROGRESSING" | "END";
+export type ActivityMemberStatus = "WAITING" | "ACCEPTED" | "REJECTED";
+export type ActivityPosition = "LEADER" | "MEMBER";
 
 export type GetActivitiyByCategoryRequest = {
   category: ActivityCategory;
@@ -139,4 +141,39 @@ export type PostActivityCreateRequest = {
   githubUrl: string;
 };
 
+export type PostActivityCreateResponse = BaseApiResponse<number>;
+
 export type PatchActivityUpdateRequest = PostActivityCreateRequest;
+
+export type GetActivityApplicationsRequest = {
+  activityGroupId: number;
+  page?: number;
+  size?: number;
+};
+
+export type GetActivityApplicationsResponse = BasePaginationResponse<
+  {
+    memberId: string;
+    memberName: string;
+    role: string;
+    status: string;
+    applyReason: string;
+  }[]
+>;
+
+export type PatchActivityMemberRoleRequest = {
+  activityGroupId: number;
+  memberId: string;
+  position: ActivityPosition;
+};
+
+export type PatchActivityMemberStatusRequest = {
+  activityGroupId: number;
+  memberId: string;
+  status: ActivityMemberStatus;
+};
+
+export type PatchActivityChangeStatusRequest = {
+  activityGroupId: number;
+  activityGroupStatus: ActivityStatus;
+};

@@ -54,9 +54,20 @@ export function ActivityCreatePageContent({
     endDate.trim() !== "" &&
     techStack.trim() !== "";
 
+  const statusMutation = useMutation({
+    ...activityQueries.patchActivityStatusMutation,
+  });
+
   const createMutation = useMutation({
     ...activityQueries.postActivityCreateMutation,
-    onSuccess: () => {
+    onSuccess: async (data) => {
+      const activityGroupId = data?.data;
+      if (activityGroupId != null) {
+        await statusMutation.mutateAsync({
+          activityGroupId,
+          activityGroupStatus: "PROGRESSING",
+        });
+      }
       queryClient.invalidateQueries({ queryKey: activityQueries.all });
       showSuccessToast(TOAST_MESSAGES.ACTIVITY_CREATE_SUCCESS);
       navigate(ROUTE.ACTIVITY_STUDY);
