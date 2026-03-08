@@ -1,4 +1,5 @@
 export { default as ActivityCreatePage } from "./activity/ActivityCreatePage";
+export { default as ActivityEditPage } from "./activity/ActivityEditPage";
 export { default as ActivityHomePage } from "./activity/ActivityHomePage";
 export { default as ActivityStudyPage } from "./activity/ActivityStudyPage";
 export { default as StudyDetailPage } from "./activity/study/StudyDetailPage";

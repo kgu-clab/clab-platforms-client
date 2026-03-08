@@ -13,11 +13,18 @@ import { ActivityCreateProvider, useActivityCreate } from "@/model/activity";
 import ActivityCreateStep1 from "@/components/activity/ActivityCreateStep1";
 import ActivityCreateStep2 from "@/components/activity/ActivityCreateStep2";
 
+import type { ActivityCategory } from "@/api/activity/api.model";
 import { activityQueries } from "@/api/activity/api.query";
 import { ROUTE, TOAST_MESSAGES } from "@/constants";
 import { showSuccessToast } from "@/utils/toast";
 
-function ActivityCreatePageContent() {
+export interface ActivityCreatePageContentProps {
+  editPayload?: { activityGroupId: number };
+}
+
+export function ActivityCreatePageContent({
+  editPayload,
+}: ActivityCreatePageContentProps) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const {
@@ -56,21 +63,49 @@ function ActivityCreatePageContent() {
     },
   });
 
+  const updateMutation = useMutation({
+    ...activityQueries.patchActivityUpdateMutation,
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: activityQueries.all });
+      queryClient.invalidateQueries({
+        queryKey: activityQueries.detailKey({
+          activityGroupId: variables.activityGroupId,
+        }),
+      });
+      showSuccessToast(TOAST_MESSAGES.ACTIVITY_UPDATE_SUCCESS);
+      navigate(ROUTE.ACTIVITY);
+    },
+  });
+
+  const isEditMode = !!editPayload;
+  const submitMutation = isEditMode ? updateMutation : createMutation;
+
+  const categoryValue: ActivityCategory =
+    category === "study" ? "STUDY" : "PROJECT";
+  const payload = {
+    category: categoryValue,
+    subject: target,
+    name: title,
+    content: description,
+    imageUrl: "",
+    curriculum: curriculumList
+      .map(({ label, content }) => `${label}\n${content}`)
+      .join("\n\n"),
+    startDate,
+    endDate,
+    techStack,
+    githubUrl: githubLink,
+  };
+
   const handleSubmit = () => {
-    createMutation.mutate({
-      category: category === "study" ? "STUDY" : "PROJECT",
-      subject: target,
-      name: title,
-      content: description,
-      imageUrl: "",
-      curriculum: curriculumList
-        .map(({ label, content }) => `${label}\n${content}`)
-        .join("\n\n"),
-      startDate,
-      endDate,
-      techStack,
-      githubUrl: githubLink,
-    });
+    if (isEditMode && editPayload) {
+      updateMutation.mutate({
+        ...payload,
+        activityGroupId: editPayload.activityGroupId,
+      });
+    } else {
+      createMutation.mutate(payload);
+    }
   };
 
   return (
@@ -113,9 +148,15 @@ function ActivityCreatePageContent() {
               size="large"
               color={!isStep2Valid ? "disabled" : "active"}
               onClick={handleSubmit}
-              disabled={!isStep2Valid || createMutation.isPending}
+              disabled={!isStep2Valid || submitMutation.isPending}
             >
-              {createMutation.isPending ? "제출 중..." : "제출하기"}
+              {submitMutation.isPending
+                ? isEditMode
+                  ? "수정 중..."
+                  : "제출 중..."
+                : isEditMode
+                  ? "수정하기"
+                  : "제출하기"}
             </Button>
           )}
         </div>

@@ -3,11 +3,24 @@ import { useState, type ReactNode } from "react";
 import { ActivityCreateContext } from "./ActivityCreateContext";
 import type { CurriculumItem } from "./ActivityCreateContext";
 
-interface ActivityCreateProviderProps {
-  children: ReactNode;
+export interface ActivityCreateInitialValues {
+  title: string;
+  category: "study" | "project";
+  description: string;
+  curriculumList: CurriculumItem[];
+  target: string;
+  startDate: string;
+  endDate: string;
+  techStack: string;
+  githubLink: string;
 }
 
-const initialCurriculumList: CurriculumItem[] = [
+interface ActivityCreateProviderProps {
+  children: ReactNode;
+  initialValues?: ActivityCreateInitialValues;
+}
+
+const defaultCurriculumList: CurriculumItem[] = [
   { label: "1주차", content: "" },
   { label: "2주차", content: "" },
   { label: "3주차", content: "" },
@@ -15,24 +28,31 @@ const initialCurriculumList: CurriculumItem[] = [
 
 export const ActivityCreateProvider = ({
   children,
+  initialValues,
 }: ActivityCreateProviderProps) => {
   const [currentStep, setCurrentStep] = useState(1);
 
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState<"study" | "project">("study");
-  const [description, setDescription] = useState("");
+  const [title, setTitle] = useState(initialValues?.title ?? "");
+  const [category, setCategory] = useState<"study" | "project">(
+    initialValues?.category ?? "study",
+  );
+  const [description, setDescription] = useState(
+    initialValues?.description ?? "",
+  );
   const [curriculumList, setCurriculumList] = useState<CurriculumItem[]>(
-    initialCurriculumList,
+    initialValues?.curriculumList?.length
+      ? initialValues.curriculumList
+      : defaultCurriculumList,
   );
   const [editingCurriculumIndex, setEditingCurriculumIndex] = useState<
     number | null
   >(null);
 
-  const [target, setTarget] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [techStack, setTechStack] = useState("");
-  const [githubLink, setGithubLink] = useState("");
+  const [target, setTarget] = useState(initialValues?.target ?? "");
+  const [startDate, setStartDate] = useState(initialValues?.startDate ?? "");
+  const [endDate, setEndDate] = useState(initialValues?.endDate ?? "");
+  const [techStack, setTechStack] = useState(initialValues?.techStack ?? "");
+  const [githubLink, setGithubLink] = useState(initialValues?.githubLink ?? "");
 
   const setCurriculumContent = (index: number, content: string) => {
     setCurriculumList((prev) =>
