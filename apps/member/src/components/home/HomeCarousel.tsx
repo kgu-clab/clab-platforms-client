@@ -38,10 +38,10 @@ function HomeCarouselItem({ category, title, description, image }: ClubNews) {
       <div className="bg-gray-2 px-2xl py-3xl relative flex h-full w-[330px] flex-col justify-end overflow-hidden rounded-lg">
         <div className="absolute inset-0">
           <img src={image} alt={title} className="h-full w-full object-cover" />
-          <div className="bg-linear-to-b absolute inset-0 from-transparent via-transparent to-[rgba(0,0,0,0.51)]" />
+          <div className="bg-linear-to-b absolute inset-0 from-transparent to-[rgba(0,0,0,0.95)]" />
         </div>
 
-        <div className="left-2xl absolute top-[147px]">
+        <div className="left-2xl absolute top-[154px]">
           <Chip className="border-secondary text-gray-2 border bg-[rgba(1,32,108,0.6)]">
             {category}
           </Chip>

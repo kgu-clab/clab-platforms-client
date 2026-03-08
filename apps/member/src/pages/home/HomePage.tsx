@@ -6,11 +6,10 @@ import {
   IoBookOutline,
 } from "react-icons/io5";
 
-import { boardQueries } from "@/api/community";
-
 import { HomeCarousel, HomePostItem, HomeLink } from "@/components/home";
 import { BottomNavbar } from "@/components/menu";
 
+import { boardQueries } from "@/api/community";
 import { ROUTE } from "@/constants";
 
 export default function HomePage() {
