@@ -2,9 +2,9 @@ import { Button, Chip, Dropdown, Section } from "@clab/design-system";
 import { IoChevronDown } from "react-icons/io5";
 
 import { ProfileImage } from "@/components/common";
-import { getRoleLabel, getRoleOptions } from "@/utils/role";
 
 import type { ActivityGroupMember } from "@/api/activity/api.type";
+import { getRoleLabel, getRoleOptions } from "@/utils/role";
 
 function formatGeneration(memberId: string): string {
   const gen = memberId.slice(2, 4);
