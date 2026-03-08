@@ -125,3 +125,16 @@ export type GetActivityAppliedResponse = BasePaginationResponse<{
   weeklyActivityCount: number;
   createdAt: string;
 }>;
+
+export type PostActivityCreateRequest = {
+  category: ActivityCategory;
+  subject: string;
+  name: string;
+  content: string;
+  imageUrl: string;
+  curriculum: string;
+  startDate: string;
+  endDate: string;
+  techStack: string;
+  githubUrl: string;
+};

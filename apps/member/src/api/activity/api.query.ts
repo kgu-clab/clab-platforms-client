@@ -7,6 +7,7 @@ import type {
   GetActivitiyByStatusRequest,
   GetActivitiyDetailRequest,
   PostActivityApplyRequest,
+  PostActivityCreateRequest,
 } from "./api.model";
 export type ActivityListFilter =
   | { type: "category"; category: ActivityCategory }
@@ -16,6 +17,7 @@ import { getActivityByCategory } from "./getActivityByCategory";
 import { getActivityByStatus } from "./getActivityByStatus";
 import { getActivityDetail } from "./getActivityDetail";
 import { postActivityApply } from "./postActivityApply";
+import { postActivityCreate } from "./postActivityCreate";
 
 const activityQueryKey = ["activity"] as const;
 
@@ -80,6 +82,15 @@ export const activityQueries = {
       const res = await postActivityApply(request);
       if (!res.ok)
         throw new Error(res.error.message ?? "활동 참여 신청에 실패했습니다.");
+      return res.data;
+    },
+  }),
+
+  postActivityCreateMutation: mutationOptions({
+    mutationFn: async (request: PostActivityCreateRequest) => {
+      const res = await postActivityCreate(request);
+      if (!res.ok)
+        throw new Error(res.error.message ?? "활동 생성에 실패했습니다.");
       return res.data;
     },
   }),
