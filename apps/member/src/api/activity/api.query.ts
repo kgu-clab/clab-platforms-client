@@ -1,10 +1,15 @@
 import { queryOptions } from "@tanstack/react-query";
 
 import type {
+  ActivityCategory,
+  ActivityStatus,
   GetActivitiyByCategoryRequest,
   GetActivitiyByStatusRequest,
   GetActivitiyDetailRequest,
 } from "./api.model";
+export type ActivityListFilter =
+  | { type: "category"; category: ActivityCategory }
+  | { type: "status"; status: ActivityStatus };
 import { getActivityByCategory } from "./getActivityByCategory";
 import { getActivityByStatus } from "./getActivityByStatus";
 import { getActivityDetail } from "./getActivityDetail";

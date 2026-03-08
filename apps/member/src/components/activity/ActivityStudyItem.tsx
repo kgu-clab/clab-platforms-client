@@ -3,24 +3,37 @@ import { GoPeople } from "react-icons/go";
 import { PiCrownSimpleFill } from "react-icons/pi";
 import { Link } from "react-router";
 
-import type { ActivityData } from "@/types/activity";
+import type { ActivityStatus } from "@/api/activity/api.model";
+import type { Activity, ActivityByStatus } from "@/api/activity/api.type";
 
-interface ActivityStudyItemProps {
-  activity: ActivityData;
-}
+type ActivityStudyItemProps = {
+  activity: Activity | ActivityByStatus;
+};
 
-const STATUS_MAP = {
+const STATUS_MAP: Record<
+  ActivityStatus,
+  { label: string; color: "green" | "yellow" | "red" }
+> = {
   WAITING: { label: "모집중", color: "green" },
   PROGRESSING: { label: "진행중", color: "yellow" },
   END: { label: "종료", color: "red" },
-} as const;
+};
+
+function hasLeaders(
+  activity: Activity | ActivityByStatus,
+): activity is ActivityByStatus {
+  return "leaders" in activity && "participantCount" in activity;
+}
 
 export default function ActivityStudyItem({
   activity,
 }: ActivityStudyItemProps) {
-  const { id, name, category, status, imageUrl, leaders, participantCount } =
-    activity;
+  const { id, name, category, imageUrl } = activity;
+  const status: ActivityStatus =
+    "status" in activity ? activity.status : "PROGRESSING";
   const statusInfo = STATUS_MAP[status];
+  const leaders = hasLeaders(activity) ? activity.leaders : [];
+  const participantCount = hasLeaders(activity) ? activity.participantCount : 0;
   const leader = leaders[0];
   const leaderGeneration = leader?.id.slice(2, 4) ?? "";
 
@@ -41,14 +54,18 @@ export default function ActivityStudyItem({
       <div className="space-y-sm p-gutter">
         <div className="text-16-medium line-clamp-1">{name}</div>
         <div className="gap-md text-12-regular text-gray-4 flex items-center">
-          <div className="gap-xs flex items-center">
-            <PiCrownSimpleFill />
-            {leader ? `${leader.name}(${leaderGeneration})` : ""}
-          </div>
-          <div className="gap-xs flex items-center">
-            <GoPeople />
-            {participantCount}
-          </div>
+          {leader && (
+            <div className="gap-xs flex items-center">
+              <PiCrownSimpleFill />
+              {`${leader.name}(${leaderGeneration})`}
+            </div>
+          )}
+          {participantCount > 0 && (
+            <div className="gap-xs flex items-center">
+              <GoPeople />
+              {participantCount}
+            </div>
+          )}
         </div>
         <div className="gap-xs flex items-center">
           <Chip color="purple">
