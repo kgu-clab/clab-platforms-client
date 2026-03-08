@@ -52,6 +52,16 @@ export const boardQueries = {
         data.ok ? data.data.data : null,
     }),
 
+  getBoardsByCategoryQuery: (params: GetBoardsByCategoryRequest) =>
+    queryOptions({
+      queryKey: boardKeys.category(params),
+      queryFn: () => getBoardsByCategory(params),
+      select: (data) =>
+        data.ok
+          ? data.data.data
+          : { items: [], currentPage: 0, totalPage: 0, totalItems: 0 },
+    }),
+
   getBoardsByCategoryInfiniteQuery: (
     params: Omit<GetBoardsByCategoryRequest, "page" | "size">,
   ) =>
