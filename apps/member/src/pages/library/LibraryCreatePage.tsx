@@ -116,7 +116,7 @@ export default function LibraryCreatePage() {
         </Section>
       </Scrollable>
 
-      <footer className="z-999 h-bottom-navbar-height px-gutter border-gray-2 fixed bottom-0 left-0 right-0 box-border flex items-center justify-center border-t bg-white">
+      <footer className="z-999 pb-gutter h-bottom-navbar-height px-gutter border-gray-2 fixed bottom-0 left-0 right-0 box-border flex items-center justify-center border-t bg-white">
         <Button
           onClick={handleSubmit}
           color={isSubmitDisabled ? "disabled" : "active"}
