@@ -67,7 +67,35 @@ export default function ActivityManagePage() {
     },
   });
 
+  const memberStatusMutation = useMutation({
+    ...activityQueries.patchActivityMemberStatusMutation,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: activityQueries.applicationsKey({ activityGroupId }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: activityQueries.detailKey({ activityGroupId }),
+      });
+    },
+  });
+
   const handleBack = () => navigate(-1);
+
+  const handleApprove = (memberId: string) => {
+    memberStatusMutation.mutate({
+      activityGroupId,
+      memberId,
+      status: "ACCEPTED",
+    });
+  };
+
+  const handleReject = (memberId: string) => {
+    memberStatusMutation.mutate({
+      activityGroupId,
+      memberId,
+      status: "REJECTED",
+    });
+  };
 
   const handleRoleChange = (member: ActivityGroupMember, newRole: string) => {
     if (member.role === newRole) return;
@@ -161,6 +189,9 @@ export default function ActivityManagePage() {
           applications={applications}
           isError={applicationsError}
           isFetchingNextPage={isFetchingNextPage}
+          onApprove={handleApprove}
+          onReject={handleReject}
+          isMemberStatusPending={memberStatusMutation.isPending}
         />
         <div ref={bottomSentinelRef} />
       </div>

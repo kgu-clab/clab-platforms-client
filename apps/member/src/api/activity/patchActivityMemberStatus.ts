@@ -6,7 +6,14 @@ import type { PatchActivityMemberStatusRequest } from "./api.model";
 export const patchActivityMemberStatus = (
   request: PatchActivityMemberStatusRequest,
 ) =>
-  authApi.patch<BaseApiResponse<unknown>, PatchActivityMemberStatusRequest>(
+  authApi.patch<BaseApiResponse<unknown>, Record<string, never>>(
     END_POINT.ACTIVITY.MEMBER_STATUS,
-    request,
+    {},
+    {
+      searchParams: {
+        activityGroupId: request.activityGroupId,
+        memberId: request.memberId,
+        status: request.status,
+      },
+    },
   );
