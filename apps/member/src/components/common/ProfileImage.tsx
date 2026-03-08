@@ -1,48 +1,37 @@
-import { cn } from "@clab/design-system";
+import { useState } from "react";
+import { IoPersonSharp } from "react-icons/io5";
 
-const ROLE_RING_STYLE: Record<string, string> = {
-  1: "ring-2 ring-gray-500",
-  2: "ring-2 ring-red-500",
-  3: "ring-2 ring-blue-500",
-};
+import { cn } from "@clab/design-system";
 
 interface ProfileImageProps {
   imageUrl?: string;
-  role?: number;
   size?: string;
   className?: string;
-  showRing?: boolean;
 }
 
 export default function ProfileImage({
   imageUrl,
-  role,
   size = "size-16",
   className,
-  showRing = true,
 }: ProfileImageProps) {
-  const roleStyle = showRing
-    ? role
-      ? ROLE_RING_STYLE[role]
-      : "ring-2 ring-gray-500"
-    : undefined;
+  const [hasError, setHasError] = useState(false);
 
-  return imageUrl ? (
+  return imageUrl && !hasError ? (
     <img
       src={imageUrl}
       alt="프로필"
-      className={cn(size, "rounded-full object-cover", roleStyle, className)}
+      className={cn(size, "rounded-full object-cover", className)}
+      onError={() => setHasError(true)}
     />
   ) : (
     <div
       className={cn(
         size,
         "flex items-center justify-center rounded-full bg-gray-300",
-        roleStyle,
         className,
       )}
     >
-      <span className="text-lg font-bold text-white">U</span>
+      <IoPersonSharp className="size-1/2 text-white" />
     </div>
   );
 }
