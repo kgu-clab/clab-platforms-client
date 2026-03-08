@@ -8,6 +8,7 @@ import type {
   GetActivitiyDetailRequest,
   PostActivityApplyRequest,
   PostActivityCreateRequest,
+  PatchActivityUpdateRequest,
 } from "./api.model";
 export type ActivityListFilter =
   | { type: "category"; category: ActivityCategory }
@@ -16,6 +17,7 @@ import { getActivityApplied } from "./getActivityApplied";
 import { getActivityByCategory } from "./getActivityByCategory";
 import { getActivityByStatus } from "./getActivityByStatus";
 import { getActivityDetail } from "./getActivityDetail";
+import { patchActivityUpdate } from "./patchActivityUpdate";
 import { postActivityApply } from "./postActivityApply";
 import { postActivityCreate } from "./postActivityCreate";
 
@@ -91,6 +93,18 @@ export const activityQueries = {
       const res = await postActivityCreate(request);
       if (!res.ok)
         throw new Error(res.error.message ?? "활동 생성에 실패했습니다.");
+      return res.data;
+    },
+  }),
+
+  patchActivityUpdateMutation: mutationOptions({
+    mutationFn: async ({
+      activityGroupId,
+      ...request
+    }: PatchActivityUpdateRequest & { activityGroupId: number }) => {
+      const res = await patchActivityUpdate(activityGroupId, request);
+      if (!res.ok)
+        throw new Error(res.error.message ?? "활동 수정에 실패했습니다.");
       return res.data;
     },
   }),

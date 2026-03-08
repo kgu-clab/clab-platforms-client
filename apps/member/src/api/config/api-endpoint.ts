@@ -61,6 +61,8 @@ export const END_POINT = {
     APPLY: "activity-group/member/apply",
     MY_ACTIVITY_APPLY: "activity-group/member/applied",
     CREATE: "activity-group/admin",
+    EDIT: (activityGroupId: number) =>
+      `activity-group/admin/${activityGroupId}`,
   },
   SUPPORT: {
     BASE: "supports",

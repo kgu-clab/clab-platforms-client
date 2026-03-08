@@ -138,3 +138,5 @@ export type PostActivityCreateRequest = {
   techStack: string;
   githubUrl: string;
 };
+
+export type PatchActivityUpdateRequest = PostActivityCreateRequest;
