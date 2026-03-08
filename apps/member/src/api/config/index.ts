@@ -5,7 +5,6 @@ export type {
   PaginationParams,
 } from "./api-base-types";
 export {
-  DEFAULT_PAGE_SIZE,
   ACCUSATIONS_PAGE_SIZE,
   BOOKS_PAGE_SIZE,
   SUPPORTS_PAGE_SIZE,
