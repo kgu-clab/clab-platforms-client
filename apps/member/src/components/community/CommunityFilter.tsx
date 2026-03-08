@@ -42,7 +42,7 @@ export default function CommunityFilter({ tab }: CommunityFilterProps) {
   );
 }
 
-export const INFORMATION_FILTERS = ["전체", "IT 소식", "채용 정보"] as const;
+export const INFORMATION_FILTERS = ["IT 소식", "채용 정보"] as const;
 
 function InformationFilterOptions() {
   const [searchParams, setSearchParams] = useSearchParams();
