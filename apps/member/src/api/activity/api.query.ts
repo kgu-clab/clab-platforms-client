@@ -15,6 +15,7 @@ import type {
   GetActivitiyDetailRequest,
   GetActivityApplicationsRequest,
   PatchActivityChangeStatusRequest,
+  PatchActivityMemberStatusRequest,
   PatchActivityUpdateRequest,
   PostActivityApplyRequest,
   PostActivityCreateRequest,
@@ -29,6 +30,7 @@ import { getActivityByCategory } from "./getActivityByCategory";
 import { getActivityByStatus } from "./getActivityByStatus";
 import { getActivityDetail } from "./getActivityDetail";
 import { patchActivityMemberRole } from "./patchActivityMemberRole";
+import { patchActivityMemberStatus } from "./patchActivityMemberStatus";
 import { patchActivityStatus } from "./patchActivityStatus";
 import { patchActivityUpdate } from "./patchActivityUpdate";
 import { postActivityApply } from "./postActivityApply";
@@ -199,6 +201,15 @@ export const activityQueries = {
       );
       if (!res.ok)
         throw new Error(res.error.message ?? "활동 상태 변경에 실패했습니다.");
+      return res.data;
+    },
+  }),
+
+  patchActivityMemberStatusMutation: mutationOptions({
+    mutationFn: async (request: PatchActivityMemberStatusRequest) => {
+      const res = await patchActivityMemberStatus(request);
+      if (!res.ok)
+        throw new Error(res.error.message ?? "멤버 상태 변경에 실패했습니다.");
       return res.data;
     },
   }),

@@ -5,6 +5,7 @@ import type {
 
 export type ActivityCategory = "STUDY" | "PROJECT";
 export type ActivityStatus = "WAITING" | "PROGRESSING" | "END";
+export type ActivityMemberStatus = "WAITING" | "ACCEPTED" | "REJECTED";
 export type ActivityPosition = "LEADER" | "MEMBER";
 
 export type GetActivitiyByCategoryRequest = {
@@ -164,6 +165,12 @@ export type PatchActivityMemberRoleRequest = {
   activityGroupId: number;
   memberId: string;
   position: ActivityPosition;
+};
+
+export type PatchActivityMemberStatusRequest = {
+  activityGroupId: number;
+  memberId: string;
+  status: ActivityMemberStatus;
 };
 
 export type PatchActivityChangeStatusRequest = {
