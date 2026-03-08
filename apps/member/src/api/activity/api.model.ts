@@ -140,6 +140,8 @@ export type PostActivityCreateRequest = {
   githubUrl: string;
 };
 
+export type PostActivityCreateResponse = BaseApiResponse<number>;
+
 export type PatchActivityUpdateRequest = PostActivityCreateRequest;
 
 export type GetActivityApplicationsRequest = {
@@ -162,4 +164,9 @@ export type PatchActivityMemberRoleRequest = {
   activityGroupId: number;
   memberId: string;
   position: ActivityPosition;
+};
+
+export type PatchActivityChangeStatusRequest = {
+  activityGroupId: number;
+  status: ActivityStatus;
 };
