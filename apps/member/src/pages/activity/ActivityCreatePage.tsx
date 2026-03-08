@@ -65,7 +65,7 @@ export function ActivityCreatePageContent({
       if (activityGroupId != null) {
         await statusMutation.mutateAsync({
           activityGroupId,
-          status: "PROGRESSING",
+          activityGroupStatus: "PROGRESSING",
         });
       }
       queryClient.invalidateQueries({ queryKey: activityQueries.all });

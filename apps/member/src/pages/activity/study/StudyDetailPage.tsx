@@ -24,10 +24,10 @@ import { formatTextToNodes } from "@/utils/formatter";
 
 const STATUS_MAP: Record<
   ActivityStatus,
-  { label: string; color: "green" | "yellow" | "red" }
+  { label: string; color: "disabled" | "green" | "red" }
 > = {
-  WAITING: { label: "모집중", color: "green" },
-  PROGRESSING: { label: "진행중", color: "yellow" },
+  WAITING: { label: "모집대기", color: "disabled" },
+  PROGRESSING: { label: "모집중", color: "green" },
   END: { label: "종료", color: "red" },
 };
 

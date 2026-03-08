@@ -8,9 +8,9 @@ import type {
 
 export const patchActivityStatus = (
   activityGroupId: number,
-  status: ActivityStatus,
+  activityGroupStatus: ActivityStatus,
 ) =>
   authApi.patch<BaseApiResponse<unknown>, PatchActivityChangeStatusRequest>(
     END_POINT.ACTIVITY.CHANGE_STATUS(activityGroupId),
-    { activityGroupId, status },
+    { activityGroupId, activityGroupStatus },
   );

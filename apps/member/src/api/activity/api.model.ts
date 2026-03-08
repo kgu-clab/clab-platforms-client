@@ -168,5 +168,5 @@ export type PatchActivityMemberRoleRequest = {
 
 export type PatchActivityChangeStatusRequest = {
   activityGroupId: number;
-  status: ActivityStatus;
+  activityGroupStatus: ActivityStatus;
 };

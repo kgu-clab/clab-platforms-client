@@ -191,9 +191,12 @@ export const activityQueries = {
   patchActivityStatusMutation: mutationOptions({
     mutationFn: async ({
       activityGroupId,
-      status,
+      activityGroupStatus,
     }: PatchActivityChangeStatusRequest) => {
-      const res = await patchActivityStatus(activityGroupId, status);
+      const res = await patchActivityStatus(
+        activityGroupId,
+        activityGroupStatus,
+      );
       if (!res.ok)
         throw new Error(res.error.message ?? "활동 상태 변경에 실패했습니다.");
       return res.data;
