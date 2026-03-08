@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 
 import type { PagedResponse, PaginationParams } from "@/api/config";
-import { COMMENTS_PAGE_SIZE } from "@/api/config";
+import { DEFAULT_PAGE_SIZE } from "@/api/config";
 import { TOAST_MESSAGES } from "@/constants";
 import { showErrorToast } from "@/utils/toast";
 
@@ -42,7 +42,7 @@ export const commentQueries = {
         const res = await getComments({
           ...params,
           page: pageParam as number,
-          size: COMMENTS_PAGE_SIZE,
+          size: DEFAULT_PAGE_SIZE,
         });
         if (!res.ok) {
           return {
@@ -88,7 +88,7 @@ export const commentQueries = {
       queryFn: async ({ pageParam }): Promise<GetCommentsResponse> => {
         const res = await getMyComments({
           page: pageParam as number,
-          size: COMMENTS_PAGE_SIZE,
+          size: DEFAULT_PAGE_SIZE,
         });
         if (!res.ok) {
           return {

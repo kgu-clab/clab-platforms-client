@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 
 import type { PagedResponse } from "@/api/config";
-import { BOARDS_PAGE_SIZE } from "@/api/config";
+import { DEFAULT_PAGE_SIZE } from "@/api/config";
 import { TOAST_MESSAGES } from "@/constants";
 import { showErrorToast } from "@/utils/toast";
 
@@ -61,7 +61,7 @@ export const boardQueries = {
         const res = await getBoardsByCategory({
           ...params,
           page: pageParam as number,
-          size: BOARDS_PAGE_SIZE,
+          size: DEFAULT_PAGE_SIZE,
         });
         if (!res.ok) {
           return {
@@ -90,7 +90,7 @@ export const boardQueries = {
         const res = await getBoardsByHashtag({
           ...params,
           page: pageParam as number,
-          size: BOARDS_PAGE_SIZE,
+          size: DEFAULT_PAGE_SIZE,
         });
         if (!res.ok) {
           return {
@@ -134,7 +134,7 @@ export const boardQueries = {
         const res = await getMyBoards({
           ...params,
           page: pageParam as number,
-          size: BOARDS_PAGE_SIZE,
+          size: DEFAULT_PAGE_SIZE,
         });
         if (!res.ok) {
           return {

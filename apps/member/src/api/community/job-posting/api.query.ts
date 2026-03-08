@@ -1,7 +1,7 @@
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 
 import type { ApiResponse, PagedResponse } from "@/api/config";
-import { JOB_POSTINGS_PAGE_SIZE } from "@/api/config";
+import { DEFAULT_PAGE_SIZE } from "@/api/config";
 
 import type {
   GetJobPostingsParams,
@@ -30,7 +30,7 @@ export const jobPostingQueries = {
         const res = await getJobPostings({
           ...params,
           page: pageParam as number,
-          size: JOB_POSTINGS_PAGE_SIZE,
+          size: DEFAULT_PAGE_SIZE,
         });
         if (!res.ok) {
           return {

@@ -1,7 +1,7 @@
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 
 import type { ApiResponse, PagedResponse } from "@/api/config";
-import { NEWS_PAGE_SIZE } from "@/api/config";
+import { DEFAULT_PAGE_SIZE } from "@/api/config";
 
 import type {
   GetNewsParams,
@@ -28,7 +28,7 @@ export const newsQueries = {
         const res = await getNews({
           ...params,
           page: pageParam as number,
-          size: NEWS_PAGE_SIZE,
+          size: DEFAULT_PAGE_SIZE,
         });
         if (!res.ok) {
           return {
