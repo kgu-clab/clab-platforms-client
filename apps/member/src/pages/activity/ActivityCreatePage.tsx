@@ -59,7 +59,7 @@ export function ActivityCreatePageContent({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: activityQueries.all });
       showSuccessToast(TOAST_MESSAGES.ACTIVITY_CREATE_SUCCESS);
-      navigate(ROUTE.ACTIVITY);
+      navigate(ROUTE.ACTIVITY_STUDY);
     },
   });
 
@@ -73,7 +73,7 @@ export function ActivityCreatePageContent({
         }),
       });
       showSuccessToast(TOAST_MESSAGES.ACTIVITY_UPDATE_SUCCESS);
-      navigate(ROUTE.ACTIVITY);
+      navigate(ROUTE.ACTIVITY_STUDY);
     },
   });
 

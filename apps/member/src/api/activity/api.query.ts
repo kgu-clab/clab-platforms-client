@@ -13,6 +13,7 @@ import type {
 export type ActivityListFilter =
   | { type: "category"; category: ActivityCategory }
   | { type: "status"; status: ActivityStatus };
+import { deleteActivity } from "./deleteActivity";
 import { getActivityApplied } from "./getActivityApplied";
 import { getActivityByCategory } from "./getActivityByCategory";
 import { getActivityByStatus } from "./getActivityByStatus";
@@ -105,6 +106,15 @@ export const activityQueries = {
       const res = await patchActivityUpdate(activityGroupId, request);
       if (!res.ok)
         throw new Error(res.error.message ?? "활동 수정에 실패했습니다.");
+      return res.data;
+    },
+  }),
+
+  deleteActivityMutation: mutationOptions({
+    mutationFn: async (activityGroupId: number) => {
+      const res = await deleteActivity(activityGroupId);
+      if (!res.ok)
+        throw new Error(res.error.message ?? "활동 삭제에 실패했습니다.");
       return res.data;
     },
   }),

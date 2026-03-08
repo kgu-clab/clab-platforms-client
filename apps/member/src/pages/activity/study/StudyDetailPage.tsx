@@ -1,6 +1,7 @@
 import {
   Button,
   Chip,
+  Dropdown,
   Field,
   Header,
   Modal,
@@ -11,12 +12,14 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { GoChevronLeft } from "react-icons/go";
+import { IoEllipsisVertical } from "react-icons/io5";
 import { useNavigate, useParams } from "react-router";
 
 import { StudyMemberGrid } from "@/components/activity";
 
 import type { ActivityStatus } from "@/api/activity/api.model";
 import { activityQueries } from "@/api/activity/api.query";
+import { ROUTE } from "@/constants";
 import { formatTextToNodes } from "@/utils/formatter";
 
 const STATUS_MAP: Record<
@@ -98,6 +101,29 @@ export default function StudyDetailPage() {
     });
   };
 
+  const handleEdit = () => {
+    navigate(ROUTE.ACTIVITY_EDIT(activityGroupId));
+  };
+
+  const deleteMutation = useMutation({
+    ...activityQueries.deleteActivityMutation,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: activityQueries.all });
+      queryClient.invalidateQueries({
+        queryKey: activityQueries.detailKey({ activityGroupId }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: activityQueries.appliedKey(),
+      });
+      navigate(ROUTE.ACTIVITY_STUDY);
+    },
+  });
+
+  const handleDelete = () => {
+    if (!window.confirm("정말 이 활동을 삭제하시겠어요?")) return;
+    deleteMutation.mutate(activityGroupId);
+  };
+
   if (!Number.isFinite(activityGroupId)) {
     return (
       <Scrollable>
@@ -162,6 +188,27 @@ export default function StudyDetailPage() {
           <button className="focus:outline-none" onClick={handleBack}>
             <GoChevronLeft size={24} />
           </button>
+        }
+        right={
+          detail.isOwner ? (
+            <Dropdown
+              trigger={
+                <button
+                  type="button"
+                  className="p-1 focus:outline-none"
+                  aria-label="메뉴"
+                >
+                  <IoEllipsisVertical size={18} />
+                </button>
+              }
+              align="end"
+            >
+              <Dropdown.Item onSelect={handleEdit}>수정하기</Dropdown.Item>
+              <Dropdown.Item onSelect={handleDelete}>
+                <span className="text-red-500">삭제하기</span>
+              </Dropdown.Item>
+            </Dropdown>
+          ) : undefined
         }
         className="z-999 absolute left-0 right-0 top-0 bg-transparent"
       />
