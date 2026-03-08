@@ -254,7 +254,13 @@ export default function StudyDetailPage() {
         </Section>
 
         <footer className="z-999 pb-gutter h-bottom-navbar-height px-gutter border-gray-2 fixed bottom-0 left-0 right-0 box-border flex items-center justify-center border-t bg-white">
-          {hasApplied ? (
+          {detail.isOwner ? (
+            <Button
+              onClick={() => navigate(ROUTE.ACTIVITY_MANAGE(activityGroupId))}
+            >
+              활동 관리
+            </Button>
+          ) : hasApplied ? (
             <Button disabled color="disabled">
               신청완료
             </Button>

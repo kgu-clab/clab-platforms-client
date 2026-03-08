@@ -15,6 +15,7 @@ import {
   CommunityWritePage,
   ActivityCreatePage,
   ActivityEditPage,
+  ActivityManagePage,
   MyPage,
   MyPostsPage,
   MyCommentsPage,
@@ -50,6 +51,10 @@ const activityRoutes = [
   {
     path: `${ROUTE.ACTIVITY}/:id/edit`,
     element: <ActivityEditPage />,
+  },
+  {
+    path: `${ROUTE.ACTIVITY}/:id/manage`,
+    element: <ActivityManagePage />,
   },
   {
     path: ROUTE.ACTIVITY_CREATE,
