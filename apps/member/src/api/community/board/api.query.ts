@@ -65,16 +65,20 @@ export const boardQueries = {
         });
         if (!res.ok) {
           return {
-            data: { items: [], currentPage: 0, totalPage: 0, totalItems: 0 },
-          } as unknown as PagedResponse<never>;
+            items: [],
+            currentPage: 0,
+            hasNext: false,
+            hasPrevious: false,
+            totalPages: 0,
+            totalItems: 0,
+            take: 0,
+          } as PagedResponse<never>;
         }
         return res.data.data;
       },
       initialPageParam: 0,
       getNextPageParam: (lastPage) =>
-        lastPage.currentPage < lastPage.totalPage - 1
-          ? lastPage.currentPage + 1
-          : undefined,
+        lastPage.hasNext ? lastPage.currentPage + 1 : undefined,
     }),
 
   getBoardsByHashtagInfiniteQuery: (
@@ -90,16 +94,20 @@ export const boardQueries = {
         });
         if (!res.ok) {
           return {
-            data: { items: [], currentPage: 0, totalPage: 0, totalItems: 0 },
-          } as unknown as PagedResponse<never>;
+            items: [],
+            currentPage: 0,
+            hasNext: false,
+            hasPrevious: false,
+            totalPages: 0,
+            totalItems: 0,
+            take: 0,
+          } as PagedResponse<never>;
         }
         return res.data.data;
       },
       initialPageParam: 0,
       getNextPageParam: (lastPage) =>
-        lastPage.currentPage < lastPage.totalPage - 1
-          ? lastPage.currentPage + 1
-          : undefined,
+        lastPage.hasNext ? lastPage.currentPage + 1 : undefined,
     }),
 
   getHotBoardsQuery: () =>
@@ -130,16 +138,20 @@ export const boardQueries = {
         });
         if (!res.ok) {
           return {
-            data: { items: [], currentPage: 0, totalPage: 0, totalItems: 0 },
-          } as unknown as PagedResponse<never>;
+            items: [],
+            currentPage: 0,
+            hasNext: false,
+            hasPrevious: false,
+            totalPages: 0,
+            totalItems: 0,
+            take: 0,
+          } as PagedResponse<never>;
         }
         return res.data.data;
       },
       initialPageParam: 0,
       getNextPageParam: (lastPage) =>
-        lastPage.currentPage < lastPage.totalPage - 1
-          ? lastPage.currentPage + 1
-          : undefined,
+        lastPage.hasNext ? lastPage.currentPage + 1 : undefined,
     }),
 
   postBoardMutation: mutationOptions<unknown, Error, PostBoardRequest>({

@@ -1,17 +1,26 @@
 import { Header, Scrollable, Title } from "@clab/design-system";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { GoChevronLeft } from "react-icons/go";
 import { useNavigate } from "react-router";
 
 import { PostDetailCommentItem } from "@/components/community";
 
 import { commentQueries } from "@/api/community";
+import { useInfiniteScroll } from "@/model/common/useInfiniteScroll";
 
 export default function MyCommentsPage() {
   const navigate = useNavigate();
-  const { data, isLoading } = useQuery(commentQueries.getMyCommentsQuery());
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useInfiniteQuery(commentQueries.getMyCommentsInfiniteQuery());
 
-  const comments = data?.items ?? [];
+  const comments = data?.pages.flatMap((page) => page.data.items) ?? [];
+
+  const { bottomSentinelRef } = useInfiniteScroll({
+    hasNextPage: hasNextPage ?? false,
+    isFetchingNextPage,
+    fetchNextPage,
+    useViewport: true,
+  });
 
   return (
     <>
@@ -41,11 +50,14 @@ export default function MyCommentsPage() {
           </div>
         )}
         {comments.map((comment) => (
-          <PostDetailCommentItem
-            key={comment.id}
-            commentData={{ ...comment, isOwner: true }}
-          />
+          <PostDetailCommentItem key={comment.id} commentData={comment} />
         ))}
+        <div ref={bottomSentinelRef} />
+        {isFetchingNextPage && (
+          <div className="flex justify-center py-4">
+            <span className="text-gray-4 text-14-regular">로딩 중...</span>
+          </div>
+        )}
       </Scrollable>
     </>
   );
