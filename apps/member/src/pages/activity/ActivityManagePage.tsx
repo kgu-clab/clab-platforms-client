@@ -1,7 +1,14 @@
 import { Header, Scrollable } from "@clab/design-system";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { GoChevronLeft } from "react-icons/go";
 import { useNavigate, useParams } from "react-router";
+
+import { useInfiniteScroll } from "@/model/common/useInfiniteScroll";
 
 import ActivityManageApplicationList from "@/components/activity/ActivityManageApplicationList";
 import ActivityManageMemberList from "@/components/activity/ActivityManageMemberList";
@@ -25,10 +32,27 @@ export default function ActivityManagePage() {
     enabled: Number.isFinite(activityGroupId),
   });
 
-  const { data: applications = [], isError: applicationsError } = useQuery({
-    ...activityQueries.getActivityApplicationsQuery({ activityGroupId }),
+  const {
+    data: applicationsData,
+    isError: applicationsError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    ...activityQueries.getActivityApplicationsInfiniteQuery({
+      activityGroupId,
+    }),
     enabled: Number.isFinite(activityGroupId) && !!detail?.isOwner,
     retry: false,
+  });
+
+  const applications =
+    applicationsData?.pages.flatMap((p) => p.data?.items ?? []) ?? [];
+
+  const { scrollRef, bottomSentinelRef } = useInfiniteScroll({
+    hasNextPage: hasNextPage ?? false,
+    isFetchingNextPage,
+    fetchNextPage,
   });
 
   const roleMutation = useMutation({
@@ -50,7 +74,7 @@ export default function ActivityManagePage() {
     roleMutation.mutate({
       activityGroupId,
       memberId: member.memberId,
-      role: newRole,
+      position: newRole as "LEADER" | "MEMBER",
     });
   };
 
@@ -115,7 +139,10 @@ export default function ActivityManagePage() {
     : [];
 
   return (
-    <Scrollable>
+    <div
+      ref={scrollRef}
+      className="scrollbar-hide pb-bottom-padding flex size-full flex-col overflow-y-auto"
+    >
       <Header
         left={
           <button className="focus:outline-none" onClick={handleBack}>
@@ -124,7 +151,7 @@ export default function ActivityManagePage() {
         }
         className="fixed left-0 right-0 top-0 z-10 bg-white"
       />
-      <div className="gap-3xl pb-bottom-padding pt-[calc(var(--spacing-header-height)+16px)]">
+      <div className="gap-3xl pt-[calc(var(--spacing-header-height)+16px)]">
         <ActivityManageMemberList
           members={members}
           onRoleChange={handleRoleChange}
@@ -133,8 +160,10 @@ export default function ActivityManagePage() {
         <ActivityManageApplicationList
           applications={applications}
           isError={applicationsError}
+          isFetchingNextPage={isFetchingNextPage}
         />
+        <div ref={bottomSentinelRef} />
       </div>
-    </Scrollable>
+    </div>
   );
 }
