@@ -41,7 +41,11 @@ export default function DatePickerBottomSheet({
     if (isOpen) {
       const parsed = value ? dayjs(value, "YYYY-MM-DD") : dayjs();
       const nextDate = parsed.isValid() ? parsed.toDate() : new Date();
-      queueMicrotask(() => setSelectedDate(nextDate));
+      const minDate = dayjs().startOf("day");
+      const dateToUse = dayjs(nextDate).isBefore(minDate)
+        ? minDate.toDate()
+        : nextDate;
+      queueMicrotask(() => setSelectedDate(dateToUse));
     }
   }, [isOpen, value]);
 
@@ -102,6 +106,7 @@ export default function DatePickerBottomSheet({
         <div className="date-picker-calendar p-xl overflow-y-auto">
           <Calendar
             value={selectedDate}
+            minDate={dayjs().startOf("day").toDate()}
             onChange={(val) => {
               if (val instanceof Date) setSelectedDate(val);
             }}

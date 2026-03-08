@@ -56,7 +56,7 @@ export default function ActivityCreateStep2() {
             size="small"
             color={startDate ? "outlineActive" : "outlineDisabled"}
             onClick={() => setOpenPicker("start")}
-            className="flex-1"
+            // className="flex-1"
           >
             {startDate ? `시작일 | ${startDate}` : "시작일 지정하기"}
           </Button>
@@ -64,7 +64,7 @@ export default function ActivityCreateStep2() {
             size="small"
             color={endDate ? "outlineActive" : "outlineDisabled"}
             onClick={() => setOpenPicker("end")}
-            className="flex-1"
+            // className="flex-1"
           >
             {endDate ? `종료일 | ${endDate}` : "종료일 지정하기"}
           </Button>
