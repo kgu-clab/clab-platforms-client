@@ -69,6 +69,9 @@ export const END_POINT = {
     CHANGE_STATUS: (activityGroupId: number) =>
       `activity-group/admin/manage/${activityGroupId}`,
   },
+  SCHEDULE: {
+    BASE: "schedules",
+  },
   SUPPORT: {
     BASE: "supports",
     DETAIL: (supportId: number) => `supports/${supportId}`,

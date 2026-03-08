@@ -8,6 +8,7 @@ interface ActivityCalendarProps {
   onChange: (date: Date) => void;
   activeStartDate: Date;
   onActiveStartDateChange: (date: Date) => void;
+  eventDates?: Set<string>;
 }
 
 export default function ActivityCalendar({
@@ -15,6 +16,7 @@ export default function ActivityCalendar({
   onChange,
   activeStartDate,
   onActiveStartDateChange,
+  eventDates,
 }: ActivityCalendarProps) {
   return (
     <Calendar
@@ -31,6 +33,13 @@ export default function ActivityCalendar({
         }
       }}
       formatDay={(_, date) => dayjs(date).format("D")}
+      tileClassName={({ date, view }) => {
+        if (view !== "month") return undefined;
+        const key = dayjs(date).format("YYYY-MM-DD");
+        return eventDates?.has(key)
+          ? "react-calendar__tile--hasEvent"
+          : undefined;
+      }}
     />
   );
 }

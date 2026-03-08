@@ -98,3 +98,19 @@ abbr {
   background-color: var(--color-primary-sub) !important;
   color: var(--color-primary) !important;
 }
+
+.react-calendar__tile--hasEvent {
+  position: relative;
+}
+
+.react-calendar__tile--hasEvent::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+}

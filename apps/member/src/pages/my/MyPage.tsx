@@ -58,7 +58,7 @@ export default function MyPage() {
       />
 
       <Scrollable className="pt-header-height px-gutter gap-3xl mt-sm">
-        <Section className="py-9">
+        <Section className="pb-9 pt-4">
           <MyProfileHeader
             name={name}
             id={id}
