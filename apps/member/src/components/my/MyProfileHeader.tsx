@@ -5,6 +5,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 
 import { ProfileImage } from "@/components/common";
 
+import { BASE_FILE_URL } from "@/api/config";
 import { userQueries } from "@/api/user/api.query";
 import { TOAST_MESSAGES } from "@/constants";
 import { showSuccessToast } from "@/utils/toast";
@@ -54,9 +55,7 @@ export default function MyProfileHeader({
       setPreviewUrl(null);
       setSelectedFile(null);
       showSuccessToast(TOAST_MESSAGES.PROFILE_IMAGE_UPDATE);
-    } catch {
-      // 에러 시 토스트 등은 mutation.onError에서 처리
-    }
+    } catch {}
   };
 
   const handleModalClose = () => {
@@ -98,7 +97,10 @@ export default function MyProfileHeader({
         <div className="flex flex-col items-center gap-10">
           {(previewUrl ?? imageUrl) ? (
             <img
-              src={previewUrl ?? imageUrl}
+              src={
+                previewUrl ??
+                (imageUrl ? `${BASE_FILE_URL}${imageUrl}` : undefined)
+              }
               alt="미리보기"
               className="size-32 rounded-full object-cover"
             />
