@@ -16,7 +16,7 @@ export default function PostDetailCommentInput({
   boardId,
 }: PostDetailCommentInputProps) {
   const { data: userInfo } = useQuery(userQueries.getUserInfoQuery());
-  const { imageUrl, roleLevel } = userInfo?.data ?? {};
+  const { imageUrl } = userInfo?.data ?? {};
   const [comment, setComment] = useState("");
   const [isAnonymous, setIsAnonymous] = useState(false);
   const queryClient = useQueryClient();
@@ -41,7 +41,7 @@ export default function PostDetailCommentInput({
 
   return (
     <div className="gap-md px-gutter py-sm flex items-start">
-      <ProfileImage size="size-8" imageUrl={imageUrl} role={roleLevel} />
+      <ProfileImage size="size-8" imageUrl={imageUrl} />
       <div className="border-gray-2 relative flex flex-1 flex-col rounded-lg border">
         <Textarea
           placeholder="댓글을 남겨보세요..."

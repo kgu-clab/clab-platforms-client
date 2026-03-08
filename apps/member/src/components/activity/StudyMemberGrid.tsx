@@ -18,7 +18,7 @@ export default function StudyMemberGrid() {
 function MemberItem() {
   return (
     <div className="gap-sm flex flex-col items-center justify-center">
-      <ProfileImage size="size-[50px]" showRing={false} />
+      <ProfileImage size="size-[50px]" />
       <Chip color="yellow">리더</Chip>
       <p className="text-13-regular">장영후(23)</p>
     </div>

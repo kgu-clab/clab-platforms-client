@@ -75,7 +75,6 @@ export default function MyPage() {
             name={name}
             id={id}
             imageUrl={imageUrl}
-            roleLevel={roleLevel}
             daysSinceJoin={daysSinceJoin}
           />
 

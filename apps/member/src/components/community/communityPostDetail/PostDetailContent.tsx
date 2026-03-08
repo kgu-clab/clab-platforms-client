@@ -107,7 +107,6 @@ export default function BoardDetailContent({ board }: BoardDetailContentProps) {
     files,
     boardHashtagInfos,
     isOwner,
-    writerRoleLevel,
   } = board;
 
   const navigate = useNavigate();
@@ -190,11 +189,7 @@ export default function BoardDetailContent({ board }: BoardDetailContentProps) {
         meta={
           <div className="gap-md flex flex-col">
             <div className="gap-lg flex items-center">
-              <ProfileImage
-                imageUrl={writerImageUrl}
-                size="size-10"
-                role={writerRoleLevel}
-              />
+              <ProfileImage imageUrl={writerImageUrl} size="size-10" />
               <div className="flex flex-col">
                 <span className="text-14-semibold text-black">
                   {writerName}

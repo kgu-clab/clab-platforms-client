@@ -6,8 +6,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { userQueries } from "@/api/user/api.query";
 
-import { useAuthStore } from "@/model/common/store-auth";
-
 import { ProfileImage } from "@/components/common";
 
 import { TOAST_MESSAGES } from "@/constants";
@@ -17,7 +15,6 @@ interface MyProfileHeaderProps {
   name?: string;
   id?: string;
   imageUrl?: string;
-  roleLevel?: number;
   daysSinceJoin: number | null;
 }
 
@@ -25,10 +22,8 @@ export default function MyProfileHeader({
   name,
   id,
   imageUrl,
-  roleLevel,
   daysSinceJoin,
 }: MyProfileHeaderProps) {
-  const memberId = useAuthStore((s) => s.memberId);
   const queryClient = useQueryClient();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -48,12 +43,12 @@ export default function MyProfileHeader({
   };
 
   const handleImageUpload = async () => {
-    if (!selectedFile || !memberId) return;
+    if (!selectedFile || !id) return;
 
     try {
       const fileResult = await uploadMutation.mutateAsync(selectedFile);
       await patchMutation.mutateAsync({
-        memberId,
+        memberId: id,
         body: { imageUrl: fileResult.fileUrl },
       });
       queryClient.invalidateQueries({ queryKey: userQueries.infoKey() });
@@ -74,7 +69,7 @@ export default function MyProfileHeader({
     <>
       <div className="gap-2xl pb-lg flex items-center">
         <div className="relative">
-          <ProfileImage imageUrl={imageUrl} size="size-20" role={roleLevel} />
+          <ProfileImage imageUrl={imageUrl} size="size-20" />
           <button
             type="button"
             className="bg-gray-1 border-gray-3 absolute -right-1 -top-1 flex size-7 items-center justify-center rounded-full border"
@@ -101,9 +96,9 @@ export default function MyProfileHeader({
         title="프로필 이미지 변경"
       >
         <div className="flex flex-col items-center gap-10">
-          {previewUrl ? (
+          {(previewUrl ?? imageUrl) ? (
             <img
-              src={previewUrl}
+              src={previewUrl ?? imageUrl}
               alt="미리보기"
               className="size-32 rounded-full object-cover"
             />

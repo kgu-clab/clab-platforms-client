@@ -45,7 +45,6 @@ export default function PostDetailCommentItem({
     hasLikeByMe,
     isOwner,
     isDeleted,
-    writerRoleLevel,
   } = commentData;
 
   const isAnonymous = writerId === null;
@@ -206,11 +205,7 @@ export default function PostDetailCommentItem({
         onClick={handleClick}
         role={to ? "button" : undefined}
       >
-        <ProfileImage
-          imageUrl={writerImageUrl ?? undefined}
-          size="size-8"
-          role={writerRoleLevel ?? undefined}
-        />
+        <ProfileImage imageUrl={writerImageUrl ?? undefined} size="size-8" />
         <div className="gap-sm flex flex-1 flex-col">
           <div className="flex items-center justify-between">
             <div className="gap-sm flex items-center">
