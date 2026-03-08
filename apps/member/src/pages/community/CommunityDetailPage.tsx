@@ -3,6 +3,8 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { GoChevronLeft } from "react-icons/go";
 import { useNavigate, useParams, useSearchParams } from "react-router";
 
+import { useInfiniteScroll } from "@/model/common/useInfiniteScroll";
+
 import {
   PostDetailContent,
   NewsDetailContent,
@@ -11,7 +13,6 @@ import {
 } from "@/components/community";
 
 import { boardQueries, commentQueries, newsQueries } from "@/api/community";
-import { useInfiniteScroll } from "@/model/common/useInfiniteScroll";
 
 type DetailType = "board" | "news";
 

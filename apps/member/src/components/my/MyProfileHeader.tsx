@@ -55,7 +55,9 @@ export default function MyProfileHeader({
       setPreviewUrl(null);
       setSelectedFile(null);
       showSuccessToast(TOAST_MESSAGES.PROFILE_IMAGE_UPDATE);
-    } catch {}
+    } catch {
+      // 에러는 useMutation의 onError에서 처리
+    }
   };
 
   const handleModalClose = () => {

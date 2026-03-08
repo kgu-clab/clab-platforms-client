@@ -10,16 +10,16 @@ interface CommunityFilterProps {
 }
 
 export default function CommunityFilter({ tab }: CommunityFilterProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const sort = searchParams.get("sort") ?? "latest";
+  // const [searchParams, setSearchParams] = useSearchParams();
+  // const sort = searchParams.get("sort") ?? "latest";
 
-  const toggleSort = () => {
-    setSearchParams((prev) => {
-      const next = new URLSearchParams(prev);
-      next.set("sort", sort === "latest" ? "popular" : "latest");
-      return next;
-    });
-  };
+  // const toggleSort = () => {
+  //   setSearchParams((prev) => {
+  //     const next = new URLSearchParams(prev);
+  //     next.set("sort", sort === "latest" ? "popular" : "latest");
+  //     return next;
+  //   });
+  // };
 
   return (
     <div className="px-gutter gap-md flex items-center">
@@ -28,7 +28,7 @@ export default function CommunityFilter({ tab }: CommunityFilterProps) {
         {tab === CATEGORY.QUESTION && <QuestionFilterOptions />}
       </div>
       {/* 인기순 정렬 오류로 렌더 X */}
-      {tab !== CATEGORY.INFORMATION && false && (
+      {/* {tab !== CATEGORY.INFORMATION && false && (
         <Button
           color="text"
           size="small"
@@ -37,7 +37,7 @@ export default function CommunityFilter({ tab }: CommunityFilterProps) {
         >
           {sort === "latest" ? "최신순" : "인기순"}
         </Button>
-      )}
+      )} */}
     </div>
   );
 }

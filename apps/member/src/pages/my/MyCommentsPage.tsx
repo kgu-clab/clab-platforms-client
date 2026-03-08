@@ -3,10 +3,11 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { GoChevronLeft } from "react-icons/go";
 import { useNavigate } from "react-router";
 
+import { useInfiniteScroll } from "@/model/common/useInfiniteScroll";
+
 import { PostDetailCommentItem } from "@/components/community";
 
 import { commentQueries } from "@/api/community";
-import { useInfiniteScroll } from "@/model/common/useInfiniteScroll";
 
 export default function MyCommentsPage() {
   const navigate = useNavigate();

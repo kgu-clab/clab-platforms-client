@@ -1,6 +1,8 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router";
 
+import { useInfiniteScroll } from "@/model/common/useInfiniteScroll";
+
 import {
   CommunityPostItem,
   NewsPostItem,
@@ -8,9 +10,8 @@ import {
 } from "@/components/community";
 
 import type { BoardCategory } from "@/api/community";
-import type { JobPostingResponseDto } from "@/api/community/job-posting/api.model";
 import { boardQueries, newsQueries, jobPostingQueries } from "@/api/community";
-import { useInfiniteScroll } from "@/model/common/useInfiniteScroll";
+import type { JobPostingResponseDto } from "@/api/community/job-posting/api.model";
 
 function ListMessage({ message }: { message: string }) {
   return (
