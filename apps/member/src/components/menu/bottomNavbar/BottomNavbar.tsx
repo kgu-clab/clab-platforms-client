@@ -14,7 +14,7 @@ export interface BottomNavbarItemProps {
 
 export default function BottomNavbar() {
   return (
-    <footer className="h-bottom-navbar-height rounded-t-bottom-navbar shadow-t-md px-2xl py-gutter fixed bottom-0 left-0 right-0 z-50 box-border grid shrink-0 grid-cols-5 border-t border-gray-200 bg-white">
+    <footer className="h-bottom-navbar-height rounded-t-bottom-navbar shadow-t-md px-2xl pb-gutter fixed bottom-0 left-0 right-0 z-50 box-border grid shrink-0 grid-cols-5 border-t border-gray-200 bg-white">
       {BOTTOM_NAVBAR_CONFIG.map((item) => (
         <BottomNavbarItem
           key={item.href}
