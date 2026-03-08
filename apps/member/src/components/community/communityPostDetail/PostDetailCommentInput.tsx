@@ -1,9 +1,12 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { IoSend } from "react-icons/io5";
 
 import { commentKeys, commentQueries } from "@/api/community";
+import { userQueries } from "@/api/user/api.query";
 import { Button, Textarea } from "@clab/design-system";
+
+import { ProfileImage } from "@/components/common";
 
 interface PostDetailCommentInputProps {
   boardId: number;
@@ -12,6 +15,8 @@ interface PostDetailCommentInputProps {
 export default function PostDetailCommentInput({
   boardId,
 }: PostDetailCommentInputProps) {
+  const { data: userInfo } = useQuery(userQueries.getUserInfoQuery());
+  const { imageUrl } = userInfo?.data ?? {};
   const [comment, setComment] = useState("");
   const [isAnonymous, setIsAnonymous] = useState(false);
   const queryClient = useQueryClient();
@@ -36,7 +41,7 @@ export default function PostDetailCommentInput({
 
   return (
     <div className="gap-md px-gutter py-sm flex items-start">
-      <div className="bg-gray-2 size-8 shrink-0 rounded-full" />
+      <ProfileImage size="size-8" imageUrl={imageUrl} />
       <div className="border-gray-2 relative flex flex-1 flex-col rounded-lg border">
         <Textarea
           placeholder="댓글을 남겨보세요..."

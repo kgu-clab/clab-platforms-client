@@ -10,6 +10,7 @@ export const END_POINT = {
   },
   USER: {
     INFO: "members/my-profile",
+    UPDATE: (memberId: string) => `members/${memberId}`,
   },
   COMMUNITY: {
     BOARD: {
@@ -49,6 +50,7 @@ export const END_POINT = {
     },
     FILE: {
       BOARD: "files/boards",
+      PROFILE: "files/profiles",
     },
   },
   SUPPORT: {

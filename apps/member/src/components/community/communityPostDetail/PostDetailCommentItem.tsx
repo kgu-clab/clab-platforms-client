@@ -9,6 +9,7 @@ import {
 } from "react-icons/io5";
 import { useNavigate } from "react-router";
 
+import { ProfileImage } from "@/components/common";
 import type { Comment } from "@/api/community";
 import {
   accusationQueries,
@@ -204,15 +205,7 @@ export default function PostDetailCommentItem({
         onClick={handleClick}
         role={to ? "button" : undefined}
       >
-        <div className="bg-gray-2 size-8 shrink-0 overflow-hidden rounded-full">
-          {writerImageUrl && (
-            <img
-              src={writerImageUrl}
-              alt={writerName}
-              className="h-full w-full object-cover"
-            />
-          )}
-        </div>
+        <ProfileImage imageUrl={writerImageUrl ?? undefined} size="size-8" />
         <div className="gap-sm flex flex-1 flex-col">
           <div className="flex items-center justify-between">
             <div className="gap-sm flex items-center">
@@ -245,7 +238,6 @@ export default function PostDetailCommentItem({
                     className="text-12-regular text-gray-4 gap-xs flex items-center"
                     onClick={onClickReport}
                   >
-                    <IoWarningOutline className="size-3" />
                     신고
                   </button>
                 )}

@@ -14,3 +14,17 @@ export type getUserInfoResponse = BaseApiResponse<{
   isOtpEnabled: boolean;
   createdAt: string;
 }>;
+
+export type ProfileFileResponse = {
+  fileUrl: string;
+  originalFileName: string;
+  storagePeriod: number;
+  createdAt: string;
+};
+
+export type PatchMemberRequest = {
+  imageUrl?: string;
+  contact?: string;
+  email?: string;
+  githubUrl?: string;
+};

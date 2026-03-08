@@ -41,3 +41,14 @@ export function formatRelativeTime(dateString: string): string {
 
   return formatDate(dateString);
 }
+
+/**
+ * 주어진 날짜로부터 지난 일 수 계산
+ */
+export function getDaysSince(dateStr: string) {
+  const created = new Date(dateStr);
+  const now = new Date();
+  return Math.floor(
+    (now.getTime() - created.getTime()) / (1000 * 60 * 60 * 24),
+  );
+}

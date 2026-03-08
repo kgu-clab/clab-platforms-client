@@ -5,54 +5,86 @@ import { RiBook2Line, RiFilePaper2Line, RiLogoutBoxLine } from "react-icons/ri";
 import { TbXboxX } from "react-icons/tb";
 import { useNavigate } from "react-router";
 
+import { useQuery } from "@tanstack/react-query";
+
+import { boardQueries } from "@/api/community/board/api.query";
+import { commentQueries } from "@/api/community/comment/api.query";
+import { userQueries } from "@/api/user/api.query";
+
 import { useIsLoggedIn } from "@/model/auth";
 
 import { BottomNavbar } from "@/components/menu";
-import { MyMenuItem } from "@/components/my";
+import {
+  MyInfoCard,
+  MyMenuItem,
+  MyProfileHeader,
+  MyStatsCard,
+} from "@/components/my";
 
 import { ROUTE } from "@/constants";
+import { MOCK_ACTIVITIES } from "@/mock/activity";
 import { removeTokens } from "@/utils/auth";
+import { getDaysSince } from "@/utils/date";
 
 export default function MyPage() {
   const { updateLogged } = useIsLoggedIn();
   const navigate = useNavigate();
+
+  const { data: userInfo } = useQuery(userQueries.getUserInfoQuery());
+  const {
+    name,
+    id,
+    email,
+    contact,
+    githubUrl,
+    imageUrl,
+    roleLevel,
+    createdAt,
+  } = userInfo?.data ?? {};
+
+  const { data: myBoards } = useQuery(
+    boardQueries.getMyBoardsQuery({ page: 0, size: 1 }),
+  );
+
+  const { data: myComments } = useQuery(
+    commentQueries.getMyCommentsQuery({ page: 0, size: 1 }),
+  );
+
+  const activityCount = MOCK_ACTIVITIES.length;
+  const boardCount = myBoards?.totalItems ?? 0;
+  const commentCount = myComments?.totalItems ?? 0;
+
+  const daysSinceJoin = createdAt ? getDaysSince(createdAt) : null;
 
   const handleLogout = () => {
     removeTokens();
     updateLogged(false);
     navigate(ROUTE.LOGIN);
   };
+
   return (
     <>
       <Header
         left={<Title>마이페이지</Title>}
-        className="absolute left-0 right-0 top-0 bg-white"
+        className="z-100 absolute left-0 right-0 top-0 bg-white"
       />
 
-      <Scrollable className="pt-header-height px-gutter gap-3xl">
+      <Scrollable className="pt-header-height px-gutter gap-3xl mt-sm">
         <Section className="py-9">
-          <div className="gap-3xl pb-lg flex items-center">
-            <div className="bg-gray-2 size-20 rounded-full" />
-            <div>
-              <p className="text-16-semibold text-black">한유진(23)</p>
-              <p className="text-14-regular text-gray-4">202311509</p>
-            </div>
-          </div>
+          <MyProfileHeader
+            name={name}
+            id={id}
+            imageUrl={imageUrl}
+            daysSinceJoin={daysSinceJoin}
+          />
 
-          <div className="gap-md grid grid-cols-3">
-            <div className="bg-gray-1 rounded-lg px-2 py-5 text-center">
-              <p className="text-13-regular text-gray-4">참여 활동</p>
-              <p className="text-18-semibold text-black">12</p>
-            </div>
-            <div className="bg-gray-1 rounded-lg px-2 py-5 text-center">
-              <p className="text-13-regular text-gray-4">작성 글</p>
-              <p className="text-18-semibold text-black">12</p>
-            </div>
-            <div className="bg-gray-1 rounded-lg px-2 py-5 text-center">
-              <p className="text-13-regular text-gray-4">작성 댓글</p>
-              <p className="text-18-semibold text-black">12</p>
-            </div>
-          </div>
+          <MyStatsCard
+            activityCount={activityCount}
+            boardCount={boardCount}
+            commentCount={commentCount}
+          />
+
+          <MyInfoCard contact={contact} email={email} githubUrl={githubUrl} />
         </Section>
 
         <Section title="활동">
@@ -93,6 +125,7 @@ export default function MyPage() {
           <MyMenuItem to="#" label="탈퇴하기" icon={TbXboxX} />
         </Section>
       </Scrollable>
+
       <BottomNavbar />
     </>
   );
