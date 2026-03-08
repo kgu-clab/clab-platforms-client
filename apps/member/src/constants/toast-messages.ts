@@ -50,6 +50,7 @@ export const TOAST_MESSAGES = {
   PROFILE_IMAGE_UPDATE: {
     success: "프로필 이미지가 변경되었습니다.",
     error: "프로필 이미지 변경에 실패했습니다.",
+  },
   SUPPORT_CREATE: {
     success: "문의가 등록되었습니다.",
     error: "문의 등록에 실패했습니다.",

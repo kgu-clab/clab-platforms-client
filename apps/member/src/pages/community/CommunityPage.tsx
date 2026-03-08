@@ -1,9 +1,6 @@
 import { PlusButton, Section } from "@clab/design-system";
 import { useNavigate, useSearchParams } from "react-router";
 
-import { CATEGORY, TAB_TO_BOARD_CATEGORY } from "@/api/community";
-import type { CategoryTab } from "@/api/community";
-
 import {
   BoardPostList,
   QuestionPostList,
@@ -11,6 +8,8 @@ import {
   CommunityFilter,
 } from "@/components/community";
 
+import { CATEGORY, TAB_TO_BOARD_CATEGORY } from "@/api/community";
+import type { CategoryTab } from "@/api/community";
 import { ROUTE } from "@/constants";
 
 export default function CommunityPage() {

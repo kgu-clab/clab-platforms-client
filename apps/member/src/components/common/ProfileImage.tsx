@@ -1,7 +1,6 @@
+import { cn } from "@clab/design-system";
 import { useState } from "react";
 import { IoPersonSharp } from "react-icons/io5";
-
-import { cn } from "@clab/design-system";
 
 interface ProfileImageProps {
   imageUrl?: string;

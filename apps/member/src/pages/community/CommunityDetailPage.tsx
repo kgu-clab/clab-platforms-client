@@ -3,14 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import { GoChevronLeft } from "react-icons/go";
 import { useNavigate, useParams, useSearchParams } from "react-router";
 
-import { boardQueries, commentQueries, newsQueries } from "@/api/community";
-
 import {
   PostDetailContent,
   NewsDetailContent,
   PostDetailCommentInput,
   PostDetailCommentList,
 } from "@/components/community";
+
+import { boardQueries, commentQueries, newsQueries } from "@/api/community";
 
 type DetailType = "board" | "news";
 

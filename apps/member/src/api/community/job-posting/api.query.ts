@@ -1,6 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 
 import type { PagedResponse } from "@/api/config";
+
 import type {
   GetJobPostingsParams,
   JobPostingDetailsResponseDto,

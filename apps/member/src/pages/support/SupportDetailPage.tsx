@@ -5,6 +5,14 @@ import { GoChevronLeft } from "react-icons/go";
 import { useNavigate, useParams } from "react-router";
 
 import {
+  ConfirmModal,
+  FileDownloadList,
+  ImageInlineList,
+} from "@/components/common";
+import AnswerContent from "@/components/support/AnswerContent";
+import AnswerForm from "@/components/support/AnswerForm";
+
+import {
   supportKeys,
   supportQueries,
   getCategoryLabel,
@@ -12,13 +20,6 @@ import {
   getStatusLabel,
 } from "@/api/support";
 import { userQueries } from "@/api/user/api.query";
-import {
-  ConfirmModal,
-  FileDownloadList,
-  ImageInlineList,
-} from "@/components/common";
-import AnswerContent from "@/components/support/AnswerContent";
-import AnswerForm from "@/components/support/AnswerForm";
 import { ROUTE, TOAST_MESSAGES } from "@/constants";
 import { formatRelativeTime } from "@/utils/date";
 import { showSuccessToast } from "@/utils/toast";

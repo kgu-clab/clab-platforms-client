@@ -1,12 +1,12 @@
+import { Button, Textarea } from "@clab/design-system";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { IoSend } from "react-icons/io5";
 
+import { ProfileImage } from "@/components/common";
+
 import { commentKeys, commentQueries } from "@/api/community";
 import { userQueries } from "@/api/user/api.query";
-import { Button, Textarea } from "@clab/design-system";
-
-import { ProfileImage } from "@/components/common";
 
 interface PostDetailCommentInputProps {
   boardId: number;

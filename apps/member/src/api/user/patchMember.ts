@@ -1,7 +1,6 @@
-import type { BaseApiResponse } from "../config/api-base-types";
 import { authApi, END_POINT } from "../config";
-
 import type { PatchMemberRequest } from "./api.model";
+import type { BaseApiResponse } from "../config/api-base-types";
 
 export function patchMember(memberId: string, body: PatchMemberRequest) {
   return authApi.patch<BaseApiResponse<string>, PatchMemberRequest>(

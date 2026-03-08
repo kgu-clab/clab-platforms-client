@@ -4,7 +4,6 @@ import { GoChevronLeft } from "react-icons/go";
 import { useNavigate } from "react-router";
 
 import { boardQueries } from "@/api/community";
-
 import { ROUTE } from "@/constants";
 import { formatRelativeTime } from "@/utils/date";
 

@@ -3,9 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import { GoChevronLeft } from "react-icons/go";
 import { useNavigate } from "react-router";
 
-import { commentQueries } from "@/api/community";
-
 import { PostDetailCommentItem } from "@/components/community";
+
+import { commentQueries } from "@/api/community";
 
 export default function MyCommentsPage() {
   const navigate = useNavigate();
