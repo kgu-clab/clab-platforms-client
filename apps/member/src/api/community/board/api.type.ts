@@ -2,11 +2,11 @@ import type { BoardCategory } from "./api.model";
 
 export type { BoardCategory } from "./api.model";
 
-export type { BoardListResponseDto as BoardPost } from "./api.model";
-export type { BoardDetailsResponseDto as BoardDetail } from "./api.model";
-export type { BoardHotListResponseDto as HotBoardPost } from "./api.model";
-export type { BoardMyResponseDto as MyBoardPost } from "./api.model";
-export type { BoardRequestDto as BoardWriteForm } from "./api.model";
+export type { BoardListItem as BoardPost } from "./api.model";
+export type { GetBoardDetailResponse as BoardDetail } from "./api.model";
+export type { HotBoardListItem as HotBoardPost } from "./api.model";
+export type { MyBoardListItem as MyBoardPost } from "./api.model";
+export type { PostBoardRequest as BoardWriteForm } from "./api.model";
 export type { BoardEmojiInfo } from "./api.model";
 export type { BoardFileInfo } from "./api.model";
 

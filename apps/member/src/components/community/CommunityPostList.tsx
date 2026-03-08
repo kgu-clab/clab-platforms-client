@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router";
 
 import {
@@ -26,15 +26,16 @@ export function BoardPostList({ category }: BoardPostListProps) {
   const [searchParams] = useSearchParams();
   const sort = searchParams.get("sort") ?? "latest";
 
-  const { data, isLoading } = useQuery(
-    boardQueries.getBoardsByCategoryQuery({
-      category,
-      sortBy: sort === "popular" ? ["commentCount"] : ["createdAt"],
-      sortDirection: ["desc"],
-    }),
-  );
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useInfiniteQuery(
+      boardQueries.getBoardsByCategoryInfiniteQuery({
+        category,
+        sortBy: sort === "popular" ? ["commentCount"] : ["createdAt"],
+        sortDirection: ["desc"],
+      }),
+    );
 
-  const boards = data?.items ?? [];
+  const boards = data?.pages.flatMap((page) => page.items) ?? [];
 
   if (isLoading) {
     return <ListMessage message="로딩 중..." />;
@@ -49,6 +50,15 @@ export function BoardPostList({ category }: BoardPostListProps) {
       {boards.map((post) => (
         <CommunityPostItem key={post.id} post={post} />
       ))}
+      {hasNextPage && (
+        <button
+          onClick={() => fetchNextPage()}
+          disabled={isFetchingNextPage}
+          className="text-gray-4 text-14-regular py-4"
+        >
+          {isFetchingNextPage ? "로딩 중..." : "더 보기"}
+        </button>
+      )}
     </div>
   );
 }
@@ -71,24 +81,26 @@ export function QuestionPostList() {
     sortDirection: ["desc"] as string[],
   };
 
-  const categoryQuery = useQuery({
-    ...boardQueries.getBoardsByCategoryQuery({
+  const categoryQuery = useInfiniteQuery({
+    ...boardQueries.getBoardsByCategoryInfiniteQuery({
       category: "DEVELOPMENT_QNA",
       ...sortParams,
     }),
     enabled: !hasHashtags,
   });
 
-  const hashtagQuery = useQuery({
-    ...boardQueries.getBoardsByHashtagQuery({
+  const hashtagQuery = useInfiniteQuery({
+    ...boardQueries.getBoardsByHashtagInfiniteQuery({
       hashtags,
       ...sortParams,
     }),
     enabled: hasHashtags,
   });
 
-  const { data, isLoading } = hasHashtags ? hashtagQuery : categoryQuery;
-  const boards = data?.items ?? [];
+  const query = hasHashtags ? hashtagQuery : categoryQuery;
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    query;
+  const boards = data?.pages.flatMap((page) => page.items) ?? [];
 
   if (isLoading) {
     return <ListMessage message="로딩 중..." />;
@@ -103,6 +115,15 @@ export function QuestionPostList() {
       {boards.map((post) => (
         <CommunityPostItem key={post.id} post={post} />
       ))}
+      {hasNextPage && (
+        <button
+          onClick={() => fetchNextPage()}
+          disabled={isFetchingNextPage}
+          className="text-gray-4 text-14-regular py-4"
+        >
+          {isFetchingNextPage ? "로딩 중..." : "더 보기"}
+        </button>
+      )}
     </div>
   );
 }

@@ -7,6 +7,7 @@ export type {
 export {
   DEFAULT_PAGE_SIZE,
   ACCUSATIONS_PAGE_SIZE,
+  BOARDS_PAGE_SIZE,
   BOOKS_PAGE_SIZE,
   SUPPORTS_PAGE_SIZE,
 } from "./api-base-types";
