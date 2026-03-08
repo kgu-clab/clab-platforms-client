@@ -102,3 +102,8 @@ export type GetActivitiyDetailResponse = BaseApiResponse<{
   owner: boolean;
   isOwner: boolean;
 }>;
+
+export type PostActivityApplyRequest = {
+  activityGroupId: number;
+  applyReason: string;
+};
