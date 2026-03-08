@@ -15,3 +15,6 @@ export { default as MyCommentsPage } from "./my/MyCommentsPage";
 export { default as MyLibraryPage } from "./my/MyLibraryPage";
 export { default as MyPage } from "./my/MyPage";
 export { default as MyPostsPage } from "./my/MyPostsPage";
+export { default as SupportDetailPage } from "./support/SupportDetailPage";
+export { default as SupportPage } from "./support/SupportPage";
+export { default as SupportWritePage } from "./support/SupportWritePage";

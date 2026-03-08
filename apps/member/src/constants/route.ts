@@ -17,4 +17,7 @@ export const ROUTE = {
   MY_COMMENTS: "/my/comments",
   MY_LIBRARY: "/my/library",
   MY_ACTIVITY: "/my/activity",
+  SUPPORT: "/support",
+  SUPPORT_WRITE: "/support/write",
+  SUPPORT_DETAIL: (id: number) => `/support/${id}`,
 };
