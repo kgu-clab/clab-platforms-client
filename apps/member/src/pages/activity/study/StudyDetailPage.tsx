@@ -8,7 +8,7 @@ import {
   Section,
   Textarea,
 } from "@clab/design-system";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { GoChevronLeft } from "react-icons/go";
 import { useNavigate, useParams } from "react-router";
@@ -35,6 +35,7 @@ function formatGeneration(memberId: string): string {
 
 export default function StudyDetailPage() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { id } = useParams<{ id: string }>();
   const activityGroupId = id != null ? Number(id) : NaN;
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -49,6 +50,38 @@ export default function StudyDetailPage() {
     enabled: Number.isFinite(activityGroupId),
   });
 
+  const { data: appliedData } = useQuery({
+    ...activityQueries.getActivityAppliedQuery(),
+    enabled: Number.isFinite(activityGroupId) && !!detail,
+  });
+
+  const rawItems = appliedData?.items;
+  const appliedItems = Array.isArray(rawItems)
+    ? rawItems
+    : rawItems
+      ? [rawItems]
+      : [];
+  const hasApplied =
+    !!detail && appliedItems.some((item) => item.id === detail.id);
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setMotivation("");
+  };
+
+  const applyMutation = useMutation({
+    ...activityQueries.postActivityApplyMutation,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: activityQueries.detailKey({ activityGroupId }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: activityQueries.appliedKey(),
+      });
+      handleCloseModal();
+    },
+  });
+
   const handleBack = () => {
     navigate(-1);
   };
@@ -57,14 +90,12 @@ export default function StudyDetailPage() {
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setMotivation("");
-  };
-
   const handleSubmit = () => {
-    console.log("참여 신청:", motivation);
-    handleCloseModal();
+    if (!motivation.trim()) return;
+    applyMutation.mutate({
+      activityGroupId,
+      applyReason: motivation.trim(),
+    });
   };
 
   if (!Number.isFinite(activityGroupId)) {
@@ -176,7 +207,13 @@ export default function StudyDetailPage() {
         </Section>
 
         <footer className="z-999 pb-gutter h-bottom-navbar-height px-gutter border-gray-2 fixed bottom-0 left-0 right-0 box-border flex items-center justify-center border-t bg-white">
-          <Button onClick={handleOpenModal}>참여 신청</Button>
+          {hasApplied ? (
+            <Button disabled color="disabled">
+              신청완료
+            </Button>
+          ) : (
+            <Button onClick={handleOpenModal}>참여 신청</Button>
+          )}
         </footer>
       </div>
 
@@ -193,7 +230,12 @@ export default function StudyDetailPage() {
           maxLength={400}
           showCounter
         />
-        <Button onClick={handleSubmit}>신청하기</Button>
+        <Button
+          onClick={handleSubmit}
+          disabled={applyMutation.isPending || !motivation.trim()}
+        >
+          {applyMutation.isPending ? "신청 중..." : "신청하기"}
+        </Button>
       </Modal>
     </Scrollable>
   );

@@ -59,6 +59,7 @@ export const END_POINT = {
     DETAIL: (activityGroupId: number) =>
       `activity-group/member/${activityGroupId}`,
     APPLY: "activity-group/member/apply",
+    MY_ACTIVITY_APPLY: "activity-group/member/applied",
   },
   SUPPORT: {
     BASE: "supports",

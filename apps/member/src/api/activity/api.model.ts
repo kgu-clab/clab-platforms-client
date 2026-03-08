@@ -107,3 +107,21 @@ export type PostActivityApplyRequest = {
   activityGroupId: number;
   applyReason: string;
 };
+
+export type GetActivityAppliedResponse = BasePaginationResponse<{
+  id: number;
+  name: string;
+  content: string;
+  category: ActivityCategory;
+  subject: string;
+  imageUrl: string;
+  leaders: [
+    {
+      id: string;
+      name: string;
+    },
+  ];
+  participantCount: number;
+  weeklyActivityCount: number;
+  createdAt: string;
+}>;

@@ -1,4 +1,4 @@
-import { queryOptions } from "@tanstack/react-query";
+import { mutationOptions, queryOptions } from "@tanstack/react-query";
 
 import type {
   ActivityCategory,
@@ -6,13 +6,16 @@ import type {
   GetActivitiyByCategoryRequest,
   GetActivitiyByStatusRequest,
   GetActivitiyDetailRequest,
+  PostActivityApplyRequest,
 } from "./api.model";
 export type ActivityListFilter =
   | { type: "category"; category: ActivityCategory }
   | { type: "status"; status: ActivityStatus };
+import { getActivityApplied } from "./getActivityApplied";
 import { getActivityByCategory } from "./getActivityByCategory";
 import { getActivityByStatus } from "./getActivityByStatus";
 import { getActivityDetail } from "./getActivityDetail";
+import { postActivityApply } from "./postActivityApply";
 
 const activityQueryKey = ["activity"] as const;
 
@@ -24,6 +27,7 @@ export const activityQueries = {
     [...activityQueryKey, "status", request] as const,
   detailKey: (request: GetActivitiyDetailRequest) =>
     [...activityQueryKey, "detail", request.activityGroupId] as const,
+  appliedKey: () => [...activityQueryKey, "applied"] as const,
 
   getActivityByCategoryQuery: (request: GetActivitiyByCategoryRequest) =>
     queryOptions({
@@ -55,4 +59,25 @@ export const activityQueries = {
         return res.data.data;
       },
     }),
+
+  getActivityAppliedQuery: () =>
+    queryOptions({
+      queryKey: activityQueries.appliedKey(),
+      queryFn: async () => {
+        const res = await getActivityApplied();
+        if (!res.ok)
+          throw new Error("활동 참여 신청 목록 조회에 실패했습니다.");
+        return res.data.data;
+      },
+      staleTime: Number.POSITIVE_INFINITY, // invalidate 시에만 재요청
+    }),
+
+  postActivityApplyMutation: mutationOptions({
+    mutationFn: async (request: PostActivityApplyRequest) => {
+      const res = await postActivityApply(request);
+      if (!res.ok)
+        throw new Error(res.error.message ?? "활동 참여 신청에 실패했습니다.");
+      return res.data;
+    },
+  }),
 };
