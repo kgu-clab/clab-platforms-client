@@ -50,6 +50,13 @@ export default function HomePage() {
 
         <Section title="커뮤니티 인기 게시글" className="px-gutter">
           <Section.List>
+            {hotBoards.length === 0 && (
+              <div className="flex justify-center py-10">
+                <span className="text-gray-4 text-14-regular">
+                  게시글이 없습니다.
+                </span>
+              </div>
+            )}
             {hotBoards.map((post) => (
               <HomePostItem
                 key={post.id}
