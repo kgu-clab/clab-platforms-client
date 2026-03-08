@@ -43,13 +43,11 @@ export default function ActivityStudyItem({
       className="bg-gray-0 border-gray-2 grid w-full grid-cols-[1fr_3fr] rounded-xl border"
     >
       <div className="bg-gray-2 overflow-hidden rounded-l-xl">
-        {imageUrl && (
-          <img
-            src={imageUrl}
-            alt={name}
-            className="h-full w-full object-cover"
-          />
-        )}
+        <img
+          src={imageUrl || "/images/clab.png"}
+          alt={name}
+          className="h-full w-full object-cover"
+        />
       </div>
       <div className="space-y-sm p-gutter">
         <div className="text-16-medium line-clamp-1">{name}</div>

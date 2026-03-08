@@ -19,25 +19,25 @@ export default function StudyMemberGrid({
   const members = Array.isArray(groupMembers) ? [...groupMembers] : [];
 
   return (
-    <div className="gap-xs grid grid-cols-4">
+    <div className="scrollbar-hide -mx-gutter px-gutter overflow-x-auto">
       {members.length === 0 ? (
-        <p className="text-13-regular text-gray-4 col-span-4">
-          참여 인원이 없습니다.
-        </p>
+        <p className="text-13-regular text-gray-4">참여 인원이 없습니다.</p>
       ) : (
-        members.map((member) => (
-          <div
-            key={member.memberId}
-            className="gap-sm flex flex-col items-center justify-center"
-          >
-            <ProfileImage size="size-[50px]" />
-            <Chip color="yellow">{member.role || "멤버"}</Chip>
-            <p className="text-13-regular">
-              {member.memberName}
-              {formatGeneration(member.memberId)}
-            </p>
-          </div>
-        ))
+        <div className="gap-xl flex">
+          {members.map((member) => (
+            <div
+              key={member.memberId}
+              className="gap-sm flex shrink-0 flex-col items-center justify-center"
+            >
+              <ProfileImage size="size-[50px]" />
+              <Chip color="yellow">{member.role || "멤버"}</Chip>
+              <p className="text-13-regular">
+                {member.memberName}
+                {formatGeneration(member.memberId)}
+              </p>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );

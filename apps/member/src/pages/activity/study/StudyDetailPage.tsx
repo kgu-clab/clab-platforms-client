@@ -17,6 +17,7 @@ import { StudyMemberGrid } from "@/components/activity";
 
 import type { ActivityStatus } from "@/api/activity/api.model";
 import { activityQueries } from "@/api/activity/api.query";
+import { formatTextToNodes } from "@/utils/formatter";
 
 const STATUS_MAP: Record<
   ActivityStatus,
@@ -135,18 +136,16 @@ export default function StudyDetailPage() {
       />
 
       <div className="absolute left-0 right-0 top-0 h-[40vh] w-full bg-gray-200">
-        {detail.imageUrl && (
-          <img
-            src={detail.imageUrl}
-            alt={detail.name}
-            className="h-full w-full object-cover"
-          />
-        )}
+        <img
+          src={detail.imageUrl || "/images/no-image.png"}
+          alt={detail.name}
+          className="h-full w-full object-cover"
+        />
       </div>
 
       <div className="px-gutter rounded-t-bottom-navbar gap-3xl pb-bottom-navbar-height relative z-50 mt-[30vh] flex flex-col bg-white pt-10">
         <Section title={detail.name}>
-          <p className="text-gray-5">{detail.content}</p>
+          <p className="text-gray-5">{formatTextToNodes(detail.content)}</p>
         </Section>
 
         <div className="space-y-xs">
@@ -164,10 +163,15 @@ export default function StudyDetailPage() {
         </div>
 
         <Section title="커리큘럼">
-          <p className="text-gray-5">{detail.curriculum || "-"}</p>
+          <p className="text-gray-5">
+            {detail.curriculum ? formatTextToNodes(detail.curriculum) : "-"}
+          </p>
         </Section>
 
-        <Section title="참여 인원">
+        <Section title="참여 인원" className="relative">
+          <span className="text-13-regular text-gray-5 absolute right-0 top-0.5">
+            총 {detail.groupMembers.length}명
+          </span>
           <StudyMemberGrid groupMembers={detail.groupMembers} />
         </Section>
 
