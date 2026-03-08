@@ -1,46 +1,21 @@
 import { Section } from "@clab/design-system";
-import { useQuery } from "@tanstack/react-query";
 
-import {
-  activityQueries,
-  type ActivityListFilter,
-} from "@/api/activity/api.query";
 import type { Activity, ActivityByStatus } from "@/api/activity/api.type";
-import { DEFAULT_PAGE_SIZE } from "@/api/config";
 
 import ActivityStudyItem from "./ActivityStudyItem";
 
-export type { ActivityListFilter };
-
-const PAGE = 0;
-
 interface ActivityStudyListProps {
-  filter: ActivityListFilter;
+  items: (Activity | ActivityByStatus)[];
+  isPending: boolean;
+  isError: boolean;
 }
 
-export default function ActivityStudyList({ filter }: ActivityStudyListProps) {
-  const isByCategory = filter.type === "category";
-  const categoryQuery = useQuery({
-    ...activityQueries.getActivityByCategoryQuery({
-      category: filter.type === "category" ? filter.category : "STUDY",
-      page: PAGE,
-      size: DEFAULT_PAGE_SIZE,
-    }),
-    enabled: isByCategory,
-  });
-  const statusQuery = useQuery({
-    ...activityQueries.getActivityByStatusQuery({
-      status: filter.type === "status" ? filter.status : "PROGRESSING",
-      page: PAGE,
-      size: DEFAULT_PAGE_SIZE,
-    }),
-    enabled: !isByCategory,
-  });
-
-  const query = isByCategory ? categoryQuery : statusQuery;
-  const items: (Activity | ActivityByStatus)[] = query.data?.items ?? [];
-
-  if (query.isPending) {
+export default function ActivityStudyList({
+  items,
+  isPending,
+  isError,
+}: ActivityStudyListProps) {
+  if (isPending) {
     return (
       <Section.List>
         <div className="text-14-regular text-gray-4 py-gutter text-center">
@@ -50,7 +25,7 @@ export default function ActivityStudyList({ filter }: ActivityStudyListProps) {
     );
   }
 
-  if (query.isError) {
+  if (isError) {
     return (
       <Section.List>
         <div className="text-14-regular text-red-5 py-gutter text-center">

@@ -211,6 +211,10 @@ export default function StudyDetailPage() {
             <Button disabled color="disabled">
               신청완료
             </Button>
+          ) : detail.status === "END" ? (
+            <Button disabled color="disabled">
+              참여 신청
+            </Button>
           ) : (
             <Button onClick={handleOpenModal}>참여 신청</Button>
           )}

@@ -5,6 +5,7 @@ import { Link } from "react-router";
 
 import type { ActivityStatus } from "@/api/activity/api.model";
 import type { Activity, ActivityByStatus } from "@/api/activity/api.type";
+import { formatDate } from "@/utils/date";
 
 type ActivityStudyItemProps = {
   activity: Activity | ActivityByStatus;
@@ -40,7 +41,7 @@ export default function ActivityStudyItem({
   return (
     <Link
       to={`/activity/${id}`}
-      className="bg-gray-0 border-gray-2 grid w-full grid-cols-[1fr_3fr] rounded-xl border"
+      className="bg-gray-0 border-gray-2 grid w-full grid-cols-[2fr_5fr] rounded-xl border"
     >
       <div className="bg-gray-2 overflow-hidden rounded-l-xl">
         <img
@@ -49,8 +50,11 @@ export default function ActivityStudyItem({
           className="h-full w-full object-cover"
         />
       </div>
-      <div className="space-y-sm p-gutter">
+      <div className="space-y-xs p-gutter">
         <div className="text-16-medium line-clamp-1">{name}</div>
+        <div className="text-14-regular text-gray-5 line-clamp-1">
+          {formatDate(activity.createdAt)} 개설
+        </div>
         <div className="gap-md text-12-regular text-gray-4 flex items-center">
           {leader && (
             <div className="gap-xs flex items-center">

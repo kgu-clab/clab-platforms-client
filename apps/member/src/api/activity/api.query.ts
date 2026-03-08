@@ -38,6 +38,7 @@ export const activityQueries = {
           throw new Error("카테고리별 활동 목록 조회에 실패했습니다.");
         return res.data.data;
       },
+      staleTime: 60 * 60 * 1000,
     }),
 
   getActivityByStatusQuery: (request: GetActivitiyByStatusRequest) =>
@@ -48,6 +49,7 @@ export const activityQueries = {
         if (!res.ok) throw new Error("상태별 활동 목록 조회에 실패했습니다.");
         return res.data.data;
       },
+      staleTime: 60 * 60 * 1000,
     }),
 
   getActivityDetailQuery: (request: GetActivitiyDetailRequest) =>
@@ -58,6 +60,7 @@ export const activityQueries = {
         if (!res.ok) throw new Error("활동 상세 조회에 실패했습니다.");
         return res.data.data;
       },
+      staleTime: 60 * 60 * 1000,
     }),
 
   getActivityAppliedQuery: () =>
