@@ -55,7 +55,11 @@ export default function ActivityManageApplicationList({
         <>
           지원서 조회
           <span className="text-13-regular ml-sm text-gray-5 font-normal">
-            총 {isError ? 0 : applications.length}건
+            총{" "}
+            {isError
+              ? 0
+              : applications.filter((app) => app.status === "WAITING").length}
+            건
           </span>
         </>
       }
@@ -65,7 +69,8 @@ export default function ActivityManageApplicationList({
         <p className="text-13-regular text-gray-4">
           지원서 목록을 불러올 수 없습니다.
         </p>
-      ) : applications.length === 0 && !isFetchingNextPage ? (
+      ) : applications.filter((app) => app.status === "WAITING").length === 0 &&
+        !isFetchingNextPage ? (
         <p className="text-13-regular text-gray-4">지원한 멤버가 없습니다.</p>
       ) : (
         <>
