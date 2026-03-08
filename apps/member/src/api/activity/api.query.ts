@@ -29,6 +29,7 @@ import { getActivityApplied } from "./getActivityApplied";
 import { getActivityByCategory } from "./getActivityByCategory";
 import { getActivityByStatus } from "./getActivityByStatus";
 import { getActivityDetail } from "./getActivityDetail";
+import { getActivityJoined } from "./getActivityJoined";
 import { patchActivityMemberRole } from "./patchActivityMemberRole";
 import { patchActivityMemberStatus } from "./patchActivityMemberStatus";
 import { patchActivityStatus } from "./patchActivityStatus";
@@ -47,6 +48,8 @@ export const activityQueries = {
   detailKey: (request: GetActivitiyDetailRequest) =>
     [...activityQueryKey, "detail", request.activityGroupId] as const,
   appliedKey: () => [...activityQueryKey, "applied"] as const,
+  joinedKey: (request?: GetActivitiyByStatusRequest) =>
+    [...activityQueryKey, "joined", request] as const,
   applicationsKey: (request: GetActivityApplicationsRequest) =>
     [...activityQueryKey, "applications", request.activityGroupId] as const,
 
@@ -94,6 +97,18 @@ export const activityQueries = {
         return res.data.data;
       },
       staleTime: Number.POSITIVE_INFINITY, // invalidate 시에만 재요청
+    }),
+
+  getActivityJoinedQuery: (request: GetActivitiyByStatusRequest) =>
+    queryOptions({
+      queryKey: activityQueries.joinedKey(request),
+      queryFn: async () => {
+        const res = await getActivityJoined(request);
+        if (!res.ok)
+          throw new Error("참여 중인 활동 목록 조회에 실패했습니다.");
+        return res.data.data;
+      },
+      staleTime: 60 * 60 * 1000,
     }),
 
   getActivityApplicationsQuery: (request: GetActivityApplicationsRequest) =>

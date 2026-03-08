@@ -60,6 +60,7 @@ export const END_POINT = {
       `activity-group/member/${activityGroupId}`,
     APPLY: "activity-group/member/apply",
     MY_ACTIVITY_APPLY: "activity-group/member/applied",
+    MY_ACTIVITY_JOINED: "activity-group/member/my",
     CREATE: "activity-group/admin",
     EDIT: (activityGroupId: number) =>
       `activity-group/admin/${activityGroupId}`,
