@@ -31,16 +31,8 @@ export default function MyPage() {
   const navigate = useNavigate();
 
   const { data: userInfo } = useQuery(userQueries.getUserInfoQuery());
-  const {
-    name,
-    id,
-    email,
-    contact,
-    githubUrl,
-    imageUrl,
-    roleLevel,
-    createdAt,
-  } = userInfo?.data ?? {};
+  const { name, id, email, contact, githubUrl, imageUrl, createdAt } =
+    userInfo?.data ?? {};
 
   const { data: myBoards } = useQuery(
     boardQueries.getMyBoardsQuery({ page: 0, size: 1 }),

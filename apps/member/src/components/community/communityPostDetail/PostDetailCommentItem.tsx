@@ -1,12 +1,7 @@
 import { Button, Modal, Textarea } from "@clab/design-system";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import {
-  IoChatbubbleOutline,
-  IoHeart,
-  IoHeartOutline,
-  IoWarningOutline,
-} from "react-icons/io5";
+import { IoChatbubbleOutline, IoHeart, IoHeartOutline } from "react-icons/io5";
 import { useNavigate } from "react-router";
 
 import { ProfileImage } from "@/components/common";
