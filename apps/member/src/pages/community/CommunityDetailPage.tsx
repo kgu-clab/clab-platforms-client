@@ -1,7 +1,9 @@
 import { Header, Scrollable } from "@clab/design-system";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { GoChevronLeft } from "react-icons/go";
 import { useNavigate, useParams, useSearchParams } from "react-router";
+
+import { useInfiniteScroll } from "@/model/common/useInfiniteScroll";
 
 import {
   PostDetailContent,
@@ -33,9 +35,22 @@ export default function CommunityDetailPage() {
     enabled: type === "news",
   });
 
-  const { data: commentsData, isLoading: isCommentsLoading } = useQuery({
-    ...commentQueries.getCommentsQuery({ boardId: detailId }),
+  const {
+    data: commentsData,
+    isLoading: isCommentsLoading,
+    hasNextPage: commentsHasNextPage,
+    fetchNextPage: commentsFetchNextPage,
+    isFetchingNextPage: commentsIsFetchingNextPage,
+  } = useInfiniteQuery({
+    ...commentQueries.getCommentsInfiniteQuery({ boardId: detailId }),
     enabled: type === "board",
+  });
+
+  const { bottomSentinelRef } = useInfiniteScroll({
+    hasNextPage: commentsHasNextPage ?? false,
+    isFetchingNextPage: commentsIsFetchingNextPage,
+    fetchNextPage: commentsFetchNextPage,
+    useViewport: true,
   });
 
   const isLoading =
@@ -87,9 +102,17 @@ export default function CommunityDetailPage() {
             <hr className="border-gray-1 border-t" />
 
             <PostDetailCommentList
-              comments={commentsData?.items ?? []}
+              comments={
+                commentsData?.pages.flatMap((page) => page.data.items) ?? []
+              }
               boardId={detailId}
             />
+            <div ref={bottomSentinelRef} />
+            {commentsIsFetchingNextPage && (
+              <div className="flex justify-center py-4">
+                <span className="text-gray-4 text-14-regular">로딩 중...</span>
+              </div>
+            )}
           </>
         )}
       </Scrollable>

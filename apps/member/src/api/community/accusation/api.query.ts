@@ -4,7 +4,7 @@ import {
   queryOptions,
 } from "@tanstack/react-query";
 
-import { ACCUSATIONS_PAGE_SIZE } from "@/api/config";
+import { DEFAULT_PAGE_SIZE } from "@/api/config";
 import type { PaginationParams } from "@/api/config";
 import type { BasePaginationResponse } from "@/api/config/api-base-types";
 import { TOAST_MESSAGES } from "@/constants";
@@ -43,7 +43,7 @@ export const accusationQueries = {
         const res = await getMyAccusations({
           ...params,
           page: pageParam as number,
-          size: ACCUSATIONS_PAGE_SIZE,
+          size: DEFAULT_PAGE_SIZE,
         });
         if (!res.ok) {
           return {

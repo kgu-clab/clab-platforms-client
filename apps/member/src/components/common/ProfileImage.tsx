@@ -1,6 +1,7 @@
 import { cn } from "@clab/design-system";
-import { useState } from "react";
 import { IoPersonSharp } from "react-icons/io5";
+
+import { BASE_FILE_URL } from "@/api/config";
 
 interface ProfileImageProps {
   imageUrl?: string;
@@ -13,14 +14,13 @@ export default function ProfileImage({
   size = "size-16",
   className,
 }: ProfileImageProps) {
-  const [hasError, setHasError] = useState(false);
+  const fullUrl = imageUrl ? `${BASE_FILE_URL}${imageUrl}` : undefined;
 
-  return imageUrl && !hasError ? (
+  return imageUrl ? (
     <img
-      src={imageUrl}
+      src={fullUrl}
       alt="프로필"
       className={cn(size, "rounded-full object-cover", className)}
-      onError={() => setHasError(true)}
     />
   ) : (
     <div

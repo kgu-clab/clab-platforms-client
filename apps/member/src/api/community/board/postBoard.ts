@@ -1,10 +1,10 @@
 import type { ApiResponse } from "@/api/config";
 import { authApi, END_POINT } from "@/api/config";
 
-import type { BoardRequestDto } from "./api.model";
+import type { PostBoardRequest } from "./api.model";
 
-export async function postBoard(body: BoardRequestDto) {
-  const result = await authApi.post<ApiResponse<string>, BoardRequestDto>(
+export async function postBoard(body: PostBoardRequest) {
+  const result = await authApi.post<ApiResponse<string>, PostBoardRequest>(
     END_POINT.COMMUNITY.BOARD.BASE,
     body,
   );

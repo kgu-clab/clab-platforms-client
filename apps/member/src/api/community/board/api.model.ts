@@ -27,7 +27,7 @@ export type BoardEmojiInfo = {
   isOwner: boolean;
 };
 
-export type BoardListResponseDto = {
+export type BoardListItem = {
   id: number;
   category: string;
   writerId: string | null; // 익명 게시글인 경우 null
@@ -39,7 +39,7 @@ export type BoardListResponseDto = {
   boardHashtagInfos: BoardHashtagInfo[];
 };
 
-export type BoardHotListResponseDto = {
+export type HotBoardListItem = {
   id: number;
   writerId: string;
   writerName: string;
@@ -52,7 +52,7 @@ export type BoardHotListResponseDto = {
   createdAt: string;
 };
 
-export type BoardDetailsResponseDto = {
+export type GetBoardDetailResponse = {
   id: number;
   writerId: string;
   writerName: string;
@@ -69,7 +69,7 @@ export type BoardDetailsResponseDto = {
   isOwner: boolean;
 };
 
-export type BoardMyResponseDto = {
+export type MyBoardListItem = {
   id: number;
   category: string;
   writerName: string;
@@ -79,14 +79,14 @@ export type BoardMyResponseDto = {
   createdAt: string;
 };
 
-export type BoardEmojiToggleResponseDto = {
+export type PostBoardEmojiResponse = {
   boardId: number;
   emoji: string;
   count: number;
   isOwner: boolean;
 };
 
-export type BoardRequestDto = {
+export type PostBoardRequest = {
   category: BoardCategory;
   title: string;
   content: string;
@@ -96,7 +96,7 @@ export type BoardRequestDto = {
   hashtagNames?: string[];
 };
 
-export type BoardUpdateRequestDto = {
+export type PatchBoardRequest = {
   wantAnonymous: boolean;
   category?: BoardCategory;
   title?: string;
@@ -105,10 +105,12 @@ export type BoardUpdateRequestDto = {
   hashtagNames?: string[];
 };
 
-export type GetBoardsByCategoryParams = PaginationParams & {
+export type GetBoardsByCategoryRequest = PaginationParams & {
   category: BoardCategory;
 };
 
-export type GetBoardsByHashtagParams = PaginationParams & {
+export type GetBoardsByHashtagRequest = PaginationParams & {
   hashtags: string[];
 };
+
+export type GetMyBoardsRequest = PaginationParams;

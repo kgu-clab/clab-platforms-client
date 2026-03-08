@@ -4,7 +4,7 @@ import {
   queryOptions,
 } from "@tanstack/react-query";
 
-import { BOOKS_PAGE_SIZE } from "@/api/config";
+import { DEFAULT_PAGE_SIZE } from "@/api/config";
 
 import type {
   getBooksRequest,
@@ -34,7 +34,7 @@ export const libraryQueries = {
         const res = await getBooks({
           ...request,
           page: pageParam as number,
-          size: BOOKS_PAGE_SIZE,
+          size: DEFAULT_PAGE_SIZE,
         });
         if (!res.ok) {
           return {

@@ -32,16 +32,14 @@ export default function MyPage() {
   const { name, id, email, contact, githubUrl, imageUrl, createdAt } =
     userInfo?.data ?? {};
 
-  const { data: myBoards } = useQuery(
-    boardQueries.getMyBoardsQuery({ page: 0, size: 1 }),
-  );
+  const { data: myBoards } = useQuery(boardQueries.getMyBoardsCountQuery());
 
   const { data: myComments } = useQuery(
     commentQueries.getMyCommentsQuery({ page: 0, size: 1 }),
   );
 
   const activityCount = MOCK_ACTIVITIES.length;
-  const boardCount = myBoards?.totalItems ?? 0;
+  const boardCount = myBoards ?? 0;
   const commentCount = myComments?.totalItems ?? 0;
 
   const daysSinceJoin = createdAt ? getDaysSince(createdAt) : null;

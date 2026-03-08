@@ -1,5 +1,5 @@
 import { Header, Scrollable, Title } from "@clab/design-system";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { GoChevronLeft } from "react-icons/go";
 import { useNavigate } from "react-router";
 
@@ -9,9 +9,10 @@ import { formatRelativeTime } from "@/utils/date";
 
 export default function MyPostsPage() {
   const navigate = useNavigate();
-  const { data, isLoading } = useQuery(boardQueries.getMyBoardsQuery());
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useInfiniteQuery(boardQueries.getMyBoardsInfiniteQuery());
 
-  const posts = data?.items ?? [];
+  const posts = data?.pages.flatMap((page) => page.items) ?? [];
 
   return (
     <>
@@ -55,6 +56,15 @@ export default function MyPostsPage() {
             </div>
           </div>
         ))}
+        {hasNextPage && (
+          <button
+            onClick={() => fetchNextPage()}
+            disabled={isFetchingNextPage}
+            className="text-gray-4 text-14-regular py-4"
+          >
+            {isFetchingNextPage ? "로딩 중..." : "더 보기"}
+          </button>
+        )}
       </Scrollable>
     </>
   );

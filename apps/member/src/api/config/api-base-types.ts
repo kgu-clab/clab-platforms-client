@@ -31,8 +31,11 @@ export type BasePaginationResponse<T> = BaseApiResponse<{
 export type PagedResponse<T> = {
   items: T[];
   currentPage: number;
-  totalPage: number;
+  hasPrevious: boolean;
+  hasNext: boolean;
+  totalPages: number;
   totalItems: number;
+  take: number;
 };
 
 export type PaginationParams = {
@@ -43,6 +46,3 @@ export type PaginationParams = {
 };
 
 export const DEFAULT_PAGE_SIZE = 20;
-export const ACCUSATIONS_PAGE_SIZE = 20;
-export const BOOKS_PAGE_SIZE = 20;
-export const SUPPORTS_PAGE_SIZE = 20;

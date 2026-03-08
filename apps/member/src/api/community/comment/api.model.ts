@@ -1,4 +1,12 @@
-import type { PaginationParams } from "@/api/config";
+import type {
+  ApiResponse,
+  PagedResponse,
+  PaginationParams,
+} from "@/api/config";
+
+export type GetCommentsResponse = ApiResponse<
+  PagedResponse<CommentResponseDto>
+>;
 
 export type CommentResponseDto = {
   id: number;
@@ -14,6 +22,14 @@ export type CommentResponseDto = {
   isOwner: boolean | null;
   children: CommentResponseDto[];
 };
+
+export type MyCommentResponseDto = Omit<CommentResponseDto, "writerName"> & {
+  writer: string;
+};
+
+export type GetMyCommentsResponse = ApiResponse<
+  PagedResponse<MyCommentResponseDto>
+>;
 
 export type CommentLikeToggleResponseDto = {
   boardId: number;

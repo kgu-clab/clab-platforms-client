@@ -4,7 +4,7 @@ import {
   queryOptions,
 } from "@tanstack/react-query";
 
-import { SUPPORTS_PAGE_SIZE } from "@/api/config";
+import { DEFAULT_PAGE_SIZE } from "@/api/config";
 import { TOAST_MESSAGES } from "@/constants";
 import { showErrorToast } from "@/utils/toast";
 
@@ -47,7 +47,7 @@ export const supportQueries = {
         const res = await getSupports({
           ...params,
           page: pageParam as number,
-          size: SUPPORTS_PAGE_SIZE,
+          size: DEFAULT_PAGE_SIZE,
         });
         if (!res.ok) {
           return {
@@ -77,7 +77,7 @@ export const supportQueries = {
         const res = await getMySupports({
           ...params,
           page: pageParam as number,
-          size: SUPPORTS_PAGE_SIZE,
+          size: DEFAULT_PAGE_SIZE,
         });
         if (!res.ok) {
           return {

@@ -10,16 +10,16 @@ interface CommunityFilterProps {
 }
 
 export default function CommunityFilter({ tab }: CommunityFilterProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const sort = searchParams.get("sort") ?? "latest";
+  // const [searchParams, setSearchParams] = useSearchParams();
+  // const sort = searchParams.get("sort") ?? "latest";
 
-  const toggleSort = () => {
-    setSearchParams((prev) => {
-      const next = new URLSearchParams(prev);
-      next.set("sort", sort === "latest" ? "popular" : "latest");
-      return next;
-    });
-  };
+  // const toggleSort = () => {
+  //   setSearchParams((prev) => {
+  //     const next = new URLSearchParams(prev);
+  //     next.set("sort", sort === "latest" ? "popular" : "latest");
+  //     return next;
+  //   });
+  // };
 
   return (
     <div className="px-gutter gap-md flex items-center">
@@ -27,7 +27,8 @@ export default function CommunityFilter({ tab }: CommunityFilterProps) {
         {tab === CATEGORY.INFORMATION && <InformationFilterOptions />}
         {tab === CATEGORY.QUESTION && <QuestionFilterOptions />}
       </div>
-      {tab !== CATEGORY.INFORMATION && (
+      {/* 인기순 정렬 오류로 렌더 X */}
+      {/* {tab !== CATEGORY.INFORMATION && false && (
         <Button
           color="text"
           size="small"
@@ -36,12 +37,12 @@ export default function CommunityFilter({ tab }: CommunityFilterProps) {
         >
           {sort === "latest" ? "최신순" : "인기순"}
         </Button>
-      )}
+      )} */}
     </div>
   );
 }
 
-export const INFORMATION_FILTERS = ["전체", "IT 소식", "채용 정보"] as const;
+export const INFORMATION_FILTERS = ["IT 소식", "채용 정보"] as const;
 
 function InformationFilterOptions() {
   const [searchParams, setSearchParams] = useSearchParams();

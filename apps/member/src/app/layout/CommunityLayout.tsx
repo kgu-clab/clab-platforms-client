@@ -24,7 +24,7 @@ export default function CommunityLayout() {
           <Tabs.Item
             icon={<BsFillClipboardFill />}
             label="공지"
-            href={ROUTE.COMMUNITY_NOTICE}
+            href={ROUTE.COMMUNITY}
           />
           <Tabs.Item
             icon={<BsFillEmojiSmileFill />}

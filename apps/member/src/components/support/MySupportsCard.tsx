@@ -1,4 +1,4 @@
-import { Chip } from "@clab/design-system";
+import { Button, Chip } from "@clab/design-system";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 
@@ -34,11 +34,12 @@ export default function MySupportsCard() {
     accusationQueries.getMyAccusationsInfiniteQuery(),
   );
 
-  const { items } = useMergedInfiniteScroll({
-    queries: [supportsQuery, accusationsQuery],
-  });
+  const { items, hasNextPage, isFetchingNextPage, fetchNextPage } =
+    useMergedInfiniteScroll({
+      queries: [supportsQuery, accusationsQuery],
+    });
 
-  const mergedCards: MergedCardItem[] = items.slice(0, 10).map((item) => {
+  const mergedCards: MergedCardItem[] = items.map((item) => {
     if (isAccusation(item)) {
       const { label, chipColor } = ACCUSE_STATUS_MAP[item.accuseStatus];
       return {
@@ -78,7 +79,7 @@ export default function MySupportsCard() {
 
   return (
     <>
-      <div className="scrollbar-hide gap-md flex overflow-x-scroll pb-2">
+      <div className="scrollbar-hide gap-md flex items-center overflow-x-scroll pb-2">
         {mergedCards.map((card) => (
           <div
             key={card.id}
@@ -103,6 +104,17 @@ export default function MySupportsCard() {
             </Chip>
           </div>
         ))}
+        {hasNextPage && (
+          <Button
+            className="shrink-0 whitespace-nowrap"
+            size="small"
+            color="outlineActive"
+            onClick={fetchNextPage}
+            disabled={isFetchingNextPage}
+          >
+            {isFetchingNextPage ? "로딩 중..." : "더보기"}
+          </Button>
+        )}
       </div>
     </>
   );

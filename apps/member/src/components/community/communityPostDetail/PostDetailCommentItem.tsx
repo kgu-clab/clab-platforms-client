@@ -204,9 +204,7 @@ export default function PostDetailCommentItem({
         <div className="gap-sm flex flex-1 flex-col">
           <div className="flex items-center justify-between">
             <div className="gap-sm flex items-center">
-              <span className="text-14-semibold text-black">
-                {writerName ?? "알 수 없음"}
-              </span>
+              <span className="text-14-semibold text-black">{writerName}</span>
               <span className="text-12-regular text-gray-4">
                 {formatRelativeTime(createdAt)}
               </span>

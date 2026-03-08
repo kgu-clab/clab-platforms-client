@@ -19,4 +19,5 @@ export type JobPostingDetailsResponseDto = {
   createdAt: string;
 };
 
-export type GetJobPostingsParams = PaginationParams & JobPostingResponseDto;
+export type GetJobPostingsParams = PaginationParams &
+  Partial<JobPostingResponseDto>;

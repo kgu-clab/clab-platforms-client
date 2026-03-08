@@ -1,12 +1,9 @@
 import type { ApiResponse, PagedResponse } from "@/api/config";
 import { authApi, END_POINT } from "@/api/config";
 
-import type {
-  BoardListResponseDto,
-  GetBoardsByHashtagParams,
-} from "./api.model";
+import type { BoardListItem, GetBoardsByHashtagRequest } from "./api.model";
 
-export function getBoardsByHashtag(params: GetBoardsByHashtagParams) {
+export function getBoardsByHashtag(params: GetBoardsByHashtagRequest) {
   const { hashtags, page, size, sortBy, sortDirection } = params;
 
   const searchParams = new URLSearchParams();
@@ -16,7 +13,7 @@ export function getBoardsByHashtag(params: GetBoardsByHashtagParams) {
   sortBy?.forEach((s) => searchParams.append("sortBy", s));
   sortDirection?.forEach((d) => searchParams.append("sortDirection", d));
 
-  return authApi.get<ApiResponse<PagedResponse<BoardListResponseDto>>>(
+  return authApi.get<ApiResponse<PagedResponse<BoardListItem>>>(
     END_POINT.COMMUNITY.BOARD.HASHTAG,
     { searchParams },
   );

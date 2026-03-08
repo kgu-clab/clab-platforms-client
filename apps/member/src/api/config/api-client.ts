@@ -22,6 +22,8 @@ const baseURL = import.meta.env.VITE_BASE_API_URL;
 const reissueURL =
   baseURL.replace(/\/$/, "") + "/" + END_POINT.AUTH.REISSUE_TOKEN;
 
+export const BASE_FILE_URL = new URL(baseURL).origin;
+
 let reissueLock = false;
 
 export const baseApiClient = ky.extend({

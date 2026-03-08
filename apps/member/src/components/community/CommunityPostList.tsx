@@ -1,5 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router";
+
+import { useInfiniteScroll } from "@/model/common/useInfiniteScroll";
 
 import {
   CommunityPostItem,
@@ -9,6 +11,7 @@ import {
 
 import type { BoardCategory } from "@/api/community";
 import { boardQueries, newsQueries, jobPostingQueries } from "@/api/community";
+import type { JobPostingResponseDto } from "@/api/community/job-posting/api.model";
 
 function ListMessage({ message }: { message: string }) {
   return (
@@ -26,15 +29,23 @@ export function BoardPostList({ category }: BoardPostListProps) {
   const [searchParams] = useSearchParams();
   const sort = searchParams.get("sort") ?? "latest";
 
-  const { data, isLoading } = useQuery(
-    boardQueries.getBoardsByCategoryQuery({
-      category,
-      sortBy: sort === "popular" ? ["commentCount"] : ["createdAt"],
-      sortDirection: ["desc"],
-    }),
-  );
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useInfiniteQuery(
+      boardQueries.getBoardsByCategoryInfiniteQuery({
+        category,
+        sortBy: sort === "popular" ? ["commentCount"] : ["createdAt"],
+        sortDirection: ["desc"],
+      }),
+    );
 
-  const boards = data?.items ?? [];
+  const { bottomSentinelRef } = useInfiniteScroll({
+    hasNextPage: hasNextPage ?? false,
+    isFetchingNextPage,
+    fetchNextPage,
+    useViewport: true,
+  });
+
+  const boards = data?.pages.flatMap((page) => page.items) ?? [];
 
   if (isLoading) {
     return <ListMessage message="로딩 중..." />;
@@ -49,6 +60,8 @@ export function BoardPostList({ category }: BoardPostListProps) {
       {boards.map((post) => (
         <CommunityPostItem key={post.id} post={post} />
       ))}
+      <div ref={bottomSentinelRef} />
+      {isFetchingNextPage && <ListMessage message="로딩 중..." />}
     </div>
   );
 }
@@ -71,24 +84,34 @@ export function QuestionPostList() {
     sortDirection: ["desc"] as string[],
   };
 
-  const categoryQuery = useQuery({
-    ...boardQueries.getBoardsByCategoryQuery({
+  const categoryQuery = useInfiniteQuery({
+    ...boardQueries.getBoardsByCategoryInfiniteQuery({
       category: "DEVELOPMENT_QNA",
       ...sortParams,
     }),
     enabled: !hasHashtags,
   });
 
-  const hashtagQuery = useQuery({
-    ...boardQueries.getBoardsByHashtagQuery({
+  const hashtagQuery = useInfiniteQuery({
+    ...boardQueries.getBoardsByHashtagInfiniteQuery({
       hashtags,
       ...sortParams,
     }),
     enabled: hasHashtags,
   });
 
-  const { data, isLoading } = hasHashtags ? hashtagQuery : categoryQuery;
-  const boards = data?.items ?? [];
+  const query = hasHashtags ? hashtagQuery : categoryQuery;
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    query;
+
+  const { bottomSentinelRef } = useInfiniteScroll({
+    hasNextPage: hasNextPage ?? false,
+    isFetchingNextPage,
+    fetchNextPage,
+    useViewport: true,
+  });
+
+  const boards = data?.pages.flatMap((page) => page.items) ?? [];
 
   if (isLoading) {
     return <ListMessage message="로딩 중..." />;
@@ -103,40 +126,43 @@ export function QuestionPostList() {
       {boards.map((post) => (
         <CommunityPostItem key={post.id} post={post} />
       ))}
+      <div ref={bottomSentinelRef} />
+      {isFetchingNextPage && <ListMessage message="로딩 중..." />}
     </div>
   );
 }
 
 export function InformationPostList() {
   const [searchParams] = useSearchParams();
-  const filter = searchParams.get("filter") ?? "전체";
+  const filter = searchParams.get("filter") ?? "IT 소식";
 
-  const showNews = filter === "전체" || filter === "IT 소식";
-  const showJobPostings = filter === "전체" || filter === "채용 정보";
+  const showNews = filter === "IT 소식";
 
-  const { data: newsData, isLoading: isNewsLoading } = useQuery({
-    ...newsQueries.getNewsQuery(),
-    enabled: showNews,
+  if (showNews) {
+    return <NewsPostList />;
+  }
+
+  return <JobPostingsPostList />;
+}
+
+function NewsPostList() {
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useInfiniteQuery(newsQueries.getNewsInfiniteQuery());
+
+  const { bottomSentinelRef } = useInfiniteScroll({
+    hasNextPage: hasNextPage ?? false,
+    isFetchingNextPage,
+    fetchNextPage,
+    useViewport: true,
   });
 
-  const { data: jobPostingsData, isLoading: isJobPostingsLoading } = useQuery({
-    ...jobPostingQueries.getJobPostingsQuery(),
-    enabled: showJobPostings,
-  });
-
-  const isLoading =
-    (showNews && isNewsLoading) || (showJobPostings && isJobPostingsLoading);
+  const news = data?.pages.flatMap((page) => page.data.items) ?? [];
 
   if (isLoading) {
     return <ListMessage message="로딩 중..." />;
   }
 
-  const news = showNews ? (newsData?.items ?? []) : [];
-  const jobPostings = showJobPostings ? (jobPostingsData?.items ?? []) : [];
-
-  const hasNoData = news.length === 0 && jobPostings.length === 0;
-
-  if (hasNoData) {
+  if (news.length === 0) {
     return <ListMessage message="게시글이 없습니다." />;
   }
 
@@ -145,9 +171,43 @@ export function InformationPostList() {
       {news.map((item) => (
         <NewsPostItem key={`news-${item.id}`} news={item} />
       ))}
+      <div ref={bottomSentinelRef} />
+      {isFetchingNextPage && <ListMessage message="로딩 중..." />}
+    </div>
+  );
+}
+
+function JobPostingsPostList() {
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useInfiniteQuery(jobPostingQueries.getJobPostingsInfiniteQuery());
+
+  const { bottomSentinelRef } = useInfiniteScroll({
+    hasNextPage: hasNextPage ?? false,
+    isFetchingNextPage,
+    fetchNextPage,
+    useViewport: true,
+  });
+
+  const jobPostings = data?.pages.flatMap((page) => page.data.items) ?? [];
+
+  if (isLoading) {
+    return <ListMessage message="로딩 중..." />;
+  }
+
+  if (jobPostings.length === 0) {
+    return <ListMessage message="게시글이 없습니다." />;
+  }
+
+  return (
+    <div className="flex flex-col">
       {jobPostings.map((item) => (
-        <JobPostingItem key={`job-${item.id}`} jobPosting={item} />
+        <JobPostingItem
+          key={`job-${item.id}`}
+          jobPosting={item as unknown as JobPostingResponseDto}
+        />
       ))}
+      <div ref={bottomSentinelRef} />
+      {isFetchingNextPage && <ListMessage message="로딩 중..." />}
     </div>
   );
 }
