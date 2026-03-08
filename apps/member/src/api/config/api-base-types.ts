@@ -41,3 +41,7 @@ export type PaginationParams = {
   sortBy?: string[];
   sortDirection?: string[];
 };
+
+export const ACCUSATIONS_PAGE_SIZE = 20;
+export const BOOKS_PAGE_SIZE = 20;
+export const SUPPORTS_PAGE_SIZE = 20;

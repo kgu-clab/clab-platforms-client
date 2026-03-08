@@ -15,6 +15,7 @@ import type {
   PostAnswerRequest,
 } from "./api.model";
 import type { SupportDetail } from "./api.type";
+import { SUPPORTS_PAGE_SIZE } from "@/api/config";
 import { TOAST_MESSAGES } from "@/constants";
 import { getSupports } from "./getSupports";
 import { getSupportDetail } from "./getSupportDetail";
@@ -26,8 +27,6 @@ import { postAnswer } from "./postAnswer";
 import { patchAnswer } from "./patchAnswer";
 import { deleteAnswer } from "./deleteAnswer";
 import { postSupportFile } from "./postSupportFile";
-
-const SUPPORTS_PAGE_SIZE = 20;
 
 export const supportKeys = {
   all: ["support"] as const,

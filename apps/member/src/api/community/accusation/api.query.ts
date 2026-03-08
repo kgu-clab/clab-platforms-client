@@ -5,6 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { showErrorToast } from "@/utils/toast";
 
+import { ACCUSATIONS_PAGE_SIZE } from "@/api/config";
 import type { PaginationParams } from "@/api/config";
 import type { BasePaginationResponse } from "@/api/config/api-base-types";
 import type {
@@ -18,8 +19,6 @@ import { getAccusations } from "./getAccusations";
 import { getMyAccusations } from "./getMyAccusations";
 import { patchAccusationStatus } from "./patchAccusationStatus";
 import { postAccusation } from "./postAccusation";
-
-const ACCUSATIONS_PAGE_SIZE = 20;
 
 export const accusationQueries = {
   getAccusationsQuery: (params?: GetAccusationsParams) =>
