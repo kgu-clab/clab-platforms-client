@@ -107,7 +107,8 @@ export default function CommunityWritePage() {
           category: form.category,
           title: form.title,
           content: form.content,
-          hashtagNames: form.hashtags.length > 0 ? form.hashtags : undefined,
+          imageUrl: "",
+          hashtagNames: form.hashtags,
         },
       });
     } else {
