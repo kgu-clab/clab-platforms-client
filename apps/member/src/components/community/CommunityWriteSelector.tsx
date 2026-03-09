@@ -1,12 +1,19 @@
 import { Button, Dropdown, Section } from "@clab/design-system";
+import { useQuery } from "@tanstack/react-query";
 import { IoChevronDown } from "react-icons/io5";
 
 import type { BoardCategory } from "@/api/community";
+import { userQueries } from "@/api/user/api.query";
 import { useHashtagFilterOptions } from "@/hooks/useHashtagFilterOptions";
 
 const BOARD_CATEGORIES: { id: BoardCategory; label: string }[] = [
   { id: "FREE", label: "자유" },
   { id: "DEVELOPMENT_QNA", label: "개발 Q&A" },
+];
+
+const ADMIN_BOARD_CATEGORIES: { id: BoardCategory; label: string }[] = [
+  { id: "NOTICE", label: "공지" },
+  ...BOARD_CATEGORIES,
 ];
 
 export interface CommunityWriteSelectorProps {
@@ -22,6 +29,10 @@ export default function CommunityWriteSelector({
   selectedHashtags,
   onSelectHashtag,
 }: CommunityWriteSelectorProps) {
+  const { data: userInfo } = useQuery(userQueries.getUserInfoQuery());
+  const roleLevel = userInfo?.data?.roleLevel ?? 0;
+  const categories = roleLevel >= 2 ? ADMIN_BOARD_CATEGORIES : BOARD_CATEGORIES;
+
   const handleCategorySelect = (category: BoardCategory) => {
     onSelectCategory(category);
     if (category !== "DEVELOPMENT_QNA") {
@@ -32,7 +43,7 @@ export default function CommunityWriteSelector({
   return (
     <div className="gap-md flex flex-col">
       <div className="gap-md scrollbar-hide flex items-center overflow-x-auto">
-        {BOARD_CATEGORIES.map((category) => (
+        {categories.map((category) => (
           <Button
             key={category.id}
             size="small"
