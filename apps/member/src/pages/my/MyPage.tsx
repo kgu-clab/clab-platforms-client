@@ -1,5 +1,12 @@
-import { Header, Scrollable, Section, Title } from "@clab/design-system";
+import {
+  Button,
+  Header,
+  Scrollable,
+  Section,
+  Title,
+} from "@clab/design-system";
 import { useQueries, useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { BiCommentDetail, BiCommentError } from "react-icons/bi";
 import { IoCubeOutline, IoNotificationsOutline } from "react-icons/io5";
 import { RiBook2Line, RiFilePaper2Line, RiLogoutBoxLine } from "react-icons/ri";
@@ -14,6 +21,7 @@ import {
   MyMenuItem,
   MyProfileHeader,
   MyStatsCard,
+  PasswordChangeModal,
 } from "@/components/my";
 
 import { activityQueries } from "@/api/activity/api.query";
@@ -27,6 +35,7 @@ import { getDaysSince } from "@/utils/date";
 export default function MyPage() {
   const { updateLogged } = useIsLoggedIn();
   const navigate = useNavigate();
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
   const { data: userInfo } = useQuery(userQueries.getUserInfoQuery());
   const { name, id, email, contact, githubUrl, imageUrl, createdAt } =
@@ -85,6 +94,16 @@ export default function MyPage() {
           />
 
           <MyInfoCard contact={contact} email={email} githubUrl={githubUrl} />
+
+          <div className="flex justify-end">
+            <Button
+              size="small"
+              color="outlineActive"
+              onClick={() => setIsPasswordModalOpen(true)}
+            >
+              비밀번호 변경
+            </Button>
+          </div>
         </Section>
 
         <Section title="활동">
@@ -127,6 +146,10 @@ export default function MyPage() {
       </Scrollable>
 
       <BottomNavbar />
+
+      {isPasswordModalOpen && (
+        <PasswordChangeModal onClose={() => setIsPasswordModalOpen(false)} />
+      )}
     </>
   );
 }

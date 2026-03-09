@@ -6,10 +6,12 @@ import { showErrorToast } from "@/utils/toast";
 import type {
   getUserInfoResponse,
   PatchMemberRequest,
+  PatchPasswordRequest,
   ProfileFileResponse,
 } from "./api.model";
 import { getUserInfo } from "./getUserInfo";
 import { patchMember } from "./patchMember";
+import { patchPassword } from "./patchPassword";
 import { postProfileFile } from "./postProfileFile";
 
 const userQueryKey = ["user"] as const;
@@ -46,6 +48,17 @@ export const userQueries = {
     mutationFn: ({ memberId, body }) => patchMember(memberId, body),
     onError: () => {
       showErrorToast(TOAST_MESSAGES.PROFILE_UPDATE);
+    },
+  }),
+
+  patchPasswordMutation: mutationOptions<
+    unknown,
+    Error,
+    { memberId: string; body: PatchPasswordRequest }
+  >({
+    mutationFn: ({ memberId, body }) => patchPassword(memberId, body),
+    onError: () => {
+      showErrorToast(TOAST_MESSAGES.PASSWORD_UPDATE);
     },
   }),
 };
