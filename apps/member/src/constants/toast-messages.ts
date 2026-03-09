@@ -51,6 +51,10 @@ export const TOAST_MESSAGES = {
   FILE_UPLOAD: {
     error: "파일 업로드에 실패했습니다.",
   },
+  PASSWORD_UPDATE: {
+    success: "비밀번호가 변경되었습니다.",
+    error: "비밀번호 변경에 실패했습니다.",
+  },
   PROFILE_UPDATE: {
     success: "프로필이 수정되었습니다.",
     error: "프로필 수정에 실패했습니다.",

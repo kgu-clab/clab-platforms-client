@@ -28,3 +28,7 @@ export type PatchMemberRequest = {
   email?: string;
   githubUrl?: string;
 };
+
+export type PatchPasswordRequest = {
+  password: string;
+};
