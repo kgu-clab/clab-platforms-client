@@ -6,11 +6,11 @@ import { useMemo, useState } from "react";
 import { useDebounce } from "@/model/common/useDebounce";
 import { useInfiniteScroll } from "@/model/common/useInfiniteScroll";
 
-import { BOOK_STATUS, type BookStatus } from "@/types/library";
+// import { BOOK_STATUS, type BookStatus } from "@/types/library";
 
 import {
   LibrarySearchBar,
-  LibraryFilter,
+  // LibraryFilter,
   LibraryBookList,
 } from "@/components/library";
 import { BottomNavbar } from "@/components/menu";
@@ -22,7 +22,7 @@ export default function LibraryPage() {
   // const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
-  const [borrowStatus, setBorrowStatus] = useState<BookStatus>(BOOK_STATUS.ALL);
+  // const [borrowStatus, setBorrowStatus] = useState<BookStatus>(BOOK_STATUS.ALL);
 
   const debouncedTitle = useDebounce(title, 500);
 
@@ -60,10 +60,10 @@ export default function LibraryPage() {
         className="pt-header-height pb-bottom-padding h-full overflow-y-auto"
       >
         <LibrarySearchBar value={title} onChange={setTitle} />
-        <LibraryFilter
+        {/* <LibraryFilter
           activeFilter={borrowStatus}
           onActiveFilterChange={setBorrowStatus}
-        />
+        /> */}
         <LibraryBookList books={books} bottomSentinelRef={bottomSentinelRef} />
       </Section>
 
