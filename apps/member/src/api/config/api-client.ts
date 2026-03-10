@@ -5,22 +5,17 @@ import ky, {
   type NormalizedOptions,
 } from "ky";
 
-import type { TokenFromHeader } from "@/types/auth";
-
 import { ROUTE } from "@/constants";
 import {
-  authorization,
   getAccessToken,
   getRefreshToken,
   removeTokens,
   setTokens,
 } from "@/utils/auth";
 
-import { END_POINT } from "./api-endpoint";
+import { postReissueToken } from "../auth/postReissueToken";
 
 const baseURL = import.meta.env.VITE_BASE_API_URL;
-const reissueURL =
-  baseURL.replace(/\/$/, "") + "/" + END_POINT.AUTH.REISSUE_TOKEN;
 
 export const BASE_FILE_URL = new URL(baseURL).origin;
 
@@ -68,27 +63,8 @@ const afterResponseHook = async (
 
   reissueLock = true;
   try {
-    // 여기는 차후에 postReissueToken 호출로 변경 필요
-    const res = await fetch(reissueURL, {
-      method: "POST",
-      headers: {
-        ...authorization(refreshToken),
-        "Content-Type": "application/json",
-      },
-    });
-
-    const rawHeader = res.headers.get("X-Clab-Auth");
-    if (!rawHeader || !res.ok) {
-      throw new Error("Invalid reissue response");
-    }
-
-    const { accessToken: newAccess, refreshToken: newRefresh } = JSON.parse(
-      rawHeader,
-    ) as TokenFromHeader;
-
-    if (!newAccess || !newRefresh) {
-      throw new Error("Invalid token response");
-    }
+    const { accessToken: newAccess, refreshToken: newRefresh } =
+      await postReissueToken(refreshToken);
 
     setTokens(newAccess, newRefresh);
 
