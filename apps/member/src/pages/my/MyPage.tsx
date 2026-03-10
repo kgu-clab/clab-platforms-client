@@ -8,9 +8,9 @@ import {
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { BiCommentDetail, BiCommentError } from "react-icons/bi";
-import { IoCubeOutline, IoNotificationsOutline } from "react-icons/io5";
+import { IoCubeOutline } from "react-icons/io5";
 import { RiBook2Line, RiFilePaper2Line, RiLogoutBoxLine } from "react-icons/ri";
-import { TbXboxX } from "react-icons/tb";
+// import { TbXboxX } from "react-icons/tb";
 import { useNavigate } from "react-router";
 
 import { useIsLoggedIn } from "@/model/auth";
@@ -135,13 +135,13 @@ export default function MyPage() {
         </Section>
 
         <Section title="설정">
-          <MyMenuItem to="#" label="알림 설정" icon={IoNotificationsOutline} />
+          {/* <MyMenuItem to="#" label="알림 설정" icon={IoNotificationsOutline} /> */}
           <MyMenuItem
             label="로그아웃"
             icon={RiLogoutBoxLine}
             onClick={handleLogout}
           />
-          <MyMenuItem to="#" label="탈퇴하기" icon={TbXboxX} />
+          {/* <MyMenuItem to="#" label="탈퇴하기" icon={TbXboxX} /> */}
         </Section>
       </Scrollable>
 
