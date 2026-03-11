@@ -1,5 +1,19 @@
+import { decode } from "html-entities";
 import { HTTPError } from "ky";
 import type { KyInstance, Options } from "ky";
+
+function decodeStrings<T>(value: T): T {
+  if (typeof value === "string") return decode(value) as T;
+  if (Array.isArray(value)) return value.map(decodeStrings) as T;
+  if (value !== null && typeof value === "object") {
+    const result: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(value)) {
+      result[k] = decodeStrings(v);
+    }
+    return result as T;
+  }
+  return value;
+}
 
 type ResponseStatus = { status: number };
 
@@ -28,7 +42,7 @@ export async function apiClientHandler<T>(
       ...options,
     });
 
-    const data = (await response.json()) as T;
+    const data = decodeStrings((await response.json()) as T);
 
     return {
       ok: true,
