@@ -20,7 +20,7 @@ export default function MyActivityPage() {
     queries: JOINED_STATUSES.map((status) =>
       activityQueries.getActivityJoinedQuery({
         status,
-        page: 1,
+        page: 0,
         size: DEFAULT_PAGE_SIZE,
       }),
     ),
