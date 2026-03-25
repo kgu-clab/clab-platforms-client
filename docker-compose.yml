@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  land:
+    build:
+      context: .
+      dockerfile: apps/land/Dockerfile
+    ports:
+      - "6003:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-https://api.clab.page/api}
+      - NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL:-api.clab.page}
+      - NEXT_PUBLIC_CHANNEL_TALK_TOKEN=${NEXT_PUBLIC_CHANNEL_TALK_TOKEN:-610bd584-8b4c-4d3d-89c8-6f891e5cddcd}
+    restart: unless-stopped
+    networks:
+      - clab-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  member:
+    build:
+      context: .
+      dockerfile: apps/member/Dockerfile
+    ports:
+      - "6001:80"
+    environment:
+      - VITE_BASE_API_URL=${VITE_BASE_API_URL:-https://api.test.clab.page/api/v1/}
+    restart: unless-stopped
+    networks:
+      - clab-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  clab-network:
+    driver: bridge
