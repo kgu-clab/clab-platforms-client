@@ -62,15 +62,7 @@ export const commentQueries = {
       queryFn: () => getMyComments(params),
       select: (data): PagedResponse<CommentResponseDto> =>
         data.ok
-          ? {
-              ...data.data.data,
-              items: data.data.data.items.map(({ writer, ...rest }) => ({
-                ...rest,
-                writerName: writer,
-                isOwner: true,
-                children: [],
-              })),
-            }
+          ? data.data.data
           : {
               items: [],
               currentPage: 0,
@@ -95,18 +87,7 @@ export const commentQueries = {
             data: { hasNext: false, items: [], currentPage: 0 },
           } as unknown as GetCommentsResponse;
         }
-        return {
-          ...res.data,
-          data: {
-            ...res.data.data,
-            items: res.data.data.items.map(({ writer, ...rest }) => ({
-              ...rest,
-              writerName: writer,
-              isOwner: true,
-              children: [],
-            })),
-          },
-        };
+        return res.data;
       },
       initialPageParam: 0,
       getNextPageParam: (lastPage) =>
