@@ -23,9 +23,7 @@ export type CommentResponseDto = {
   children: CommentResponseDto[];
 };
 
-export type MyCommentResponseDto = Omit<CommentResponseDto, "writerName"> & {
-  writer: string;
-};
+export type MyCommentResponseDto = CommentResponseDto;
 
 export type GetMyCommentsResponse = ApiResponse<
   PagedResponse<MyCommentResponseDto>
