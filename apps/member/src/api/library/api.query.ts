@@ -85,6 +85,9 @@ export const libraryQueries = {
         throw new Error(res.error.message ?? "대출 신청에 실패했습니다.");
       return res.data;
     },
+    onError: () => {
+      showErrorToast(TOAST_MESSAGES.BOOK_LOAN_APPLY);
+    },
   }),
   deleteBookLoanRecordMutation: mutationOptions({
     mutationFn: async (request: deleteBookLoanRecordRequest) => {

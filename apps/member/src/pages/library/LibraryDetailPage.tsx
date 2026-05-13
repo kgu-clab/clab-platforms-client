@@ -17,6 +17,8 @@ import { useAuthStore } from "@/model/common/store-auth";
 import { ConfirmModal } from "@/components/common";
 
 import { libraryQueries } from "@/api/library/api.query";
+import { TOAST_MESSAGES } from "@/constants";
+import { showSuccessToast } from "@/utils/toast";
 
 export default function LibraryDetailPage() {
   const navigate = useNavigate();
@@ -61,6 +63,7 @@ export default function LibraryDetailPage() {
   const postBookLoanMutation = useMutation({
     ...libraryQueries.postBookLoanMutation,
     onSuccess: () => {
+      showSuccessToast(TOAST_MESSAGES.BOOK_LOAN_APPLY);
       queryClient.invalidateQueries({
         queryKey: libraryQueries.loanConditionsKey(loanConditionsParams),
       });
@@ -70,6 +73,7 @@ export default function LibraryDetailPage() {
   const deleteBookLoanRecordMutation = useMutation({
     ...libraryQueries.deleteBookLoanRecordMutation,
     onSuccess: () => {
+      showSuccessToast(TOAST_MESSAGES.BOOK_LOAN_CANCEL);
       queryClient.invalidateQueries({
         queryKey: libraryQueries.loanConditionsKey(loanConditionsParams),
       });
