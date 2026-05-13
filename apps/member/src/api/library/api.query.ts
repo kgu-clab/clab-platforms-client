@@ -7,12 +7,14 @@ import {
 import { DEFAULT_PAGE_SIZE } from "@/api/config";
 
 import type {
+  deleteBookLoanRecordRequest,
   getBooksRequest,
   getBooksResponse,
   getBooksDetailRequest,
   getBooksLoanConditionsRequest,
   postBookLoanRequest,
 } from "./api.model";
+import { deleteBookLoanRecord } from "./deleteBookLoanRecord";
 import { getBooks } from "./getBooks";
 import { getBooksDetail } from "./getBooksDetail";
 import { getBooksLoanConditions } from "./getBooksLoanConditions";
@@ -58,6 +60,7 @@ export const libraryQueries = {
     }),
   getBooksLoanConditionsQuery: (
     request: getBooksLoanConditionsRequest = {
+      borrowerId: undefined,
       status: "PENDING",
       page: 0,
       size: 20,
@@ -78,6 +81,14 @@ export const libraryQueries = {
       const res = await postBookLoan(request);
       if (!res.ok)
         throw new Error(res.error.message ?? "대출 신청에 실패했습니다.");
+      return res.data;
+    },
+  }),
+  deleteBookLoanRecordMutation: mutationOptions({
+    mutationFn: async (request: deleteBookLoanRecordRequest) => {
+      const res = await deleteBookLoanRecord(request);
+      if (!res.ok)
+        throw new Error(res.error.message ?? "대출 신청 취소에 실패했습니다.");
       return res.data;
     },
   }),

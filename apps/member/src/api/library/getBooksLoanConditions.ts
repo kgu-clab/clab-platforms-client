@@ -16,6 +16,9 @@ export const getBooksLoanConditions = (
         size: request.size,
         sortBy: request.sortBy,
         sortDirection: request.sortDirection,
+        ...(request.borrowerId !== undefined && {
+          borrowerId: request.borrowerId,
+        }),
       },
     },
   );
