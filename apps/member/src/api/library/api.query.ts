@@ -5,6 +5,8 @@ import {
 } from "@tanstack/react-query";
 
 import { DEFAULT_PAGE_SIZE } from "@/api/config";
+import { TOAST_MESSAGES } from "@/constants";
+import { showErrorToast } from "@/utils/toast";
 
 import type {
   deleteBookLoanRecordRequest,
@@ -90,6 +92,9 @@ export const libraryQueries = {
       if (!res.ok)
         throw new Error(res.error.message ?? "대출 신청 취소에 실패했습니다.");
       return res.data;
+    },
+    onError: () => {
+      showErrorToast(TOAST_MESSAGES.BOOK_LOAN_CANCEL);
     },
   }),
 };

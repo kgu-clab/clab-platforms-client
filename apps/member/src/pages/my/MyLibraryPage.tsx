@@ -9,6 +9,8 @@ import { useAuthStore } from "@/model/common/store-auth";
 import { libraryQueries } from "@/api/library/api.query";
 import { ConfirmModal, EmptyState } from "@/components/common";
 import { LoanBookCard } from "@/components/library";
+import { TOAST_MESSAGES } from "@/constants";
+import { showSuccessToast } from "@/utils/toast";
 
 export default function MyLibraryPage() {
   const navigate = useNavigate();
@@ -42,6 +44,7 @@ export default function MyLibraryPage() {
   const deleteBookLoanRecordMutation = useMutation({
     ...libraryQueries.deleteBookLoanRecordMutation,
     onSuccess: () => {
+      showSuccessToast(TOAST_MESSAGES.BOOK_LOAN_CANCEL);
       queryClient.invalidateQueries({ queryKey: libraryQueries.all });
     },
   });
