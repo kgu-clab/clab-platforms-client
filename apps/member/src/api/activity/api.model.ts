@@ -27,6 +27,12 @@ export type GetActivitiyByCategoryResponse = BasePaginationResponse<
 >;
 
 export type GetActivitiyByStatusRequest = {
+  activityGroupStatus: ActivityStatus;
+  page: number;
+  size: number;
+};
+
+export type GetActivityJoinedRequest = {
   status: ActivityStatus;
   page: number;
   size: number;

@@ -8,7 +8,7 @@ import type {
 export const getActivityByStatus = (request: GetActivitiyByStatusRequest) =>
   authApi.get<GetActivitiyByStatusResponse>(END_POINT.ACTIVITY.LIST_BY_STATUS, {
     searchParams: {
-      status: request.status,
+      activityGroupStatus: request.activityGroupStatus,
       page: request.page,
       size: request.size,
     },

@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router";
 
+import { AdminGuard } from "@/components/admin";
 import { AuthProvider } from "@/components/auth";
 
 import { ROUTE } from "@/constants";
@@ -25,6 +26,12 @@ import {
   SupportPage,
   SupportWritePage,
   LoginPage,
+  AdminHomePage,
+  AdminSupportPage,
+  AdminActivityPage,
+  AdminLibraryPage,
+  AdminReportPage,
+  AdminMemberPage,
 } from "@/pages";
 
 import ActivityLayout from "../layout/ActivityLayout";
@@ -122,6 +129,65 @@ const supportRoutes = [
   },
 ];
 
+const adminRoutes = [
+  {
+    path: ROUTE.ADMIN,
+    element: (
+      <AdminGuard>
+        <AdminHomePage />
+      </AdminGuard>
+    ),
+  },
+  {
+    path: ROUTE.ADMIN_SUPPORT,
+    element: (
+      <AdminGuard>
+        <AdminSupportPage />
+      </AdminGuard>
+    ),
+  },
+  {
+    path: `${ROUTE.ADMIN_SUPPORT}/:id`,
+    element: (
+      <AdminGuard>
+        <SupportDetailPage />
+      </AdminGuard>
+    ),
+  },
+  {
+    path: ROUTE.ADMIN_ACTIVITY,
+    element: (
+      <AdminGuard>
+        <AdminActivityPage />
+      </AdminGuard>
+    ),
+  },
+  {
+    path: ROUTE.ADMIN_LIBRARY,
+    element: (
+      <AdminGuard>
+        <AdminLibraryPage />
+      </AdminGuard>
+    ),
+  },
+  {
+    path: ROUTE.ADMIN_REPORT,
+    element: (
+      <AdminGuard>
+        <AdminReportPage />
+      </AdminGuard>
+    ),
+  },
+  {
+    path: ROUTE.ADMIN_MEMBER,
+    element: (
+      <AdminGuard>
+        <AdminMemberPage />
+      </AdminGuard>
+    ),
+  },
+];
+
 const protectedRoutes = [
   {
     element: <AuthProvider protect />,
@@ -132,6 +198,7 @@ const protectedRoutes = [
       ...libraryRoutes,
       ...myRoutes,
       ...supportRoutes,
+      ...adminRoutes,
     ],
   },
 ];

@@ -12,6 +12,25 @@ export const END_POINT = {
     INFO: "members/my-profile",
     UPDATE: (memberId: string) => `members/${memberId}`,
   },
+  MEMBER: {
+    BASE: "members",
+    DETAIL: (memberId: string) => `members/${memberId}`,
+    ROLES_LIST: "members/roles",
+    ROLE: (memberId: string) => `members/${memberId}/roles`,
+    PASSWORD_RESEND: (memberId: string) =>
+      `members/password/${memberId}/resend`,
+  },
+  APPLICATION: {
+    CONDITIONS: "applications/conditions",
+    APPROVE: (recruitmentId: number, studentId: string) =>
+      `applications/approve/${recruitmentId}/${studentId}`,
+    REJECT: (recruitmentId: number, studentId: string) =>
+      `applications/reject/${recruitmentId}/${studentId}`,
+  },
+  RECRUITMENT: {
+    BASE: "recruitments",
+    OPEN: "recruitments/open",
+  },
   COMMUNITY: {
     BOARD: {
       BASE: "boards",
@@ -55,7 +74,7 @@ export const END_POINT = {
   },
   ACTIVITY: {
     LIST_BY_CATEGORY: "activity-group/member/list",
-    LIST_BY_STATUS: "activity-group/status/list",
+    LIST_BY_STATUS: "activity-group/member/status",
     DETAIL: (activityGroupId: number) =>
       `activity-group/member/${activityGroupId}`,
     APPLY: "activity-group/member/apply",

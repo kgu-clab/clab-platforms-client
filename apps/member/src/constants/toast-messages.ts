@@ -87,4 +87,24 @@ export const TOAST_MESSAGES = {
     success: "답변이 삭제되었습니다.",
     error: "답변 삭제에 실패했습니다.",
   },
+  MEMBER_ROLE_UPDATE: {
+    success: "권한이 변경되었습니다.",
+    error: "권한 변경에 실패했습니다.",
+  },
+  MEMBER_DELETE: {
+    success: "회원이 삭제되었습니다.",
+    error: "회원 삭제에 실패했습니다.",
+  },
+  MEMBER_PASSWORD_RESEND: {
+    success: "비밀번호 재전송이 완료되었습니다.",
+    error: "비밀번호 재전송에 실패했습니다.",
+  },
+  APPLICATION_APPROVE: {
+    success: "가입 신청을 승인했습니다.",
+    error: "승인 처리에 실패했습니다.",
+  },
+  APPLICATION_REJECT: {
+    success: "가입 신청을 거절했습니다.",
+    error: "거절 처리에 실패했습니다.",
+  },
 } as const;

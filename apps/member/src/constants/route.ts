@@ -22,4 +22,11 @@ export const ROUTE = {
   SUPPORT: "/support",
   SUPPORT_WRITE: "/support/write",
   SUPPORT_DETAIL: (id: number) => `/support/${id}`,
+  ADMIN: "/admin",
+  ADMIN_SUPPORT: "/admin/support",
+  ADMIN_SUPPORT_DETAIL: (id: number) => `/admin/support/${id}`,
+  ADMIN_ACTIVITY: "/admin/activity",
+  ADMIN_LIBRARY: "/admin/library",
+  ADMIN_REPORT: "/admin/report",
+  ADMIN_MEMBER: "/admin/member",
 };

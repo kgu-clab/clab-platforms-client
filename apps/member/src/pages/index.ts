@@ -20,3 +20,11 @@ export { default as MyPostsPage } from "./my/MyPostsPage";
 export { default as SupportDetailPage } from "./support/SupportDetailPage";
 export { default as SupportPage } from "./support/SupportPage";
 export { default as SupportWritePage } from "./support/SupportWritePage";
+export {
+  AdminHomePage,
+  AdminSupportPage,
+  AdminActivityPage,
+  AdminLibraryPage,
+  AdminReportPage,
+  AdminMemberPage,
+} from "./admin";
