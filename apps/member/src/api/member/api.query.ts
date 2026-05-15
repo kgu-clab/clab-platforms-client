@@ -1,7 +1,7 @@
 import { mutationOptions, queryOptions } from "@tanstack/react-query";
 
 import { TOAST_MESSAGES } from "@/constants";
-import { showErrorToast, showSuccessToast } from "@/utils/toast";
+import { showErrorToast } from "@/utils/toast";
 
 import type {
   ChangeMemberRoleRequest,
@@ -41,9 +41,6 @@ export const memberQueries = {
     { memberId: string; body: ChangeMemberRoleRequest }
   >({
     mutationFn: ({ memberId, body }) => patchMemberRole(memberId, body),
-    onSuccess: () => {
-      showSuccessToast(TOAST_MESSAGES.MEMBER_ROLE_UPDATE);
-    },
     onError: () => {
       showErrorToast(TOAST_MESSAGES.MEMBER_ROLE_UPDATE);
     },
@@ -51,9 +48,6 @@ export const memberQueries = {
 
   deleteMemberMutation: mutationOptions<unknown, Error, string>({
     mutationFn: (memberId: string) => deleteMember(memberId),
-    onSuccess: () => {
-      showSuccessToast(TOAST_MESSAGES.MEMBER_DELETE);
-    },
     onError: () => {
       showErrorToast(TOAST_MESSAGES.MEMBER_DELETE);
     },
@@ -61,9 +55,6 @@ export const memberQueries = {
 
   postPasswordResendMutation: mutationOptions<unknown, Error, string>({
     mutationFn: (memberId: string) => postPasswordResend(memberId),
-    onSuccess: () => {
-      showSuccessToast(TOAST_MESSAGES.MEMBER_PASSWORD_RESEND);
-    },
     onError: () => {
       showErrorToast(TOAST_MESSAGES.MEMBER_PASSWORD_RESEND);
     },

@@ -11,6 +11,7 @@ import type {
   getBooksResponse,
   getBooksDetailRequest,
   getBooksLoanConditionsRequest,
+  getBooksLoanConditionsResponse,
   postBookLoanRequest,
 } from "./api.model";
 import { getBooks } from "./getBooks";
@@ -27,6 +28,28 @@ export const libraryQueries = {
     [...libraryQueryKey, "detail", request.id] as const,
   loanConditionsKey: (request?: getBooksLoanConditionsRequest) =>
     [...libraryQueryKey, "loanConditions", request] as const,
+  getBooksLoanConditionsInfiniteQuery: (
+    request: Omit<getBooksLoanConditionsRequest, "page" | "size">,
+  ) =>
+    infiniteQueryOptions({
+      queryKey: [...libraryQueries.all, "loanConditionsInfinite", request],
+      queryFn: async ({ pageParam }) => {
+        const res = await getBooksLoanConditions({
+          ...request,
+          page: pageParam as number,
+          size: DEFAULT_PAGE_SIZE,
+        });
+        if (!res.ok) {
+          return {
+            data: { hasNext: false, items: [], currentPage: 0 },
+          } as unknown as getBooksLoanConditionsResponse;
+        }
+        return res.data;
+      },
+      initialPageParam: 0,
+      getNextPageParam: (lastPage: getBooksLoanConditionsResponse) =>
+        lastPage.data.hasNext ? lastPage.data.currentPage + 1 : undefined,
+    }),
   getBooksInfiniteQuery: (request: Omit<getBooksRequest, "page" | "size">) =>
     infiniteQueryOptions({
       queryKey: [...libraryQueries.all, "infinite", request] as const,

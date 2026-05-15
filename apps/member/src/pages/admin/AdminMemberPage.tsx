@@ -31,9 +31,10 @@ import type {
   MemberRoleInfoResponseDto,
 } from "@/api/member";
 import { recruitmentQueries } from "@/api/recruitment";
-import { ROUTE } from "@/constants";
+import { ROUTE, TOAST_MESSAGES } from "@/constants";
 import { getConfirmMessage } from "@/utils/admin";
 import type { AdminMemberPendingAction } from "@/utils/admin";
+import { showSuccessToast } from "@/utils/toast";
 
 type AdminMemberTab = "MEMBERS" | "APPLICATIONS";
 type MemberRoleFilter = "ALL" | Extract<MemberRole, "ADMIN" | "SUPER">;
@@ -147,27 +148,36 @@ export default function AdminMemberPage() {
   const roleMutation = useMutation({
     ...memberQueries.patchMemberRoleMutation,
     onSuccess: () => {
+      showSuccessToast(TOAST_MESSAGES.MEMBER_ROLE_UPDATE);
       queryClient.invalidateQueries({ queryKey: memberKeys.all });
     },
   });
-  const passwordMutation = useMutation(
-    memberQueries.postPasswordResendMutation,
-  );
+  const passwordMutation = useMutation({
+    ...memberQueries.postPasswordResendMutation,
+    onSuccess: () => {
+      showSuccessToast(TOAST_MESSAGES.MEMBER_PASSWORD_RESEND);
+      queryClient.invalidateQueries({ queryKey: memberKeys.all });
+    },
+  });
   const deleteMutation = useMutation({
     ...memberQueries.deleteMemberMutation,
     onSuccess: () => {
+      showSuccessToast(TOAST_MESSAGES.MEMBER_DELETE);
       queryClient.invalidateQueries({ queryKey: memberKeys.all });
     },
   });
   const approveMutation = useMutation({
     ...applicationQueries.patchApplicationApproveMutation,
     onSuccess: () => {
+      showSuccessToast(TOAST_MESSAGES.APPLICATION_APPROVE);
       queryClient.invalidateQueries({ queryKey: applicationKeys.all });
+      queryClient.invalidateQueries({ queryKey: memberKeys.all });
     },
   });
   const rejectMutation = useMutation({
     ...applicationQueries.patchApplicationRejectMutation,
     onSuccess: () => {
+      showSuccessToast(TOAST_MESSAGES.APPLICATION_REJECT);
       queryClient.invalidateQueries({ queryKey: applicationKeys.all });
     },
   });

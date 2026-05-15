@@ -1,7 +1,7 @@
 import { mutationOptions, queryOptions } from "@tanstack/react-query";
 
 import { TOAST_MESSAGES } from "@/constants";
-import { showErrorToast, showSuccessToast } from "@/utils/toast";
+import { showErrorToast } from "@/utils/toast";
 
 import type {
   ApplicationActionParams,
@@ -30,9 +30,6 @@ export const applicationQueries = {
     ApplicationActionParams
   >({
     mutationFn: (params) => patchApplicationApprove(params),
-    onSuccess: () => {
-      showSuccessToast(TOAST_MESSAGES.APPLICATION_APPROVE);
-    },
     onError: () => {
       showErrorToast(TOAST_MESSAGES.APPLICATION_APPROVE);
     },
@@ -44,9 +41,6 @@ export const applicationQueries = {
     ApplicationActionParams
   >({
     mutationFn: (params) => patchApplicationReject(params),
-    onSuccess: () => {
-      showSuccessToast(TOAST_MESSAGES.APPLICATION_REJECT);
-    },
     onError: () => {
       showErrorToast(TOAST_MESSAGES.APPLICATION_REJECT);
     },
