@@ -1,5 +1,5 @@
 import { Header, Scrollable, Section, Title } from "@clab/design-system";
-import { useInfiniteQuery, useQueries, useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { BiCommentError } from "react-icons/bi";
 import { HiMiniSquare3Stack3D } from "react-icons/hi2";
 import { ImBubbles } from "react-icons/im";
@@ -23,13 +23,14 @@ const PENDING_LOAN_PARAMS = {
 };
 
 export default function AdminHomePage() {
-  const { data: supportPage } = useInfiniteQuery(
-    supportQueries.getSupportsInfiniteQuery(),
+  const { data: pendingSupportPage } = useQuery(
+    supportQueries.getSupportsQuery({
+      status: "PENDING",
+      page: 0,
+      size: 1,
+    }),
   );
-  const supports = supportPage?.pages.flatMap((p) => p.data.items ?? []) ?? [];
-  const pendingSupportCount = supports.filter(
-    (s) => s.status === "PENDING",
-  ).length;
+  const pendingSupportCount = pendingSupportPage?.totalItems ?? 0;
 
   const [waitingActivityRes, progressingActivityRes] = useQueries({
     queries: ["WAITING", "PROGRESSING"].map((status) =>

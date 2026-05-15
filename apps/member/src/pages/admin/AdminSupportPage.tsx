@@ -19,31 +19,33 @@ export default function AdminSupportPage() {
   const [searchParams] = useSearchParams();
   const tab = (searchParams.get("tab") ?? "PENDING") as SupportTab;
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isPending,
-    isError,
-  } = useInfiniteQuery(supportQueries.getSupportsInfiniteQuery());
+  const pendingQuery = useInfiniteQuery(
+    supportQueries.getSupportsInfiniteQuery({ status: "PENDING" }),
+  );
+  const allQuery = useInfiniteQuery({
+    ...supportQueries.getSupportsInfiniteQuery(),
+    enabled: tab === "ALL",
+  });
+  const activeQuery = tab === "PENDING" ? pendingQuery : allQuery;
 
   const { scrollRef, bottomSentinelRef } = useInfiniteScroll({
-    hasNextPage: hasNextPage ?? false,
-    isFetchingNextPage,
-    fetchNextPage,
+    hasNextPage: activeQuery.hasNextPage ?? false,
+    isFetchingNextPage: activeQuery.isFetchingNextPage,
+    fetchNextPage: activeQuery.fetchNextPage,
   });
 
-  const allSupports = useMemo(
-    () => data?.pages.flatMap((p) => p.data.items ?? []) ?? [],
-    [data],
-  );
   const pendingSupports = useMemo(
-    () => allSupports.filter((s) => s.status === "PENDING"),
-    [allSupports],
+    () => pendingQuery.data?.pages.flatMap((p) => p.data.items ?? []) ?? [],
+    [pendingQuery.data],
+  );
+  const allSupports = useMemo(
+    () => allQuery.data?.pages.flatMap((p) => p.data.items ?? []) ?? [],
+    [allQuery.data],
   );
 
   const visible = tab === "PENDING" ? pendingSupports : allSupports;
+  const pendingCount = pendingQuery.data?.pages[0]?.data.totalItems ?? 0;
+  const allCount = allQuery.data?.pages[0]?.data.totalItems ?? 0;
 
   return (
     <>
@@ -66,7 +68,7 @@ export default function AdminSupportPage() {
           <Tabs.Item
             label="미답변"
             href={ROUTE.ADMIN_SUPPORT}
-            endSlot={<AdminTabBadge count={pendingSupports.length} />}
+            endSlot={<AdminTabBadge count={pendingCount} />}
           />
           <Tabs.Item label="전체" href={`${ROUTE.ADMIN_SUPPORT}?tab=ALL`} />
         </Tabs>
@@ -75,14 +77,18 @@ export default function AdminSupportPage() {
           <Section
             title={
               tab === "PENDING"
-                ? `미답변 ${pendingSupports.length}건`
-                : `전체 ${allSupports.length}건`
+                ? `미답변 ${pendingCount}건`
+                : `전체 ${allCount}건`
             }
           >
             <AdminListState
-              isPending={isPending}
-              isError={isError}
-              isEmpty={visible.length === 0 && !isPending && !isError}
+              isPending={activeQuery.isPending}
+              isError={activeQuery.isError}
+              isEmpty={
+                visible.length === 0 &&
+                !activeQuery.isPending &&
+                !activeQuery.isError
+              }
               emptyMessage={
                 tab === "PENDING"
                   ? "미답변 문의가 없습니다."

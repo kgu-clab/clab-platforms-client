@@ -5,6 +5,7 @@ import type { GetSupportRequest, GetSupportResponse } from "./api.model";
 export function getSupports(params?: GetSupportRequest) {
   const searchParams = new URLSearchParams();
 
+  if (params?.status !== undefined) searchParams.set("status", params.status);
   if (params?.page !== undefined) searchParams.set("page", String(params.page));
   if (params?.size !== undefined) searchParams.set("size", String(params.size));
   params?.sortBy?.forEach((s) => searchParams.append("sortBy", s));

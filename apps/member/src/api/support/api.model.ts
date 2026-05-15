@@ -7,6 +7,7 @@ export type SupportStatus = "PENDING" | "COMPLETED";
 export type SupportCategory = "INQUIRY" | "BUG";
 
 export type GetSupportRequest = {
+  status?: SupportStatus;
   page?: number;
   size?: number;
   sortBy?: string[];

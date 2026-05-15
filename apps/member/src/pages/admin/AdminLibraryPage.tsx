@@ -6,7 +6,7 @@ import {
   Tabs,
   Title,
 } from "@clab/design-system";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useMemo, useState } from "react";
 import { GoChevronLeft } from "react-icons/go";
@@ -18,18 +18,13 @@ import { useInfiniteScroll } from "@/model/common/useInfiniteScroll";
 import { AdminListState, AdminTabBadge } from "@/components/admin";
 import { LibraryBookList, LibrarySearchBar } from "@/components/library";
 
-import type {
-  BookLoanStatus,
-  getBooksLoanConditionsResponse,
-} from "@/api/library/api.model";
+import type { getBooksLoanConditionsResponse } from "@/api/library/api.model";
 import { libraryQueries } from "@/api/library/api.query";
 import { ROUTE } from "@/constants";
 
 type LibraryTab = "LOANED" | "OVERDUE" | "BOOKS";
 
 type LoanItem = getBooksLoanConditionsResponse["data"]["items"][number];
-
-const PAGE_SIZE = 20;
 
 export default function AdminLibraryPage() {
   const navigate = useNavigate();
@@ -38,20 +33,26 @@ export default function AdminLibraryPage() {
   const [keyword, setKeyword] = useState("");
   const debouncedKeyword = useDebounce(keyword, 400);
 
-  const loanedQuery = useQuery(
-    libraryQueries.getBooksLoanConditionsQuery({
-      status: "APPROVED" as BookLoanStatus,
-      page: 0,
-      size: PAGE_SIZE,
+  const {
+    data: loanedData,
+    fetchNextPage: fetchNextLoanedPage,
+    hasNextPage: hasNextLoanedPage,
+    isFetchingNextPage: isFetchingNextLoanedPage,
+    isPending: loanedPending,
+    isError: loanedError,
+  } = useInfiniteQuery(
+    libraryQueries.getBooksLoanConditionsInfiniteQuery({
+      status: "APPROVED",
       sortBy: "borrowedAt",
       sortDirection: "desc",
     }),
   );
 
   const allBookLoans = useMemo(
-    () => loanedQuery.data?.items ?? [],
-    [loanedQuery.data?.items],
+    () => loanedData?.pages.flatMap((p) => p.data.items ?? []) ?? [],
+    [loanedData],
   );
+  const loanedCount = loanedData?.pages[0]?.data.totalItems ?? 0;
   const overdueLoans = useMemo(
     () =>
       allBookLoans.filter(
@@ -77,9 +78,11 @@ export default function AdminLibraryPage() {
   });
 
   const { scrollRef, bottomSentinelRef } = useInfiniteScroll({
-    hasNextPage: hasNextPage ?? false,
-    isFetchingNextPage,
-    fetchNextPage,
+    hasNextPage:
+      tab === "BOOKS" ? (hasNextPage ?? false) : (hasNextLoanedPage ?? false),
+    isFetchingNextPage:
+      tab === "BOOKS" ? isFetchingNextPage : isFetchingNextLoanedPage,
+    fetchNextPage: tab === "BOOKS" ? fetchNextPage : fetchNextLoanedPage,
   });
 
   const books = useMemo(
@@ -108,13 +111,9 @@ export default function AdminLibraryPage() {
           <Tabs.Item
             label="대여"
             href={ROUTE.ADMIN_LIBRARY}
-            endSlot={<AdminTabBadge count={allBookLoans.length} />}
+            endSlot={<AdminTabBadge count={loanedCount} />}
           />
-          <Tabs.Item
-            label="연체"
-            href={`${ROUTE.ADMIN_LIBRARY}?tab=OVERDUE`}
-            endSlot={<AdminTabBadge count={overdueLoans.length} />}
-          />
+          <Tabs.Item label="연체" href={`${ROUTE.ADMIN_LIBRARY}?tab=OVERDUE`} />
           <Tabs.Item
             label="도서"
             href={`${ROUTE.ADMIN_LIBRARY}?tab=BOOKS`}
@@ -126,11 +125,11 @@ export default function AdminLibraryPage() {
 
         {tab === "LOANED" && (
           <Scrollable className="px-gutter py-xl">
-            <Section title={`대여 중 ${allBookLoans.length}권`}>
+            <Section title={`대여 중 ${loanedCount}권`}>
               <AdminListState
-                isPending={loanedQuery.isPending}
-                isError={loanedQuery.isError}
-                isEmpty={!loanedQuery.isPending && allBookLoans.length === 0}
+                isPending={loanedPending}
+                isError={loanedError}
+                isEmpty={!loanedPending && allBookLoans.length === 0}
                 emptyMessage="대여 중인 도서가 없습니다."
               />
               <div className="gap-md flex flex-col">
@@ -143,6 +142,7 @@ export default function AdminLibraryPage() {
                     }
                   />
                 ))}
+                <div ref={bottomSentinelRef} />
               </div>
             </Section>
           </Scrollable>
@@ -150,17 +150,18 @@ export default function AdminLibraryPage() {
 
         {tab === "OVERDUE" && (
           <Scrollable className="px-gutter py-xl">
-            <Section title={`연체 ${overdueLoans.length}건`}>
+            <Section title={`확인된 연체 ${overdueLoans.length}건`}>
               {overdueLoans.length > 0 && (
                 <div className="rounded-lg bg-red-50 px-4 py-3 text-[13px] text-red-600">
-                  {overdueLoans.length}권의 연체 도서가 있어요.
+                  현재 불러온 대여 목록에서 {overdueLoans.length}권의 연체
+                  도서를 확인했어요.
                 </div>
               )}
               <AdminListState
-                isPending={loanedQuery.isPending}
-                isError={loanedQuery.isError}
-                isEmpty={!loanedQuery.isPending && overdueLoans.length === 0}
-                emptyMessage="연체 도서가 없습니다."
+                isPending={loanedPending}
+                isError={loanedError}
+                isEmpty={!loanedPending && overdueLoans.length === 0}
+                emptyMessage="현재 불러온 목록에서 확인된 연체 도서가 없습니다."
               />
               <div className="gap-md flex flex-col">
                 {overdueLoans.map((loan) => (
@@ -173,6 +174,7 @@ export default function AdminLibraryPage() {
                     }
                   />
                 ))}
+                <div ref={bottomSentinelRef} />
               </div>
             </Section>
           </Scrollable>
