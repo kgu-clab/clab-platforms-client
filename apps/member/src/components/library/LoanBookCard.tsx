@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import { useNavigate } from "react-router";
 
-import { ROUTE } from "@/constants";
 import type { BookLoanCondition } from "@/api/library/api.type";
+import { ROUTE } from "@/constants";
 
 interface LoanBookCardProps {
   loan: BookLoanCondition;

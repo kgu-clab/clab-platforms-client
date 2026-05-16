@@ -8,7 +8,7 @@ import {
   Title,
 } from "@clab/design-system";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { GoChevronLeft } from "react-icons/go";
 import { useNavigate, useParams } from "react-router";
 
@@ -27,17 +27,15 @@ export default function LibraryDetailPage() {
   const memberId = useAuthStore((s) => s.memberId);
   const { id } = useParams<{ id: string }>();
   const bookId = id ? Number(id) : NaN;
-  const loanConditionsParams = useMemo(
-    () => ({
-      status: "PENDING" as const,
-      page: 0,
-      size: 20,
-      sortBy: "borrowedAt" as const,
-      sortDirection: "desc" as const,
-      borrowerId: memberId ?? undefined,
-    }),
-    [memberId],
-  );
+
+  const loanConditionsParams = {
+    status: "PENDING" as const,
+    page: 0,
+    size: 20,
+    sortBy: "borrowedAt" as const,
+    sortDirection: "desc" as const,
+    borrowerId: memberId ?? undefined,
+  };
 
   const {
     data: book,
@@ -53,12 +51,9 @@ export default function LibraryDetailPage() {
     enabled: !!memberId && Number.isInteger(bookId) && bookId > 0 && !!book,
   });
 
-  const appliedLoanRecord = useMemo(() => {
-    if (!book || !loanConditions?.items.length) return undefined;
-    return loanConditions.items.find((item) => item.bookId === book.id);
-  }, [book, loanConditions]);
-
-  const hasApplied = !!appliedLoanRecord;
+  const appliedLoanRecord = book
+    ? loanConditions?.items.find((item) => item.bookId === book.id)
+    : undefined;
 
   const postBookLoanMutation = useMutation({
     ...libraryQueries.postBookLoanMutation,
@@ -66,6 +61,9 @@ export default function LibraryDetailPage() {
       showSuccessToast(TOAST_MESSAGES.BOOK_LOAN_APPLY);
       queryClient.invalidateQueries({
         queryKey: libraryQueries.loanConditionsKey(loanConditionsParams),
+      });
+      queryClient.invalidateQueries({
+        queryKey: libraryQueries.booksDetailKey({ id: bookId }),
       });
     },
   });
@@ -77,24 +75,29 @@ export default function LibraryDetailPage() {
       queryClient.invalidateQueries({
         queryKey: libraryQueries.loanConditionsKey(loanConditionsParams),
       });
+      queryClient.invalidateQueries({
+        queryKey: libraryQueries.booksDetailKey({ id: bookId }),
+      });
     },
   });
 
   const isAvailable = book ? !book.borrowerId : false;
+  const isLoanMutationPending =
+    postBookLoanMutation.isPending || deleteBookLoanRecordMutation.isPending;
 
+  const canApplyLoan = isAvailable && !appliedLoanRecord;
   const isButtonDisabled =
-    (!isAvailable && !hasApplied) ||
-    postBookLoanMutation.isPending ||
-    deleteBookLoanRecordMutation.isPending;
+    (!canApplyLoan && !appliedLoanRecord) || isLoanMutationPending;
+
+  const bottomButtonText = isLoanMutationPending
+    ? "처리 중..."
+    : appliedLoanRecord
+      ? "신청 취소"
+      : "대출 신청";
 
   const handleLoanApply = () => {
-    if (!book || !isAvailable || hasApplied) return;
+    if (!book || !canApplyLoan) return;
     postBookLoanMutation.mutate({ bookId: book.id });
-  };
-
-  const handleCancelLoanApply = () => {
-    if (!appliedLoanRecord) return;
-    setShowCancelModal(true);
   };
 
   const handleConfirmCancel = () => {
@@ -106,8 +109,8 @@ export default function LibraryDetailPage() {
   };
 
   const handleBottomButtonClick = () => {
-    if (hasApplied) {
-      handleCancelLoanApply();
+    if (appliedLoanRecord) {
+      setShowCancelModal(true);
       return;
     }
     handleLoanApply();
@@ -277,15 +280,12 @@ export default function LibraryDetailPage() {
               onClick={handleBottomButtonClick}
               color={isButtonDisabled ? "disabled" : "active"}
               className={
-                hasApplied && !isButtonDisabled ? "bg-red-500" : undefined
+                appliedLoanRecord && !isButtonDisabled
+                  ? "bg-red-500"
+                  : undefined
               }
             >
-              {deleteBookLoanRecordMutation.isPending ||
-              postBookLoanMutation.isPending
-                ? "처리 중..."
-                : hasApplied
-                  ? "신청 취소"
-                  : "대출 신청"}
+              {bottomButtonText}
             </Button>
           </footer>
         </div>
