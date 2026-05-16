@@ -1,11 +1,8 @@
 import type { ReactNode } from "react";
 import { useNavigate } from "react-router";
 
-import type { getBooksLoanConditionsResponse } from "@/api/library/api.model";
 import { ROUTE } from "@/constants";
-
-type BookLoanCondition =
-  getBooksLoanConditionsResponse["data"]["items"][number];
+import type { BookLoanCondition } from "@/api/library/api.type";
 
 interface LoanBookCardProps {
   loan: BookLoanCondition;
