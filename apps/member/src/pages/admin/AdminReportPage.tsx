@@ -161,11 +161,7 @@ export default function AdminReportPage() {
                   })
                 }
                 onView={() => {
-                  if (item.targetType === "BOARD") {
-                    navigate(`${ROUTE.COMMUNITY}/${item.targetId}`);
-                  }
-                  // COMMENT 신고는 AccuseResponseDto에 parent boardId가 없어
-                  // 댓글 위치로 navigate 불가. BE에 parentBoardId 보강되면 연결.
+                  navigate(`${ROUTE.COMMUNITY}/${item.redirectId}`);
                 }}
               />
             ))}

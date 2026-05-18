@@ -7,6 +7,7 @@ export type AccuseResponseDto = {
   members: { memberId: string; memberName: string }[];
   targetType: TargetType;
   targetId: number;
+  redirectId: number;
   reason: string;
   accuseStatus: AccuseStatus;
   accuseCount: number;
