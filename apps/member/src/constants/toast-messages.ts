@@ -106,6 +106,7 @@ export const TOAST_MESSAGES = {
   APPLICATION_REJECT: {
     success: "가입 신청을 거절했습니다.",
     error: "거절 처리에 실패했습니다.",
+  },
   BOOK_LOAN_APPLY: {
     success: "도서 대출 신청이 완료되었습니다.",
     error: "도서 대출 신청에 실패했습니다.",
