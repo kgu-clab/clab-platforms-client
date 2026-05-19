@@ -5,8 +5,11 @@ import {
 } from "@tanstack/react-query";
 
 import { DEFAULT_PAGE_SIZE } from "@/api/config";
+import { TOAST_MESSAGES } from "@/constants";
+import { showErrorToast } from "@/utils/toast";
 
 import type {
+  deleteBookLoanRecordRequest,
   getBooksRequest,
   getBooksResponse,
   getBooksDetailRequest,
@@ -14,6 +17,7 @@ import type {
   getBooksLoanConditionsResponse,
   postBookLoanRequest,
 } from "./api.model";
+import { deleteBookLoanRecord } from "./deleteBookLoanRecord";
 import { getBooks } from "./getBooks";
 import { getBooksDetail } from "./getBooksDetail";
 import { getBooksLoanConditions } from "./getBooksLoanConditions";
@@ -81,6 +85,7 @@ export const libraryQueries = {
     }),
   getBooksLoanConditionsQuery: (
     request: getBooksLoanConditionsRequest = {
+      borrowerId: undefined,
       status: "PENDING",
       page: 0,
       size: 20,
@@ -102,6 +107,20 @@ export const libraryQueries = {
       if (!res.ok)
         throw new Error(res.error.message ?? "대출 신청에 실패했습니다.");
       return res.data;
+    },
+    onError: () => {
+      showErrorToast(TOAST_MESSAGES.BOOK_LOAN_APPLY);
+    },
+  }),
+  deleteBookLoanRecordMutation: mutationOptions({
+    mutationFn: async (request: deleteBookLoanRecordRequest) => {
+      const res = await deleteBookLoanRecord(request);
+      if (!res.ok)
+        throw new Error(res.error.message ?? "대출 신청 취소에 실패했습니다.");
+      return res.data;
+    },
+    onError: () => {
+      showErrorToast(TOAST_MESSAGES.BOOK_LOAN_CANCEL);
     },
   }),
 };
