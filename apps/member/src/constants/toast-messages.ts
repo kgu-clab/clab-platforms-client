@@ -87,4 +87,12 @@ export const TOAST_MESSAGES = {
     success: "답변이 삭제되었습니다.",
     error: "답변 삭제에 실패했습니다.",
   },
+  BOOK_LOAN_APPLY: {
+    success: "도서 대출 신청이 완료되었습니다.",
+    error: "도서 대출 신청에 실패했습니다.",
+  },
+  BOOK_LOAN_CANCEL: {
+    success: "도서 대출 신청이 취소되었습니다.",
+    error: "도서 대출 신청 취소에 실패했습니다.",
+  },
 } as const;

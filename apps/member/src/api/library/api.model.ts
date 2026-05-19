@@ -56,9 +56,14 @@ export type postBookLoanRequest = {
   bookId: number;
 };
 
+export type deleteBookLoanRecordRequest = {
+  bookLoanRecordId: number;
+};
+
 export type BookLoanStatus = "PENDING" | "APPROVED" | "REJECTED" | "RETURNED";
 
 export type getBooksLoanConditionsRequest = {
+  borrowerId?: string;
   status: BookLoanStatus;
   page: number;
   size: number;
