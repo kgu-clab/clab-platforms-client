@@ -14,6 +14,7 @@ import type {
   GetActivitiyByStatusRequest,
   GetActivitiyDetailRequest,
   GetActivityApplicationsRequest,
+  GetActivityJoinedRequest,
   PatchActivityChangeStatusRequest,
   PatchActivityMemberStatusRequest,
   PatchActivityUpdateRequest,
@@ -48,7 +49,7 @@ export const activityQueries = {
   detailKey: (request: GetActivitiyDetailRequest) =>
     [...activityQueryKey, "detail", request.activityGroupId] as const,
   appliedKey: () => [...activityQueryKey, "applied"] as const,
-  joinedKey: (request?: GetActivitiyByStatusRequest) =>
+  joinedKey: (request?: GetActivityJoinedRequest) =>
     [...activityQueryKey, "joined", request] as const,
   applicationsKey: (request: GetActivityApplicationsRequest) =>
     [...activityQueryKey, "applications", request.activityGroupId] as const,
@@ -99,7 +100,7 @@ export const activityQueries = {
       staleTime: Number.POSITIVE_INFINITY, // invalidate 시에만 재요청
     }),
 
-  getActivityJoinedQuery: (request: GetActivitiyByStatusRequest) =>
+  getActivityJoinedQuery: (request: GetActivityJoinedRequest) =>
     queryOptions({
       queryKey: activityQueries.joinedKey(request),
       queryFn: async () => {
@@ -206,14 +207,8 @@ export const activityQueries = {
   }),
 
   patchActivityStatusMutation: mutationOptions({
-    mutationFn: async ({
-      activityGroupId,
-      activityGroupStatus,
-    }: PatchActivityChangeStatusRequest) => {
-      const res = await patchActivityStatus(
-        activityGroupId,
-        activityGroupStatus,
-      );
+    mutationFn: async (request: PatchActivityChangeStatusRequest) => {
+      const res = await patchActivityStatus(request);
       if (!res.ok)
         throw new Error(res.error.message ?? "활동 상태 변경에 실패했습니다.");
       return res.data;

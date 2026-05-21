@@ -8,7 +8,7 @@ import {
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { BiCommentDetail, BiCommentError } from "react-icons/bi";
-import { IoCubeOutline } from "react-icons/io5";
+import { IoCubeOutline, IoSettings } from "react-icons/io5";
 import { RiBook2Line, RiFilePaper2Line, RiLogoutBoxLine } from "react-icons/ri";
 // import { TbXboxX } from "react-icons/tb";
 import { useNavigate } from "react-router";
@@ -40,6 +40,7 @@ export default function MyPage() {
   const { data: userInfo } = useQuery(userQueries.getUserInfoQuery());
   const { name, id, email, contact, githubUrl, imageUrl, createdAt } =
     userInfo?.data ?? {};
+  const isAdmin = (userInfo?.data.roleLevel ?? 0) >= 2;
 
   const { data: myBoards } = useQuery(boardQueries.getMyBoardsCountQuery());
 
@@ -133,6 +134,12 @@ export default function MyPage() {
             icon={BiCommentError}
           />
         </Section>
+
+        {isAdmin && (
+          <Section title="운영">
+            <MyMenuItem to={ROUTE.ADMIN} label="관리" icon={IoSettings} />
+          </Section>
+        )}
 
         <Section title="설정">
           {/* <MyMenuItem to="#" label="알림 설정" icon={IoNotificationsOutline} /> */}

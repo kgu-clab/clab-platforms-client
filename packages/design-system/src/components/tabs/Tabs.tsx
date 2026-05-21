@@ -8,9 +8,10 @@ export interface TabsProps extends HTMLAttributes<HTMLElement> {
 }
 
 interface TabsItemProps extends HTMLAttributes<HTMLButtonElement> {
-  icon: ReactNode;
   label: string;
   href: string;
+  icon?: ReactNode;
+  endSlot?: ReactNode;
 }
 
 export default function Tabs({ className, children, ...props }: TabsProps) {
@@ -24,7 +25,7 @@ export default function Tabs({ className, children, ...props }: TabsProps) {
   );
 }
 
-function TabsItem({ className, icon, label, href, ...props }: TabsItemProps) {
+function TabsItem({ className, icon, label, href, endSlot, ...props }: TabsItemProps) {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -46,14 +47,17 @@ function TabsItem({ className, icon, label, href, ...props }: TabsItemProps) {
       onClick={() => navigate(href)}
       {...props}
     >
-      <span className={cn('text-gray-300', isActive && 'text-primary')}>
-        {cloneElement(icon as ReactElement<IconBaseProps>, {
-          size: 16,
-        })}
-      </span>
+      {icon && (
+        <span className={cn('text-gray-300', isActive && 'text-primary')}>
+          {cloneElement(icon as ReactElement<IconBaseProps>, {
+            size: 16,
+          })}
+        </span>
+      )}
       <span className={cn('font-size-18 font-semibold text-gray-300', isActive && 'text-primary')}>
         {label}
       </span>
+      {endSlot}
     </button>
   );
 }

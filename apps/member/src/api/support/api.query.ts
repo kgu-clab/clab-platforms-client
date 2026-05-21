@@ -33,11 +33,23 @@ export const supportKeys = {
   all: ["support"] as const,
   detail: (supportId: number) => [...supportKeys.all, supportId] as const,
   lists: ["supports"] as const,
+  list: (params?: GetSupportRequest) =>
+    [...supportKeys.lists, "list", params] as const,
   my: (params?: GetMySupportsRequest) =>
     [...supportKeys.lists, "my", params] as const,
 };
 
 export const supportQueries = {
+  getSupportsQuery: (params?: GetSupportRequest) =>
+    queryOptions({
+      queryKey: supportKeys.list(params),
+      queryFn: async () => {
+        const res = await getSupports(params);
+        if (!res.ok) throw new Error("문의 목록 조회에 실패했습니다.");
+        return res.data.data;
+      },
+    }),
+
   getSupportsInfiniteQuery: (
     params?: Omit<GetSupportRequest, "page" | "size">,
   ) =>

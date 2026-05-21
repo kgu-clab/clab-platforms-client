@@ -34,3 +34,34 @@ export const Default: Story = {
     ),
   },
 };
+
+const CountBadge = ({ count }: { count: number }) => (
+  <span className="bg-primary/10 text-primary rounded-full px-2 text-[11px] font-semibold leading-[1.4]">
+    {count}
+  </span>
+);
+
+export const LabelOnly: Story = {
+  args: {
+    className: 'w-[375px]',
+    children: (
+      <>
+        <Tabs.Item label="전체" href="/" />
+        <Tabs.Item label="진행중" href="/?status=ongoing" />
+        <Tabs.Item label="완료" href="/?status=done" />
+      </>
+    ),
+  },
+};
+
+export const WithEndSlot: Story = {
+  args: {
+    className: 'w-[375px]',
+    children: (
+      <>
+        <Tabs.Item label="미답변" href="/?tab=pending" endSlot={<CountBadge count={3} />} />
+        <Tabs.Item label="전체" href="/" />
+      </>
+    ),
+  },
+};
