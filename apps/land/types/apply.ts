@@ -23,6 +23,12 @@ export type ApplicationResult = {
   isPass: boolean;
 };
 
+export type ApplicationResultResponse = {
+  success: boolean;
+  data?: ApplicationResult;
+  errorMessage?: string;
+};
+
 export type Question = {
   id: number;
   question: string;

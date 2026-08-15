@@ -1,5 +1,6 @@
 'use client';
 
+import { LandingSection } from '@/components/common';
 import { Button, Input, Textarea } from '@clab/design-system';
 import { cn } from '@clab/design-system/utils';
 import Link from 'next/link';
@@ -7,7 +8,7 @@ import { useState } from 'react';
 
 import { FORM_FIELD_MAX_LENGTH } from '@/constants/apply';
 import { useApplicationMutation } from '@/hooks/apply';
-import { formatBirth } from '@/lib';
+import { formatBirth, saveApplicationHistory } from '@/lib';
 import type { ApplicationForm as ApplicationFormType, ApplicationType } from '@/types';
 
 interface Props {
@@ -64,7 +65,16 @@ export default function ApplyFormSection({ recruitmentId, applicationType }: Pro
     applicationType,
   });
   const [isApplySuccess, setIsApplySuccess] = useState<boolean | null>(null);
-  const { applicationMutate, isPending } = useApplicationMutation({ setIsApplySuccess });
+  const { applicationMutate, isPending } = useApplicationMutation({
+    setIsApplySuccess,
+    onApplySuccess: (application) => {
+      saveApplicationHistory({
+        recruitmentId: application.recruitmentId,
+        studentId: application.studentId,
+        submittedAt: new Date().toISOString(),
+      });
+    },
+  });
 
   const update = <K extends keyof ApplicationFormType>(key: K, value: ApplicationFormType[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -93,7 +103,10 @@ export default function ApplyFormSection({ recruitmentId, applicationType }: Pro
 
   if (isApplySuccess === true) {
     return (
-      <section className="px-10 py-16 lg:px-[30%]">
+      <LandingSection
+        className="h-auto items-stretch bg-gray-50 px-5 py-16 sm:px-10 sm:py-16 lg:px-[30%] lg:py-16"
+        innerClassName="max-w-none"
+      >
         <div className="text-center gap-4 flex flex-col items-center">
           <h2 className="text-2xl font-bold text-gray-900">지원이 완료되었습니다!</h2>
           <p className="mt-2 text-gray-600">결과는 추후 안내드리겠습니다.</p>
@@ -104,13 +117,16 @@ export default function ApplyFormSection({ recruitmentId, applicationType }: Pro
             동아리 더 둘러보기
           </Link>
         </div>
-      </section>
+      </LandingSection>
     );
   }
 
   if (isApplySuccess === false) {
     return (
-      <section className="px-10 py-16 lg:px-[30%]">
+      <LandingSection
+        className="h-auto items-stretch bg-gray-50 px-5 py-16 sm:px-10 sm:py-16 lg:px-[30%] lg:py-16"
+        innerClassName="max-w-none"
+      >
         <div className="text-center gap-4 flex flex-col items-center">
           <h2 className="text-2xl font-bold text-gray-900">지원에 실패했습니다.</h2>
           <p className="mt-2 text-gray-600">다시 시도해주세요.</p>
@@ -118,12 +134,15 @@ export default function ApplyFormSection({ recruitmentId, applicationType }: Pro
             다시 시도
           </Button>
         </div>
-      </section>
+      </LandingSection>
     );
   }
 
   return (
-    <section className="px-10 py-16 lg:px-[30%]">
+    <LandingSection
+      className="h-auto items-stretch bg-gray-50 px-5 py-16 sm:px-10 sm:py-16 lg:px-[30%] lg:py-16"
+      innerClassName="max-w-none"
+    >
       <form onSubmit={handleSubmit} className="flex flex-col gap-8">
         <h2 className="font-bold text-2xl">지원서 작성</h2>
 
@@ -260,6 +279,6 @@ export default function ApplyFormSection({ recruitmentId, applicationType }: Pro
           {isPending ? '제출 중...' : '제출하기'}
         </Button>
       </form>
-    </section>
+    </LandingSection>
   );
 }
