@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="ko" className={`${wantedSans.variable}`} suppressHydrationWarning>
+    <html lang="ko" className={wantedSans.variable} suppressHydrationWarning>
       <body className="antialiased" suppressHydrationWarning>
         <Header />
         <QueryProvider>{children}</QueryProvider>
