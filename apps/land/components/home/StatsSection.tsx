@@ -6,29 +6,19 @@ export default function StatsSection() {
   return (
     <LandingSection className="bg-white pt-16 sm:pt-20 lg:pt-24">
       <div className="flex flex-col gap-8">
-        <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-          <LandingTitle
-            className="max-w-168"
-            eyebrow="About C-Lab"
-            title={<>C-Lab은 다음과 같은 역사를 가지고 있어요.</>}
-            description={
-              <>
-                C-Lab은 개발을 처음 시작하는 학생도 편하게 들어와 함께 성장할 수 있는 경기대학교
-                개발 동아리에요.
-                <br />
-                기초 스터디부터 프로젝트, 발표, 선후배 네트워킹까지 개발자로 성장하는 과정을
-                함께해봐요.
-              </>
-            }
-            descriptionClassName="md:hidden"
-          />
-          <p className="hidden max-w-120 text-base leading-8 text-slate-500 md:block">
-            C-Lab은 개발을 처음 시작하는 학생도 편하게 들어와 함께 성장할 수 있는 경기대학교 개발
-            동아리에요.
-            <br />
-            기초 스터디부터 프로젝트, 발표, 선후배 네트워킹까지 개발자로 성장하는 과정을 함께해봐요.
-          </p>
-        </div>
+        <LandingTitle
+          eyebrow="About C-Lab"
+          title={<>C-Lab은 무슨 동아리인가요?</>}
+          description={
+            <>
+              C-Lab은 개발을 처음 시작하는 학생도 편하게 들어와 함께 성장할 수 있는 경기대학교 개발
+              동아리에요. <br />
+              기초 스터디부터 프로젝트, 발표, 선후배 네트워킹까지 개발자로 성장하는 과정을
+              함께해봐요.
+            </>
+          }
+          descriptionClassName="max-w-none"
+        />
 
         <div className="grid border-y border-slate-200 sm:grid-cols-2 lg:grid-cols-5">
           {STATS.map((stat, index) => (

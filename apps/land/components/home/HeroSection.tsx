@@ -6,7 +6,7 @@ import { ROUTES } from '@/constants';
 export default function HeroSection() {
   return (
     <section className="clab-hero-section relative isolate flex min-h-svh w-full items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_50%_18%,rgba(255,255,255,0.98),transparent_22%),linear-gradient(135deg,#ffffff_0%,#eef9ff_42%,#c9eaff_100%)] px-5 py-24 text-slate-950 sm:py-28 lg:py-32">
-      <div className="absolute inset-0 -z-10 opacity-[0.16] [background-image:linear-gradient(rgba(53,128,255,0.32)_1px,transparent_1px),linear-gradient(90deg,rgba(53,128,255,0.32)_1px,transparent_1px)] bg-size-[72px_72px]" />
+      <div className="absolute inset-0 -z-10 opacity-[0.16] bg-[linear-gradient(rgba(53,128,255,0.32)_1px,transparent_1px),linear-gradient(90deg,rgba(53,128,255,0.32)_1px,transparent_1px)] bg-size-[72px_72px]" />
       <div className="absolute inset-x-0 bottom-0 -z-10 h-40 bg-linear-to-t from-white/85 to-transparent" />
 
       <div className="mx-auto flex w-full max-w-5xl flex-col items-center text-center">

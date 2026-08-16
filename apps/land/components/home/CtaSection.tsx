@@ -21,7 +21,7 @@ export default function CtaSection() {
               <br /> 기다리고 있어요.
             </>
           }
-          description="C-Lab은 누구나 지원할 수 있는 동아리입니다."
+          description="C-Lab은 경기대학교 컴퓨터공학과 재학생이라면, 누구나 지원할 수 있는 동아리입니다."
           className="max-w-168"
           descriptionClassName="max-w-[35rem]"
         />

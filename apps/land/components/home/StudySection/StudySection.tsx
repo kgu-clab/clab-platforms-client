@@ -10,7 +10,12 @@ export default function StudySection() {
         <div className="flex max-w-168 flex-col gap-8">
           <LandingTitle
             eyebrow="Study Track"
-            title={<>C랩에선 어떤걸 배울 수 있나요?</>}
+            title={
+              <>
+                C랩에선 <br />
+                어떤걸 배울 수 있나요?
+              </>
+            }
             description={
               <>
                 1학년은 C언어와 자료구조로 기초적인 CS 개념을 필수로 수강하게 됩니다.
@@ -33,7 +38,7 @@ export default function StudySection() {
             delay={2000}
             skewAmount={4}
             easing="linear"
-            className="bottom-8 right-1/2 translate-x-1/2 translate-y-0 scale-[0.78] sm:bottom-6 sm:scale-90 lg:bottom-[5%] lg:right-[10.5rem] lg:translate-x-0 lg:translate-y-[20%] lg:scale-100"
+            className="bottom-8 right-1/2 translate-x-1/2 translate-y-0 scale-[0.78] sm:bottom-6 sm:scale-90 lg:bottom-[5%] lg:right-42 lg:translate-x-0 lg:translate-y-[20%] lg:scale-100"
           >
             {STUDIES.map((study, index) => (
               <StudySwapCard key={study.title} study={study} index={index} />

@@ -33,12 +33,10 @@ export default function ActivitySection() {
                 <br /> 같이 놀기도 합니다.
               </>
             }
-            titleClassName="md:text-5xl"
             description={
               <>
                 C-Lab은 스터디와 프로젝트가 끝이 아니에요. <br />
-                세미나에서 진로를 나누고, 총회와 MT에서 편하게 섞이며 오래 갈 수 있는 분위기를
-                만듭니다.
+                총회와 MT에서 편하게 섞이며 오래 갈 수 있는 분위기를 만들어요.
               </>
             }
             descriptionClassName="max-w-[32rem]"
@@ -57,7 +55,7 @@ export default function ActivitySection() {
           </div>
         </div>
 
-        <div className="w-full lg:max-w-[38.5rem] lg:justify-self-end">
+        <div className="w-full lg:max-w-154 lg:justify-self-end">
           <ActivityDetailCard activity={selected} />
         </div>
       </div>
