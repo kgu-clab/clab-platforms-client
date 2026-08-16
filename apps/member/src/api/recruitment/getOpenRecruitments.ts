@@ -7,7 +7,6 @@ import type { OpenRecruitmentResponseDto } from "./api.model";
 export async function getOpenRecruitments(): Promise<
   ApiResult<ApiResponse<OpenRecruitmentResponseDto[]>>
 > {
-  // TODO: 응답 스키마 백엔드 확인
   const res = await authApi.get<ApiResponse<unknown>>(
     END_POINT.RECRUITMENT.OPEN,
   );
@@ -39,6 +38,6 @@ function isOpenRecruitment(
   return (
     isObject(value) &&
     typeof value.id === "number" &&
-    typeof value.title === "string"
+    typeof value.applicationType === "string"
   );
 }

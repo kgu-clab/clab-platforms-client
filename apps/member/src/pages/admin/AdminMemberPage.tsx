@@ -6,7 +6,12 @@ import {
   Tabs,
   Title,
 } from "@clab/design-system";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueries,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { GoChevronLeft } from "react-icons/go";
 import { useNavigate, useSearchParams } from "react-router";
@@ -21,6 +26,7 @@ import {
   MemberCard,
   RoleSelectModal,
 } from "@/components/admin";
+import type { ApplicationPassFilter } from "@/components/admin/ApplicationSection";
 import { ConfirmModal } from "@/components/common";
 
 import { applicationKeys, applicationQueries } from "@/api/application";
@@ -62,6 +68,8 @@ export default function AdminMemberPage() {
   const [selectedRecruitmentId, setSelectedRecruitmentId] = useState<
     number | null
   >(null);
+  const [applicationPassFilter, setApplicationPassFilter] =
+    useState<ApplicationPassFilter>("ALL");
   const [roleModalMember, setRoleModalMember] =
     useState<AdminMemberItem | null>(null);
   const [pendingAction, setPendingAction] = useState<PendingAction | null>(
@@ -112,32 +120,53 @@ export default function AdminMemberPage() {
         : [],
     [openRecruitmentsQuery.data],
   );
-
-  const effectiveRecruitmentId =
-    selectedRecruitmentId ?? openRecruitments[0]?.id ?? null;
-  const badgeRecruitmentId = openRecruitments[0]?.id;
-  const applicationBadgeQuery = useQuery({
-    ...applicationQueries.getApplicationConditionsQuery({
-      recruitmentId: badgeRecruitmentId,
-      isPass: false,
-      page: 0,
-      size: 1,
-    }),
-    enabled: typeof badgeRecruitmentId === "number",
+  const recruitmentDetailQueries = useQueries({
+    queries: openRecruitments.map((recruitment) =>
+      recruitmentQueries.getRecruitmentDetailsQuery(recruitment.id),
+    ),
   });
-  const applicationBadgeCount =
-    applicationBadgeQuery.data?.ok && applicationBadgeQuery.data.data.data
-      ? applicationBadgeQuery.data.data.data.totalItems
-      : 0;
+  const recruitments = useMemo(
+    () =>
+      recruitmentDetailQueries.flatMap((query) =>
+        query.data?.ok && query.data.data.data ? [query.data.data.data] : [],
+      ),
+    [recruitmentDetailQueries],
+  );
+  const isRecruitmentsPending =
+    openRecruitmentsQuery.isPending ||
+    recruitmentDetailQueries.some((query) => query.isPending);
+  const isRecruitmentsError =
+    openRecruitmentsQuery.isError ||
+    recruitmentDetailQueries.some((query) => query.isError);
+  const applicationBadgeQueries = useQueries({
+    queries: openRecruitments.map((recruitment) =>
+      applicationQueries.getApplicationConditionsQuery({
+        recruitmentId: recruitment.id,
+        page: 0,
+        size: 1,
+      }),
+    ),
+  });
+  const applicationBadgeCount = applicationBadgeQueries.reduce(
+    (count, query) =>
+      count +
+      (query.data?.ok && query.data.data.data
+        ? query.data.data.data.totalItems
+        : 0),
+    0,
+  );
 
   const applicationQuery = useQuery({
     ...applicationQueries.getApplicationConditionsQuery({
-      recruitmentId: effectiveRecruitmentId ?? undefined,
-      isPass: false,
+      recruitmentId: selectedRecruitmentId ?? undefined,
+      isPass:
+        applicationPassFilter === "ALL"
+          ? undefined
+          : applicationPassFilter === "PASS",
       page: applicationPage,
       size: PAGE_SIZE,
     }),
-    enabled: tab === "APPLICATIONS" && effectiveRecruitmentId !== null,
+    enabled: tab === "APPLICATIONS" && selectedRecruitmentId !== null,
   });
   const applicationPageData =
     applicationQuery.data?.ok && applicationQuery.data.data.data
@@ -248,21 +277,28 @@ export default function AdminMemberPage() {
         {tab === "APPLICATIONS" ? (
           <Scrollable className="px-gutter py-xl">
             <ApplicationSection
-              recruitments={openRecruitments}
-              selectedRecruitmentId={effectiveRecruitmentId}
+              recruitments={recruitments}
+              selectedRecruitmentId={selectedRecruitmentId}
+              passFilter={applicationPassFilter}
               applications={applications}
               totalItems={applicationPageData?.totalItems ?? 0}
               currentPage={applicationPage}
               totalPages={applicationPageData?.totalPages ?? 0}
               isPending={
-                openRecruitmentsQuery.isPending || applicationQuery.isPending
+                isRecruitmentsPending ||
+                (selectedRecruitmentId !== null && applicationQuery.isPending)
               }
               isError={
-                openRecruitmentsQuery.isError || applicationQuery.isError
+                isRecruitmentsError ||
+                (selectedRecruitmentId !== null && applicationQuery.isError)
               }
               isMutating={isApplicationMutating}
               onSelectRecruitment={(id) => {
                 setSelectedRecruitmentId(id);
+                setApplicationPage(0);
+              }}
+              onSelectPassFilter={(filter) => {
+                setApplicationPassFilter(filter);
                 setApplicationPage(0);
               }}
               onApprove={(application) =>
