@@ -69,6 +69,14 @@ export const APPLY_PROCESS = {
   },
 } as const;
 
+export const CURRENT_SEMESTER_RECRUITMENT = {
+  applicationStartAt: '2026-08-17T00:00:00+09:00',
+  applicationEndAt: '2026-08-31T20:00:00+09:00',
+  interviewAt: '2026-09-02T00:00:00+09:00',
+  finalResultReleaseAt: '2026-09-02T00:00:00+09:00',
+  finalResultReleaseLabel: '9월 2일',
+} as const;
+
 export const APPLY_MESSAGE = {
   CAN_APPLY: 'C-Lab은 현재 모집중!',
   CANNOT_APPLY: '지금은 모집기간이 아니에요 😢',
