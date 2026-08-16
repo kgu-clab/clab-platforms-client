@@ -30,6 +30,7 @@ export const END_POINT = {
   RECRUITMENT: {
     BASE: "recruitments",
     OPEN: "recruitments/open",
+    DETAIL: (recruitmentId: number) => `recruitments/${recruitmentId}`,
   },
   COMMUNITY: {
     BOARD: {
