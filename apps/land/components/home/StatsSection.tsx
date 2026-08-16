@@ -1,25 +1,51 @@
+import { LandingSection, LandingTitle } from '@/components/common';
+import { CountUp } from '@/components/reactbits';
 import { STATS } from '@/constants';
-import { Title } from '../common';
 
 export default function StatsSection() {
   return (
-    <section className="flex w-full flex-col px-5 sm:px-10 md:px-20 gap-3 bg-linear-to-b from-primary to-primary-sub items-center justify-center h-screen">
-      <Title title="C-Lab은 다음과 같은 역사를 가지고 있어요" className="text-white" />
-      <div className="grid w-full grid-cols-2 gap-3 items-center justify-center max-w-[900px]">
-        {STATS.map(({ label, value, dark }, i) => (
-          <div
-            key={i}
-            className={`grid place-items-center w-full min-h-40 rounded-2xl p-4 ${
-              dark ? 'bg-blue-900 text-white' : 'bg-white text-blue-900'
-            }`}
-          >
-            <div className="flex flex-col gap-1 justify-center items-center">
-              <span className="text-sm md:text-base opacity-90">{label}</span>
-              <span className="text-xl md:text-2xl font-bold">{value}</span>
+    <LandingSection className="bg-white pt-16 sm:pt-20 lg:pt-24">
+      <div className="flex flex-col gap-8">
+        <LandingTitle
+          eyebrow="About C-Lab"
+          title={<>C-Lab은 무슨 동아리인가요?</>}
+          description={
+            <>
+              C-Lab은 개발을 처음 시작하는 학생도 편하게 들어와 함께 성장할 수 있는 경기대학교 개발
+              동아리에요. <br />
+              기초 스터디부터 프로젝트, 발표, 선후배 네트워킹까지 개발자로 성장하는 과정을
+              함께해봐요.
+            </>
+          }
+          descriptionClassName="max-w-none"
+        />
+
+        <div className="grid border-y border-slate-200 sm:grid-cols-2 lg:grid-cols-5">
+          {STATS.map((stat, index) => (
+            <div
+              key={stat.label}
+              className={`grid min-h-44 grid-rows-[auto_1fr_auto_auto] gap-4 py-6 sm:px-6 lg:px-5 xl:px-8 ${
+                index === 0 ? '' : 'border-t border-slate-200'
+              } ${index % 2 === 1 ? 'sm:border-l' : 'sm:border-l-0'} ${
+                index < 2 ? 'sm:border-t-0' : ''
+              } ${index === 0 ? 'lg:border-l-0' : 'lg:border-l'} lg:border-t-0`}
+            >
+              <p className="text-sm font-bold leading-5 text-slate-500">{stat.label}</p>
+              <div aria-hidden className="min-h-4" />
+              <div className="flex items-baseline gap-1 text-5xl font-black leading-none tracking-[-0.06em] text-slate-950 lg:text-5xl xl:text-6xl">
+                <span className="sr-only">{`${stat.value}${stat.suffix}`}</span>
+                <span aria-hidden="true" className="contents">
+                  <CountUp to={stat.value} duration={1.4} className="tabular-nums" />
+                  <span className="text-3xl leading-none tracking-[-0.04em] text-sky-600 sm:text-4xl">
+                    {stat.suffix}
+                  </span>
+                </span>
+              </div>
+              <p className="min-h-18 text-sm leading-6 text-slate-500">{stat.description}</p>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </section>
+    </LandingSection>
   );
 }

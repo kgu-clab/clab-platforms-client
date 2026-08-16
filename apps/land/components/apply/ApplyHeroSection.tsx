@@ -1,6 +1,6 @@
 export default function ApplyHeroSection() {
   return (
-    <section className="bg-linear-to-b from-black to-primary py-48 px-10 text-white">
+    <section className="bg-linear-to-b from-black to-primary px-10 pb-48 pt-64 text-white">
       <div className="lg:px-[30%]">
         <h1 className="text-3xl font-bold mb-6">C-Lab 지원하기</h1>
         <p className="text-lg mb-10 opacity-90">C-Lab과 함께 성장할 열정 있는 분들을 기다립니다.</p>

@@ -1,29 +1,60 @@
-import Image from 'next/image';
+import { LandingSection, LandingTitle } from '@/components/common';
+import { ROUTES } from '@/constants';
 import Link from 'next/link';
+
+const CHECK_ITEMS = [
+  '개발을 처음 배우는 분이어도 괜찮아요.',
+  '함께 공부하고 이야기할 사람을 찾습니다.',
+  '프로젝트 경험보다 꾸준히 해보려는 태도를 봅니다.',
+];
 
 export default function CtaSection() {
   return (
-    <section className="w-full h-screen flex flex-col items-center justify-center bg-gray-100 px-5 sm:px-10 md:px-20">
-      <div className="relative mx-auto flex flex-col items-center gap-4 overflow-hidden rounded-2xl w-full bg-primary-sub h-[60vh] max-h-[700px] px-5 py-6">
-        <Image
-          src="/images/clab-logo.png"
-          className="pointer-events-none absolute opacity-40 right-0 w-fit"
-          alt="Clab Pattern"
-          width={500}
-          height={500}
+    <LandingSection className="bg-white">
+      <div className="flex flex-col gap-8">
+        <LandingTitle
+          eyebrow="Apply"
+          title={
+            <>
+              C-Lab은
+              <br /> 열정 넘치는 여러분을
+              <br /> 기다리고 있어요.
+            </>
+          }
+          description="C-Lab은 경기대학교 컴퓨터공학과 재학생이라면, 누구나 지원할 수 있는 동아리입니다."
+          className="max-w-168"
+          descriptionClassName="max-w-[35rem]"
         />
-        <div className="relative flex flex-col items-start gap-2 text-start w-full p-5">
-          <p className="text-2xl font-bold text-tertiary">C-Lab은</p>
-          <p className="text-2xl font-bold text-tertiary">열정 넘치는 여러분을</p>
-          <p className="text-2xl font-bold text-tertiary">기다리고 있어요.</p>
+
+        <div>
           <Link
-            href="/apply"
-            className="mt-2 text-base font-semibold text-blue-900 underline underline-offset-2 transition-opacity hover:opacity-80"
+            href={ROUTES.APPLY}
+            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full bg-slate-950 px-4 py-3 text-sm font-black text-white transition-transform hover:-translate-y-0.5 hover:bg-sky-600 sm:gap-3 sm:px-6 sm:py-4 sm:text-base"
           >
-            지금 바로 지원하러 가기 →
+            지금 바로 지원하러 가기 <span className="text-base sm:text-lg">→</span>
           </Link>
         </div>
+
+        <div className="border-y border-slate-200">
+          <p className="py-4 text-sm font-bold text-slate-400">지원 전에 확인해보세요</p>
+          <ul className="grid gap-0 sm:grid-cols-3 sm:border-t sm:border-slate-200">
+            {CHECK_ITEMS.map((item) => (
+              <li
+                key={item}
+                className="flex items-center gap-3 border-t border-slate-200 py-4 text-sm font-bold leading-6 text-slate-700 sm:border-t-0 sm:border-l sm:px-4 sm:first:border-l-0"
+              >
+                <span
+                  aria-hidden="true"
+                  className="grid size-6 shrink-0 place-items-center rounded-full bg-sky-100 text-xs text-sky-700"
+                >
+                  ✓
+                </span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-    </section>
+    </LandingSection>
   );
 }

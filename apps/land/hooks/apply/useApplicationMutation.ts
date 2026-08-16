@@ -20,12 +20,13 @@ async function postApplication(body: ApplicationForm) {
 
 interface Props {
   setIsApplySuccess: (applySuccess: boolean) => void;
+  onApplySuccess?: (application: ApplicationForm) => void;
 }
 
 /**
  * 동아리를 지원합니다.
  */
-export const useApplicationMutation = ({ setIsApplySuccess }: Props) => {
+export const useApplicationMutation = ({ setIsApplySuccess, onApplySuccess }: Props) => {
   const ApplicationPost = useMutation({
     mutationFn: postApplication,
     onSuccess: (data) => {
@@ -40,5 +41,13 @@ export const useApplicationMutation = ({ setIsApplySuccess }: Props) => {
     },
   });
 
-  return { applicationMutate: ApplicationPost.mutate, isPending: ApplicationPost.isPending };
+  const applicationMutate = (application: ApplicationForm) => {
+    ApplicationPost.mutate(application, {
+      onSuccess: (data) => {
+        if (data.success) onApplySuccess?.(application);
+      },
+    });
+  };
+
+  return { applicationMutate, isPending: ApplicationPost.isPending };
 };

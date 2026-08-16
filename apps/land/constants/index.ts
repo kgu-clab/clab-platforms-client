@@ -3,3 +3,5 @@ export * from './endpoint';
 export * from './apply';
 export * from './activity';
 export * from './stat';
+export * from './study';
+export * from './route';
