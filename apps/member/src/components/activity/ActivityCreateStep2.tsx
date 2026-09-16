@@ -122,7 +122,7 @@ export default function ActivityCreateStep2() {
         <div className="px-gutter">
           <Input
             type="text"
-            placeholder="제목을 입력해주세요."
+            placeholder="https://github.com/사용자명/저장소명"
             value={githubLink}
             onChange={(e) => setGithubLink(e.target.value)}
             variant="underline"

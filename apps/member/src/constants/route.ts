@@ -10,6 +10,7 @@ export const ROUTE = {
   ACTIVITY: "/activity",
   ACTIVITY_STUDY: "/activity?tab=study",
   ACTIVITY_CREATE: "/activity/create",
+  ACTIVITY_DETAIL: (id: number) => `${ROUTE.ACTIVITY}/${id}`,
   ACTIVITY_EDIT: (id: number) => `${ROUTE.ACTIVITY}/${id}/edit`,
   ACTIVITY_MANAGE: (id: number) => `${ROUTE.ACTIVITY}/${id}/manage`,
   LIBRARY: "/library",
