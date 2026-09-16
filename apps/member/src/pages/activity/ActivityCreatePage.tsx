@@ -16,7 +16,7 @@ import ActivityCreateStep2 from "@/components/activity/ActivityCreateStep2";
 import type { ActivityCategory } from "@/api/activity/api.model";
 import { activityQueries } from "@/api/activity/api.query";
 import { ROUTE, TOAST_MESSAGES } from "@/constants";
-import { showSuccessToast } from "@/utils/toast";
+import { showErrorToast, showSuccessToast } from "@/utils/toast";
 
 export interface ActivityCreatePageContentProps {
   editPayload?: { activityGroupId: number };
@@ -54,23 +54,15 @@ export function ActivityCreatePageContent({
     endDate.trim() !== "" &&
     techStack.trim() !== "";
 
-  const statusMutation = useMutation({
-    ...activityQueries.patchActivityStatusMutation,
-  });
-
   const createMutation = useMutation({
     ...activityQueries.postActivityCreateMutation,
-    onSuccess: async (data) => {
-      const activityGroupId = data?.data;
-      if (activityGroupId != null) {
-        await statusMutation.mutateAsync({
-          activityGroupId,
-          activityGroupStatus: "PROGRESSING",
-        });
-      }
+    onSuccess: (activityGroupId) => {
       queryClient.invalidateQueries({ queryKey: activityQueries.all });
       showSuccessToast(TOAST_MESSAGES.ACTIVITY_CREATE_SUCCESS);
-      navigate(ROUTE.ACTIVITY_STUDY);
+      navigate(ROUTE.ACTIVITY_DETAIL(activityGroupId));
+    },
+    onError: () => {
+      showErrorToast(TOAST_MESSAGES.ACTIVITY_CREATE_SUCCESS);
     },
   });
 

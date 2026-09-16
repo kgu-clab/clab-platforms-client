@@ -116,6 +116,12 @@ export type PostActivityApplyRequest = {
   applyReason: string;
 };
 
+export type ActivityMutationResponse = {
+  success: boolean;
+  data?: number | null;
+  errorMessage?: string;
+};
+
 export type GetActivityAppliedResponse = BasePaginationResponse<{
   id: number;
   name: string;
@@ -147,7 +153,7 @@ export type PostActivityCreateRequest = {
   githubUrl: string;
 };
 
-export type PostActivityCreateResponse = BaseApiResponse<number>;
+export type PostActivityCreateResponse = ActivityMutationResponse;
 
 export type PatchActivityUpdateRequest = PostActivityCreateRequest;
 

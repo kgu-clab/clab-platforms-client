@@ -15,7 +15,7 @@ const STATUS_MAP: Record<
   ActivityStatus,
   { label: string; color: "disabled" | "green" | "red" }
 > = {
-  WAITING: { label: "모집대기", color: "disabled" },
+  WAITING: { label: "승인대기", color: "disabled" },
   PROGRESSING: { label: "모집중", color: "green" },
   END: { label: "종료", color: "red" },
 };

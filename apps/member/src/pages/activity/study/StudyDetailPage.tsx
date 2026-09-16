@@ -20,13 +20,14 @@ import { StudyMemberGrid } from "@/components/activity";
 import type { ActivityStatus } from "@/api/activity/api.model";
 import { activityQueries } from "@/api/activity/api.query";
 import { ROUTE } from "@/constants";
+import { getActivityApplicationState } from "@/utils/activity";
 import { formatTextToNodes } from "@/utils/formatter";
 
 const STATUS_MAP: Record<
   ActivityStatus,
   { label: string; color: "disabled" | "green" | "red" }
 > = {
-  WAITING: { label: "모집대기", color: "disabled" },
+  WAITING: { label: "승인대기", color: "disabled" },
   PROGRESSING: { label: "모집중", color: "green" },
   END: { label: "종료", color: "red" },
 };
@@ -52,6 +53,7 @@ export default function StudyDetailPage() {
     ...activityQueries.getActivityDetailQuery({ activityGroupId }),
     enabled: Number.isFinite(activityGroupId),
   });
+  const applicationState = getActivityApplicationState(detail?.status);
 
   const { data: appliedData } = useQuery({
     ...activityQueries.getActivityAppliedQuery(),
@@ -68,6 +70,7 @@ export default function StudyDetailPage() {
     !!detail && appliedItems.some((item) => item.id === detail.id);
 
   const handleCloseModal = () => {
+    applyMutation.reset();
     setIsModalOpen(false);
     setMotivation("");
   };
@@ -90,11 +93,17 @@ export default function StudyDetailPage() {
   };
 
   const handleOpenModal = () => {
+    if (!applicationState.canApply) return;
     setIsModalOpen(true);
   };
 
   const handleSubmit = () => {
-    if (!motivation.trim()) return;
+    if (
+      !applicationState.canApply ||
+      applyMutation.isPending ||
+      !motivation.trim()
+    )
+      return;
     applyMutation.mutate({
       activityGroupId,
       applyReason: motivation.trim(),
@@ -264,12 +273,14 @@ export default function StudyDetailPage() {
             <Button disabled color="disabled">
               신청완료
             </Button>
-          ) : detail.status === "END" ? (
-            <Button disabled color="disabled">
-              참여 신청
-            </Button>
           ) : (
-            <Button onClick={handleOpenModal}>참여 신청</Button>
+            <Button
+              onClick={handleOpenModal}
+              disabled={!applicationState.canApply}
+              color={applicationState.canApply ? "active" : "disabled"}
+            >
+              {applicationState.label}
+            </Button>
           )}
         </footer>
       </div>
@@ -287,11 +298,24 @@ export default function StudyDetailPage() {
           maxLength={400}
           showCounter
         />
+        {applyMutation.isError && (
+          <p role="alert" className="text-14-regular text-red-5">
+            활동 참여 신청에 실패했습니다. 잠시 후 다시 시도해주세요.
+          </p>
+        )}
         <Button
           onClick={handleSubmit}
-          disabled={applyMutation.isPending || !motivation.trim()}
+          disabled={
+            !applicationState.canApply ||
+            applyMutation.isPending ||
+            !motivation.trim()
+          }
         >
-          {applyMutation.isPending ? "신청 중..." : "신청하기"}
+          {!applicationState.canApply
+            ? applicationState.label
+            : applyMutation.isPending
+              ? "신청 중..."
+              : "신청하기"}
         </Button>
       </Modal>
     </Scrollable>

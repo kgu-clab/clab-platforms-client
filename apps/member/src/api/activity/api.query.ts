@@ -37,6 +37,7 @@ import { patchActivityStatus } from "./patchActivityStatus";
 import { patchActivityUpdate } from "./patchActivityUpdate";
 import { postActivityApply } from "./postActivityApply";
 import { postActivityCreate } from "./postActivityCreate";
+import { unwrapActivityMutationResult } from "./unwrapActivityMutationResult";
 
 const activityQueryKey = ["activity"] as const;
 
@@ -149,18 +150,17 @@ export const activityQueries = {
   postActivityApplyMutation: mutationOptions({
     mutationFn: async (request: PostActivityApplyRequest) => {
       const res = await postActivityApply(request);
-      if (!res.ok)
-        throw new Error(res.error.message ?? "활동 참여 신청에 실패했습니다.");
-      return res.data;
+      return unwrapActivityMutationResult(
+        res,
+        "활동 참여 신청에 실패했습니다.",
+      );
     },
   }),
 
   postActivityCreateMutation: mutationOptions({
     mutationFn: async (request: PostActivityCreateRequest) => {
       const res = await postActivityCreate(request);
-      if (!res.ok)
-        throw new Error(res.error.message ?? "활동 생성에 실패했습니다.");
-      return res.data;
+      return unwrapActivityMutationResult(res, "활동 생성에 실패했습니다.");
     },
   }),
 
