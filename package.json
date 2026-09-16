@@ -11,7 +11,15 @@
     "test": "turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "commit": "cz",
-    "commitlint": "commitlint"
+    "commitlint": "commitlint",
+    "agent:init": "node .agent/scripts/init.mjs",
+    "agent:check-local": "node .agent/scripts/check-local-files.mjs",
+    "agent:check-diff": "node .agent/scripts/check-diff-hygiene.mjs",
+    "agent:check": "node .agent/scripts/check-diff-hygiene.mjs",
+    "agent:verify": "node .agent/scripts/suggest-verification.mjs",
+    "agent:screenshots": "node .agent/scripts/make-screenshot-plan.mjs",
+    "agent:pr-evidence": "node .agent/scripts/collect-pr-evidence.mjs",
+    "agent:test": "node --test .agent/scripts/harness.test.mjs"
   },
   "devDependencies": {
     "@commitlint/cli": "^20.4.1",

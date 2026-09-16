@@ -220,3 +220,6 @@ out/
 .turbo/
 
 .pnpm-store/
+
+# Local agent artifacts
+.agent-local/
